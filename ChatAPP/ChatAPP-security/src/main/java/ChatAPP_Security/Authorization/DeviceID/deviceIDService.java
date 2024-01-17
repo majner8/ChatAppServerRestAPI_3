@@ -3,6 +3,7 @@ package ChatAPP_Security.Authorization.DeviceID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ChatAPP_Security.Authorization.SecurityProperties;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
 import chatAPP_database.Device.deviceIdGenerationRepository;
 
