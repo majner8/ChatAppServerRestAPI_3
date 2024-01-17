@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.CustomRabitMQQueue;
 import ChatAPP_RabitMQ.Queue.RabbitMQQueueManagerInterface;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
@@ -33,7 +32,7 @@ public class WebSocketStartConsumingRabitMQMessageService implements WebSocketSt
 			  this.makeWarmLog(true);
 			  throw new AccessDeniedException("WebSocket consuming");
 			  }
-		  CustomRabitMQQueue que=this.MqManagement.getDeviceQueueName();
+		  RabitMQQueue que=this.MqManagement.getDeviceQueueName();
 		  container.addQueueNames(que.getQueueName());
 		  container.start();
 		  if(que.isWasQueueCreated()) {

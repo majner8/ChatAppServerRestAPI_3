@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import ChatAPP_Chat.ChatManagement.ChatManagementInterface;
 import ChatAPP_RabitMQ.Producer.PushMessageRabitMQService;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
+import ChatAPP_WebSocket.WebSocketEndPointPath;
+import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
+import chatAPP_CommontPart.AOP.WebSocketThreadLocalSession;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_DTO.Message.SawMessageDTO;
@@ -17,6 +20,7 @@ import chatAPP_database.Chat.Messages.MessageEntity;
 import chatAPP_database.Chat.Messages.MessageRepositoryEntity;
 
 @Service
+@WebSocketThreadLocalSession
 public class ProcessChatMessageService {
 
 	@Autowired
@@ -31,6 +35,7 @@ public class ProcessChatMessageService {
 	private PushMessageRabitMQService rabitMQPush;
 
 	/** */
+	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
 	public void SendMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
 		//verify if user has permision to write into chat
 		//if not exception will be thrown and catch by global handler
@@ -42,6 +47,7 @@ public class ProcessChatMessageService {
 		
 		this.PushMessageToRabitMQService(message);
 	}
+	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_changeMessagePath, haveToBeMessageRequired = true)
 	public void ChangeMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
 		//if message is not exist EntityWasNotFoundException would be thrown
 		MessageEntity entity=this.messageRepo.findByPrimaryKey(message.getMessageID());
@@ -54,6 +60,7 @@ public class ProcessChatMessageService {
 			
 		this.PushMessageToRabitMQService(message);
 	}
+	@RabitMQAnnotationAOP(dtoClass = SawMessageDTO.class, getPath = WebSocketEndPointPath.Chat_sawMessagePath, haveToBeMessageRequired = false)
 	public void sawMessage(SimpMessageHeaderAccessor session,SawMessageDTO message) {
 		
 		

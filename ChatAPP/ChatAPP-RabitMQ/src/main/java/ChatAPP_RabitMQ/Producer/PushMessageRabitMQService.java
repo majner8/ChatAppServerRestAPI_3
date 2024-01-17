@@ -8,9 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 
 import ChatAPP_RabitMQ.RabitMQProperties;
 import chatAPP_CommontPart.Properties.WebSocketPropertie.WebSocketEndPointAndMessageType;
-import chatAPP_CommontPart.ThreadLocal.RabitMQConsumingMessageProperties;
-import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSimpMessageHeaderAccessor;
-import chatAPP_CommontPart.ThreadLocal.ThreadLocalSimpMessageHeaderAccessor;
+import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
 import chatAPP_DTO.DTO;
 import chatAPP_DTO.Message.MessageDTO;
 
@@ -24,7 +22,7 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 //	@Autowired
 //	private ThreadLocalSimpMessageHeaderAccessor threadLocalWebSocketSession;
 	@Autowired
-	private RabitMQThreadLocalSimpMessageHeaderAccessor rabitMQPropertiesThreadLocal;
+	private RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue rabitMQPropertiesThreadLocal;
 	private void PushMessageToRabitMQ(String exchangeKey,DTO message,MessagePostProcessor messagePostProcessor ) {
 	
         this.rabbitTemplate.convertAndSend(exchangeKey, message, messagePostProcessor);

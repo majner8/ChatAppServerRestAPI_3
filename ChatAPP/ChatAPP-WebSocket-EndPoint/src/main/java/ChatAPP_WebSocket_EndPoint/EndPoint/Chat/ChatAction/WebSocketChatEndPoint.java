@@ -1,4 +1,4 @@
-package ChatAPP_WebSocket_EndPoint.EndPoint.MessageManagement;
+package ChatAPP_WebSocket_EndPoint.EndPoint.Chat.ChatAction;
 
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 

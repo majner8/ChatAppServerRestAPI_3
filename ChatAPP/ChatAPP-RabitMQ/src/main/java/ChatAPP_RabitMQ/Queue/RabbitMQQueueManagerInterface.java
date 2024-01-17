@@ -1,6 +1,6 @@
 package ChatAPP_RabitMQ.Queue;
 
-import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.CustomRabitMQQueue;
+import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.RabitMQQueue;
 
 public interface RabbitMQQueueManagerInterface {
 
@@ -11,6 +11,6 @@ public interface RabbitMQQueueManagerInterface {
 	 *  Metod does not synchronizated
 	 *  
 	 *  */
-	public CustomRabitMQQueue getDeviceQueueName();
+	public RabitMQQueue getDeviceQueueName();
 }
 

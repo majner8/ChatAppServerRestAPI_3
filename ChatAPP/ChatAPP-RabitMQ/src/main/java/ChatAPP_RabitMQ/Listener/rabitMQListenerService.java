@@ -21,8 +21,6 @@ import com.rabbitmq.client.Channel;
 import ChatAPP_RabitMQ.RabitMQProperties;
 import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerControlInterface;
 import chatAPP_CommontPart.Log4j2.Log4j2;
-import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSimpMessageHeaderAccessor;
-import chatAPP_CommontPart.ThreadLocal.ThreadLocalSimpMessageHeaderAccessor;
 @Service
 public class rabitMQListenerService implements ChannelAwareMessageListener,RabbitMQConsumerControlInterface{
 

@@ -9,28 +9,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import chatAPP_CommontPart.ThreadLocal.ThreadLocalSimpMessageHeaderAccessor;
+import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
+import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
+
 @Component
 public class RabbitMQQueueManager implements RabbitMQQueueManagerInterface {
 
 	@Autowired
 	private AmqpAdmin amqpAdmin;
 	@Autowired
-	private ThreadLocalSimpMessageHeaderAccessor simpMessage;
+	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue simpMessage;
 	@Autowired
 	private TopicExchange topicExchange; //have to be created bean
 	@Override
-	public CustomRabitMQQueue getDeviceQueueName() {
+	public RabitMQQueue getDeviceQueueName() {
 		String queueName=this.simpMessage.getConnectionID();
 		if(this.amqpAdmin.getQueueInfo(queueName)!=null) {
-			return new CustomRabitMQQueue(queueName,false);
+			return new RabitMQQueue(queueName,false);
 		}
 		Queue q=this.createuserDeviceQueue(queueName);
 		this.BindQueue(this.simpMessage.getSessionOwnerUserID(),q);
-		return new CustomRabitMQQueue(queueName,true);
+		return new RabitMQQueue(queueName,true);
 	}
 	
-	@Async
 	private void BindQueue(long userID,Queue userDdeviceQueue) {
 		  // Declare and bind the queue
 	    Binding binding = BindingBuilder.bind(userDdeviceQueue).to(this.topicExchange).with(String.valueOf(userID));
@@ -43,11 +44,11 @@ public class RabbitMQQueueManager implements RabbitMQQueueManagerInterface {
 	}
 	
 	/**class, contain rabitMQ Queue name, and boolean value, if Queue was created, in this request */
-	public final static class CustomRabitMQQueue {
+	public final static class RabitMQQueue {
 		private final String queueName;
 		private final boolean wasQueueCreated;
 		
-		public CustomRabitMQQueue(String queueName, boolean wasQueueCreated) {
+		public RabitMQQueue(String queueName, boolean wasQueueCreated) {
 			this.queueName = queueName;
 			this.wasQueueCreated = wasQueueCreated;
 		}

@@ -6,8 +6,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.scheduling.annotation.Async;
 
+import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.RabitMQService.RabitMQConsumingEndPointService;
-import ChatAPP_WebSocket_EndPoint.WebSocketEndPointPath;
 
 @Async
 public class WebSocketEndPointConfig implements WebSocketEndPointConfigInterface {

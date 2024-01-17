@@ -1,4 +1,4 @@
-package ChatAPP_WebSocket_EndPoint;
+package ChatAPP_WebSocket;
 
 
 

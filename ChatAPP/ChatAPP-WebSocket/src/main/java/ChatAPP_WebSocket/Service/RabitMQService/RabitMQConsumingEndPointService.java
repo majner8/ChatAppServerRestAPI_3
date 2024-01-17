@@ -11,9 +11,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 
 import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
-import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.CustomRabitMQQueue;
+import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.RabitMQQueue;
 import ChatAPP_RabitMQ.Queue.RabbitMQQueueManagerInterface;
-import chatAPP_CommontPart.AOP.RabitMQPropertiesAOP;
+import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 import chatAPP_DTO.DTO;
@@ -36,7 +36,7 @@ public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceI
 	private RabitMQMessageProducerInterface amq;
 	@Override
 	public void StartConsuming(SimpMessageHeaderAccessor session,int offSetStart,int offSetEnd) {
-		CustomRabitMQQueue que=this.queueManager.getDeviceQueueName();
+		RabitMQQueue que=this.queueManager.getDeviceQueueName();
 		if(que.isWasQueueCreated()) {
 			//have to start quick synchronization
 			this.StartSynchronization(this.simpSession.getConnectionID(),this.simpSession.getSessionOwnerUserID(), offSetStart, offSetEnd);
@@ -44,10 +44,9 @@ public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceI
 	//operation was sucesfull
 	}
 
-	@RabitMQPropertiesAOP(dtoClass = MessageDTO.class, 
+	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class,
 			rabitMQPriory=5,
-			getPath = "",
-			haveToBeMessageRequired = false)
+			getPath = "", haveToBeMessageRequired = true)
 	private void StartSynchronization(String userWebSocketID,long UserID,int offSetStart,int offSetEnd) {
 		if(Log4j2.log.isDebugEnabled()) {
 			Log4j2.log.debug(Log4j2.MarkerLog.WebSocket.getMarker(),
