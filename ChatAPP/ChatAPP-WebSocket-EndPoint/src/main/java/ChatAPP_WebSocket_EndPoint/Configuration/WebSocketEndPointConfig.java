@@ -3,6 +3,7 @@ package ChatAPP_WebSocket_EndPoint.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.scheduling.annotation.Async;
 
 import ChatAPP_WebSocket.Service.RabitMQService.RabitMQConsumingEndPointService;
 import ChatAPP_WebSocket_EndPoint.WebSocketEndPointPath;
@@ -14,6 +15,8 @@ public class WebSocketEndPointConfig implements WebSocketEndPointConfigInterface
 
 	@Autowired
 	private RabitMQConsumingEndPointService service;
+	//async have to be used, because metod do not use rabitMQ annotation
+	@Async
 	@MessageMapping(WebSocketEndPointPath.Config_StartConsumingPath)
 	@Override
 	public void StartConsumingMessage(@DestinationVariable int offSetStart,@DestinationVariable int offSetEnd)  {

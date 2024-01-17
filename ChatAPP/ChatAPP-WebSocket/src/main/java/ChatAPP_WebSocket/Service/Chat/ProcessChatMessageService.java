@@ -55,12 +55,13 @@ public class ProcessChatMessageService {
 	}
 	public void sawMessage(SawMessageDTO message) {
 		
+		
 	}
 	
 	private void PushMessageToRabitMQService(MessageDTO message) {
 		//retrieved all memberIDOfChat
 		List<Long> membersID=this.chatManagement.getUserIDofMembers();
 		//push message to rabitMQ
-		this.rabitMQPush.PushSentChatMessages(message, 
-				membersID);	}
+		this.rabitMQPush.PushMessageToRabitMQ(message, membersID);
+	}
 }

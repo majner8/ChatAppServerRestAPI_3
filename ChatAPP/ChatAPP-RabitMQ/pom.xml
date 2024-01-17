@@ -22,6 +22,11 @@
   	<dependency>
   		<groupId>ChatAPP-commontPart</groupId>
   		<artifactId>ChatAPP-commontPart</artifactId>
+  	</dependency>
+
+  	<dependency>
+  		<groupId>ChatAPP</groupId>
+  		<artifactId>ChatAPP</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>

@@ -2,29 +2,29 @@ package ChatAPP_RabitMQ.Producer;
 
 import java.util.List;
 
-import chatAPP_CommontPart.Properties.WebSocketProperties.WebSocketEndPointAndMessageType;
-import chatAPP_DTO.Message.MessageDTO;
+import chatAPP_DTO.DTO;
 
+
+/**Interface set couple of metod, which manage pushing message to rabitMQ.
+ * Before use this interface, appropriate rabitMQ setting such as priory e.t.c on ThreadLocalSimMessageHeader have to be set);
+	 */
 public interface RabitMQMessageProducerInterface {
 
 
-	public void PushSentChatMessage(MessageDTO message,long UserRecipientId);
-
-	public default void PushSentChatMessages(MessageDTO message,List<Long> UserRecipientIds) {
-		synchronized (UserRecipientIds) {
-			UserRecipientIds.forEach((id)->{
-				this.PushSentChatMessage(message, id);
-			});
-		}
-		
+	public void PushMessageToRabitMQ(DTO message,long UserRecipientId);
+	public default void PushMessageToRabitMQ(DTO message,List<Long> UserRecipientIds) {
+		UserRecipientIds.forEach((x)->{
+			this.PushMessageToRabitMQ(message, x);
+		});
 	}
-	public void PushMessageFromAsyncProcess(MessageDTO message,String queueName,WebSocketEndPointAndMessageType mesType);
-	public default void PushMessageFromAsyncProcess(List<MessageDTO> messages,String queueName,WebSocketEndPointAndMessageType mesType) {
+	
+	public void PushMessageToRabitMQ(DTO message, String queueName);
+	public default void PushMessageToRabitMQ(List<DTO> messages,String queueName) {
 		synchronized(messages) {
-			messages.forEach((m)->{
-				this.PushMessageFromAsyncProcess(m, queueName, mesType);
+			messages.forEach((X)->{
+				this.PushMessageToRabitMQ(X, queueName);
 			});
 		}
 	}
 	
-}
+	}

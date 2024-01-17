@@ -21,25 +21,29 @@ import com.rabbitmq.client.Channel;
 import ChatAPP_RabitMQ.RabitMQProperties;
 import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerControlInterface;
 import chatAPP_CommontPart.Log4j2.Log4j2;
-import chatAPP_CommontPart.Properties.WebSocketProperties.WebSocketEndPointAndMessageType;
+import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSimpMessageHeaderAccessor;
+import chatAPP_CommontPart.ThreadLocal.ThreadLocalSimpMessageHeaderAccessor;
 @Service
 public class rabitMQListenerService implements ChannelAwareMessageListener,RabbitMQConsumerControlInterface{
 
 	private final Map<String,unAcknowledgeMessages> ListOfConnectedDevice=Collections.synchronizedMap(
 			new HashMap<String,unAcknowledgeMessages>());
-	@Autowired
-	private RabitMQProperties properties;
+
 	@Autowired
 	private RabbitMQMessageRelayInterface relay;
+	@Autowired
+	private RabitMQProperties RabitMQProperties;
+	@Async
 	@Override
 	public void onMessage(Message message, Channel channel) throws Exception {
 		MessageProperties properties=message.getMessageProperties();
 		String messageID=properties.getMessageId();
-		WebSocketEndPointAndMessageType type=WebSocketEndPointAndMessageType.valueOf(properties.getType());
-		String webSocketEndPoint=type.getPath();
-			//name is same as userdeviceID, userID+deviceID
 		String recipientID=properties.getConsumerQueue();
-		boolean haveToBeMessageRequired=type.isHaveToBeMessageRequired();
+		boolean haveToBeMessageRequired=properties.getHeader(this.RabitMQProperties.getHaveToBeMessageRequiredHeaderName());
+		String webSocketEndPoint=properties.getHeader(this.RabitMQProperties.getMessagePropertiesWebSocketEndPointName());
+//		Name is same as userdeviceID, userID+deviceID
+
+		
 		unAcknowledgeMessages messages=this.ListOfConnectedDevice.get(recipientID);
 		if(messages==null) {
 			//Consuming was stopped, have to returned consumed Message
@@ -54,10 +58,17 @@ public class rabitMQListenerService implements ChannelAwareMessageListener,Rabbi
 							properties.getConsumerQueue(),properties.getMessageId()));
 			return;
 		}
+		
+		
 		messages
 		.AddUnAcknodlegeMessage(messageID, channel, properties.getDeliveryTag(), haveToBeMessageRequired);
-		Class<?>dtoClass=type.getDtoClass();
-		this.relay.SendConsumedMessage(webSocketEndPoint,messageID,message.getBody(), dtoClass, recipientID);
+	
+		//eventually, load DTO class name, and work with them,
+		
+		String convertMessage=new String(message.getBody());
+		
+		this.relay.SendConsumedMessage(webSocketEndPoint, messageID, convertMessage, recipientID);
+		
 	}
 	
 	/**Metod verify, if time expiration of unAcknowledgeMessage
@@ -172,7 +183,7 @@ public class rabitMQListenerService implements ChannelAwareMessageListener,Rabbi
 				long currentTime=System.currentTimeMillis();
 				this.listOfMessage.forEach((K,V)->{
 					
-					if(V.doesMessageExpired(currentTime,properties)) {
+					if(V.doesMessageExpired(currentTime,RabitMQProperties)) {
 						//message expired have to be remove
 						expirationMessages.add(	Pair.of(K, V));
 						Log4j2.log.trace(Log4j2.MarkerLog.RabitMQ.getMarker(),

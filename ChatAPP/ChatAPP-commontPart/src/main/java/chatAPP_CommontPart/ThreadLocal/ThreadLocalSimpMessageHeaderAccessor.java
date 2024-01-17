@@ -3,7 +3,7 @@ package chatAPP_CommontPart.ThreadLocal;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
-import chatAPP_CommontPart.Properties.WebSocketProperties.WebSocketEndPointAndMessageType;
+
 
 
 public interface ThreadLocalSimpMessageHeaderAccessor {
@@ -16,15 +16,13 @@ public interface ThreadLocalSimpMessageHeaderAccessor {
 	public default String getConnectionID() 
 	{return this.getSimpMessageHeaderAccessor().getUser().getName();}
 	public boolean IsUserConsumingNow();
+	public SimpleMessageListenerContainer getSimpleMessageListenerContainer();
+	
+	
 	
 	/**Metod set to attribute of session
 	 * @return false-if operation could not be sucesfull, because SimpleMessageListenerContainer instance already exist
 	 * otherwise true */
 	public boolean setSimpleMessageListenerContainer(SimpleMessageListenerContainer container);
-	public SimpleMessageListenerContainer getSimpleMessageListenerContainer();
-	public WebSocketEndPointAndMessageType getMessageType();
-	public default int getRabitMQPriority() {
-		return this.getMessageType().getRabitMQPriority();
-	}
 }
 

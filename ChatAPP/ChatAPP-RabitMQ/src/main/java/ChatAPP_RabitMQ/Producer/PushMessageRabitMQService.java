@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
 import ChatAPP_RabitMQ.RabitMQProperties;
-import chatAPP_CommontPart.Properties.WebSocketProperties.WebSocketEndPointAndMessageType;
+import chatAPP_CommontPart.Properties.WebSocketPropertie.WebSocketEndPointAndMessageType;
+import chatAPP_CommontPart.ThreadLocal.RabitMQConsumingMessageProperties;
+import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSimpMessageHeaderAccessor;
 import chatAPP_CommontPart.ThreadLocal.ThreadLocalSimpMessageHeaderAccessor;
+import chatAPP_DTO.DTO;
 import chatAPP_DTO.Message.MessageDTO;
 
 public class PushMessageRabitMQService implements RabitMQMessageProducerInterface {
@@ -17,30 +20,37 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 	@Autowired
     private RabbitTemplate rabbitTemplate;
 	@Autowired
-	private RabitMQProperties rabitMQProperties;
+	private RabitMQProperties properties;
+//	@Autowired
+//	private ThreadLocalSimpMessageHeaderAccessor threadLocalWebSocketSession;
 	@Autowired
-	private ThreadLocalSimpMessageHeaderAccessor threadLocalWebSocketSession;
-	private void PushMessageToRabitMQ(String exchangeKey,MessageDTO mes,MessagePostProcessor messagePostProcessor ) {
+	private RabitMQThreadLocalSimpMessageHeaderAccessor rabitMQPropertiesThreadLocal;
+	private void PushMessageToRabitMQ(String exchangeKey,DTO message,MessagePostProcessor messagePostProcessor ) {
 	
-        this.rabbitTemplate.convertAndSend(exchangeKey, mes, messagePostProcessor);
+        this.rabbitTemplate.convertAndSend(exchangeKey, message, messagePostProcessor);
 
 	}
-	@Override
-	public void PushSentChatMessage(MessageDTO message, long UserRecipientId) {
-		this.PushMessageToRabitMQ(String.valueOf(UserRecipientId), message, this.getMessagePostProcessor(message, this.threadLocalWebSocketSession.getMessageType())); 
-	}
-	@Override
-	public void PushMessageFromAsyncProcess(MessageDTO message, String queueName,
-			WebSocketEndPointAndMessageType mesType) {
-		this.PushMessageToRabitMQ(queueName, message, this.getMessagePostProcessor(message, mesType));
-	}
-	private MessagePostProcessor getMessagePostProcessor(MessageDTO message,WebSocketEndPointAndMessageType mesType) {
+	
+	private MessagePostProcessor getMessagePostProcessor(DTO message) {
 		 return RBMQMessage -> {
 			   MessageProperties messageProperties =new MessageProperties();
 			   messageProperties.setMessageId(message.getMessageID());
-			   messageProperties.setType(mesType.name());
-			   messageProperties.setPriority(mesType.getRabitMQPriority()); 
+			  // messageProperties.setType(mesType.name());
+			   messageProperties.setPriority(this.rabitMQPropertiesThreadLocal.getRabitMQPriority()); 
+			   messageProperties.setHeader(this.properties.getHaveToBeMessageRequiredHeaderName(), this.rabitMQPropertiesThreadLocal.isHaveToBeMessageReDeliver());
+			   messageProperties.setHeader(this.properties.getMessagePropertiesWebSocketEndPointName(), this.rabitMQPropertiesThreadLocal.getWebSocketEndPointPath());
 			   return RBMQMessage;
 	        };
+	}
+	
+
+	@Override
+	public void PushMessageToRabitMQ(DTO message, long UserRecipientId) {
+		this.PushMessageToRabitMQ(String.valueOf(UserRecipientId), message, this.getMessagePostProcessor(message)); 
+	}
+	@Override
+	public void PushMessageToRabitMQ(DTO message, String queueName) {
+		this.PushMessageToRabitMQ(queueName, message, this.getMessagePostProcessor(message));
+
 	}
 }
