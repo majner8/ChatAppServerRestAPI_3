@@ -6,6 +6,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 
@@ -14,7 +15,7 @@ import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.CustomRabitMQQueue;
 import ChatAPP_RabitMQ.Queue.RabbitMQQueueManagerInterface;
 import chatAPP_CommontPart.AOP.RabitMQPropertiesAOP;
 import chatAPP_CommontPart.Log4j2.Log4j2;
-import chatAPP_CommontPart.ThreadLocal.ThreadLocalSimpMessageHeaderAccessor;
+import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 import chatAPP_DTO.DTO;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.Chat.Messages.MessageEntity;
@@ -28,13 +29,13 @@ public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceI
 	@Autowired
 	private RabbitMQQueueManagerInterface queueManager;
 	@Autowired
-	private ThreadLocalSimpMessageHeaderAccessor simpSession;
+	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue simpSession;
 	@Autowired
 	private MessageRepositoryEntity messageRepo;
 	@Autowired
 	private RabitMQMessageProducerInterface amq;
 	@Override
-	public void StartConsuming(int offSetStart,int offSetEnd) {
+	public void StartConsuming(SimpMessageHeaderAccessor session,int offSetStart,int offSetEnd) {
 		CustomRabitMQQueue que=this.queueManager.getDeviceQueueName();
 		if(que.isWasQueueCreated()) {
 			//have to start quick synchronization

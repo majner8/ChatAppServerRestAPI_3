@@ -4,12 +4,13 @@ package ChatAPP_WebSocket.Service.Chat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Service;
 
 import ChatAPP_Chat.ChatManagement.ChatManagementInterface;
 import ChatAPP_RabitMQ.Producer.PushMessageRabitMQService;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
-import chatAPP_CommontPart.ThreadLocal.ThreadLocalSimpMessageHeaderAccessor;
+import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_DTO.Message.SawMessageDTO;
 import chatAPP_database.Chat.Messages.MessageEntity;
@@ -23,14 +24,14 @@ public class ProcessChatMessageService {
 	@Autowired
 	private MessageRequestPermision SecurityVerification;
 	@Autowired
-	private ThreadLocalSimpMessageHeaderAccessor sessionAttributeInterface;
+	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue sessionAttributeInterface;
 	@Autowired
 	private ChatManagementInterface chatManagement;
 	@Autowired
 	private PushMessageRabitMQService rabitMQPush;
 
 	/** */
-	public void SendMessage(MessageDTO message) {
+	public void SendMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
 		//verify if user has permision to write into chat
 		//if not exception will be thrown and catch by global handler
 		this.SecurityVerification.verifyChatWritePermission(message.getSenderID(), this.sessionAttributeInterface.getSessionOwnerUserID(), message.getChatID());
@@ -41,7 +42,7 @@ public class ProcessChatMessageService {
 		
 		this.PushMessageToRabitMQService(message);
 	}
-	public void ChangeMessage(MessageDTO message) {
+	public void ChangeMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
 		//if message is not exist EntityWasNotFoundException would be thrown
 		MessageEntity entity=this.messageRepo.findByPrimaryKey(message.getMessageID());
 		//verify, if user has permision to change message(E.t.c it is owner of message)
@@ -53,7 +54,7 @@ public class ProcessChatMessageService {
 			
 		this.PushMessageToRabitMQService(message);
 	}
-	public void sawMessage(SawMessageDTO message) {
+	public void sawMessage(SimpMessageHeaderAccessor session,SawMessageDTO message) {
 		
 		
 	}

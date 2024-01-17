@@ -24,7 +24,7 @@ public class ChatEndPointWebSocketControler implements WebSocketChatEndPoint{
 	haveToBeMessageRequired = true)
 	@MessageMapping(WebSocketEndPointPath.Chat_SendMessagePath)
 	public void SendMessage(MessageDTO message,SimpMessageHeaderAccessor session) {
-		this.MessageService.SendMessage(message);
+		this.MessageService.SendMessage(session,message);
 	}
 
 	@MessageMapping(WebSocketEndPointPath.Chat_changeMessagePath)
@@ -33,7 +33,7 @@ public class ChatEndPointWebSocketControler implements WebSocketChatEndPoint{
 	haveToBeMessageRequired = true)
 	@Override
 	public void ChangeMessage(MessageDTO message,SimpMessageHeaderAccessor session) {
-		this.MessageService.ChangeMessage(message);
+		this.MessageService.ChangeMessage(session,message);
 	}
 
 	@MessageMapping(WebSocketEndPointPath.Chat_sawMessagePath)
@@ -42,7 +42,7 @@ public class ChatEndPointWebSocketControler implements WebSocketChatEndPoint{
 	haveToBeMessageRequired = false)
 	@Override
 	public void sawMessage(SawMessageDTO message, SimpMessageHeaderAccessor session) {
-		this.MessageService.sawMessage(message);
+		this.MessageService.sawMessage(session,message);
 	}
 
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.CustomRabitMQQueue;
 import ChatAPP_RabitMQ.Queue.RabbitMQQueueManagerInterface;
 import chatAPP_CommontPart.Log4j2.Log4j2;
-import chatAPP_CommontPart.ThreadLocal.ThreadLocalSimpMessageHeaderAccessor;
+import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 @Service
 public class WebSocketStartConsumingRabitMQMessageService implements WebSocketStartConsumingServiceInterface{
@@ -21,7 +21,7 @@ public class WebSocketStartConsumingRabitMQMessageService implements WebSocketSt
 	private RabbitMQQueueManagerInterface MqManagement;
 		
 	@Autowired
-	private ThreadLocalSimpMessageHeaderAccessor simpMessage;
+	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue simpMessage;
 	@Override
 	public boolean StartConsumingMessage() {		
 		if(this.simpMessage.IsUserConsumingNow()) {

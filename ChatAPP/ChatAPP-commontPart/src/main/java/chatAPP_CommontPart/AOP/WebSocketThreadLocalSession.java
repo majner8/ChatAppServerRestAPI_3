@@ -1,14 +1,21 @@
 package chatAPP_CommontPart.AOP;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
+
+@Retention(RetentionPolicy.RUNTIME) // Make it available at runtime
+@Target({ElementType.TYPE,ElementType.METHOD}) // This annotation can only be applied to methods
 public @interface WebSocketThreadLocalSession {
 
 	
