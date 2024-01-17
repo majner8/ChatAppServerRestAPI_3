@@ -12,6 +12,7 @@ import chatAPP_CommontPart.AOP.RabitMQPropertiesAOP;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_DTO.Message.SawMessageDTO;
 
+@Async
 public class ChatEndPointWebSocketControler implements WebSocketChatEndPoint{
 
 	

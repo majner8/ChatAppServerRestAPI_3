@@ -1,12 +1,12 @@
 package chatAPP_CommontPart.AOP;
 
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
-
-
-public interface ProcessAOPAsync {
-
-	private void processItAsync(ProceedingJoinPoint joinPoint,RabitMQPropertiesAOP aop); 
-	
+@Service
+public class ProcessAOPAsync {
+	@Async
+	public void ProcessAsync(Runnable task) {
+		task.run();
+	}
 }

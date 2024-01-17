@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Service;
 
 import chatAPP_CommontPart.Data.Util.Triple;
+import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.RabitMQConsumingMessageProperties;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSimpMessageHeaderAccessor;
 import chatAPP_CommontPart.ThreadLocal.ThreadLocalSessionSimpMessageHeaderAccessor;
@@ -27,7 +28,9 @@ public class ThreadLocalSessionManagement implements ThreadLocalSessionSimpMessa
 	}
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
+		if(Log4j2.log.isTraceEnabled()) {
+			Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(),"Cleaning ThreadLocalSessionManagement");
+		}
 		this.session.remove();
 	}
 	
@@ -84,11 +87,7 @@ public class ThreadLocalSessionManagement implements ThreadLocalSessionSimpMessa
 		this.session.set(Triple.of(par, null, Long.valueOf(par.getUser().getName())));
 
 	}
-	@Override
-	public void setSimpMessageHeaderAccessor(RabitMQConsumingMessageProperties mesType) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	
 	

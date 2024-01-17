@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
@@ -30,7 +29,9 @@ public @interface RabitMQPropertiesAOP {
 		@Aspect
 		@Component
 		public static class rabitmqAOP{
-	
+			
+		@Autowired
+		private ProcessAOPAsync async;
 		@Autowired
 		private ThreadLocalSessionSimpMessageHeaderAccessor manipulation;
 		@Pointcut("execution(void *.*(..)) && @annotation(RabitMQPropertiesAOP)")
@@ -44,12 +45,16 @@ public @interface RabitMQPropertiesAOP {
 				String message=String.format("Running aspect metod rabitMQAOP, Evoked by: %s is running with these metod"+System.lineSeparator()
 				 +"endPoint path: %s"+System.lineSeparator(),
 				 evnokedBy);
-				 Log4j2.log.debug(Log4j2.MarkerLog.Aspect.getMarker(), message);
+				 Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(), message);
 			 	
 			}
-			this.processItAsync(joinPoint, aop);
+			final ProceedingJoinPoint x=joinPoint;
+			final RabitMQPropertiesAOP y=aop;
+			Runnable task=()->{
+				this.processItAsync(x, y);
+			};
+			this.async.ProcessAsync(task);
 		}
-		@Async
 		private void processItAsync(ProceedingJoinPoint joinPoint,RabitMQPropertiesAOP aop) {
 			String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
 			 if(Log4j2.log.isDebugEnabled()) {

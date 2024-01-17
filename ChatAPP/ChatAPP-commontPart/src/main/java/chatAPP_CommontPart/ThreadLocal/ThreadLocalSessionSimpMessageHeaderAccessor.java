@@ -11,6 +11,6 @@ public interface ThreadLocalSessionSimpMessageHeaderAccessor {
 	public void clear();
 	public void setSimpMessageHeaderAccessor(SimpMessageHeaderAccessor par,RabitMQConsumingMessageProperties mesType);
 	public void setSimpMessageHeaderAccessor(SimpMessageHeaderAccessor par);
-	public void setSimpMessageHeaderAccessor(RabitMQConsumingMessageProperties mesType);
+	//public void setSimpMessageHeaderAccessor(RabitMQConsumingMessageProperties mesType);
 
 }
