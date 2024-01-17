@@ -3,7 +3,7 @@ package chatAPP_CommontPart.ThreadLocal;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
-public interface WebSocketThreadLocalSession {
+public interface WebSocketThreadLocalSessionInterface {
 
 	/**Metod clear current ThreadLocalValue */
 	public  void clear();

@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
-import chatAPP_CommontPart.ThreadLocal.RabitMQConsumingMessageProperties;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
+import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession.RabitMQConsumingMessageProperties;
 
 @Retention(RetentionPolicy.RUNTIME) // Make it available at runtime
 @Target(ElementType.METHOD) // This annotation can only be applied to methods
@@ -33,7 +33,7 @@ public @interface RabitMQAnnotationAOP {
 		  @Autowired
 		  private RabitMQThreadLocalSession rabitMQSession;
 		  @Around("execution(void *.*(..)) && @annotation(RabitMQAnnotationAOP)")
-		  public void AnnotationMetodCall(ProceedingJoinPoint joinPoint,RabitMQAnnotationAOP aop) {
+		  public void AnnotationMetodCall(ProceedingJoinPoint joinPoint,RabitMQAnnotationAOP aop) throws Throwable  {
 				if(Log4j2.log.isDebugEnabled()) {
 					String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
 
@@ -44,6 +44,10 @@ public @interface RabitMQAnnotationAOP {
 				 }
 				RabitMQConsumingMessageProperties x=RabitMQConsumingMessageProperties.create(aop);
 				this.rabitMQSession.setRabitMQConsumingMessageProperties(x);
+					joinPoint.proceed();
+				this.rabitMQSession.clear();
+				
+					
 				
 		  };
 		

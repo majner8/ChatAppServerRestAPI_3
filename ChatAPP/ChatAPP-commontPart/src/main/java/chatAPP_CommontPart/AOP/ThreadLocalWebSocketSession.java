@@ -39,8 +39,7 @@ public @interface ThreadLocalWebSocketSession {
 			String message=String.format("Running aspect metod rabitMQAOP, Evoked by: %s is running with these metod"+System.lineSeparator()
 			 +"endPoint path: %s"+System.lineSeparator(),
 			 evnokedBy);
-			 Log4j2.log.debug(Log4j2.MarkerLog.Aspect.getMarker(), message);
-		 	
+			 Log4j2.log.debug(Log4j2.MarkerLog.Aspect.getMarker(), message);	
 		}
 		this.processItAsync(joinPoint, aop);
 	}
