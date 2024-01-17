@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.RabitMQConsumingMessageProperties;
-import chatAPP_CommontPart.ThreadLocal.ThreadLocalSessionSimpMessageHeaderAccessor;
 
 @Retention(RetentionPolicy.RUNTIME) // Make it available at runtime
 @Target(ElementType.METHOD) // This annotation can only be applied to methods
