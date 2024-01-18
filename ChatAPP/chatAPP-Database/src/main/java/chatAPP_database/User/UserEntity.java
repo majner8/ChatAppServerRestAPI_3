@@ -76,9 +76,11 @@ public class UserEntity {
 			e.printStackTrace();
 		}
 	}
-	/**Metod return all as object connected with nameOf Field */
+	/**
+	/**Metod return map which contain value for all field, aling to UserEntity object
+	 * if some of value is null, then it will be added to map as null as well*/
 	public Map<String,Object> getValues(){
-		HashMap map = new HashMap<String, Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		try {
 			Class<?> clas = this.getClass();
 			for (Field field : clas.getDeclaredFields()) {

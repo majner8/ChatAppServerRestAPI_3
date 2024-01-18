@@ -1,11 +1,13 @@
 package ChatAPP_Security.Authorization.JwtToken;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
@@ -19,10 +21,15 @@ import chatAPP_database.User.UserEntity;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 public interface jwtToken {
+	public static final String deviceIDToken_claimName="";
+	public static final String version_claimName="";
+	public static final String isUserActive_claimName="";
 
 
 public interface jwtTokenGenerator {
 
+
+	
 	public TokenDTO generateAuthorizationToken(
 			String deviceID,
 			UserEntity userEntity);
@@ -51,17 +58,12 @@ public interface jwtTokenGenerator {
 					JWT.create()
 					.withSubject(String.valueOf(userEntity.getUserId()))
 					.withIssuedAt(new Date())
-					.withClaim(this.securityProperties.getDeviceId_TokenClaimName(), deviceID)
-					.withClaim(this.securityProperties.getVersion_TokenClaimName(),userEntity.getVersion())
-					.withClaim(this.securityProperties.getUserIsActive_TokenClaimName(), userEntity.isUserActive())
-					
+					.withClaim(jwtToken.deviceIDToken_claimName, deviceID)
+					.withClaim(jwtToken.version_claimName,userEntity.getVersion())
+					.withClaim(jwtToken.isUserActive_claimName, userEntity.isUserActive())
 					.withExpiresAt(validUntil.getTime());
 
-			if(!userEntity.isUserActive()) {
-				//add userEntity to finish registration
-				//user Entity is just as map
-				jwtBuilder.withClaim(this.securityProperties.getUserEntity_TokenClaimName(),userEntity.getValues());
-			}
+			
 			String jwtToken=jwtBuilder		
 					.sign(this.securityProperties.getjwtTokenAuthorizationUserAlgorithm());
 
@@ -93,13 +95,9 @@ public interface jwtTokenGenerator {
 
 public interface jwtTokenValidator {
 
-	public DecodedJWT jwtTokenDeviceIDTokenValidator(HttpServletRequest request);
+	public String jwtTokenDeviceIDTokenValidator(HttpServletRequest request);
 	
-	public DecodedJWT jwtTokenAuthorizationUserTokenValidator(HttpServletRequest request);
-
-	
-	
-
+	public AuthorizationUserTokenValue jwtTokenAuthorizationUserTokenValidator(HttpServletRequest request);
 	@Component
 	public static  final class jwtTokenValidationClass implements jwtTokenValidator{
 		
@@ -128,26 +126,64 @@ public interface jwtTokenValidator {
 
 
 		@Override
-		public DecodedJWT jwtTokenDeviceIDTokenValidator(HttpServletRequest request) {
+		public String jwtTokenDeviceIDTokenValidator(HttpServletRequest request) {
 			// TODO Auto-generated method stub
-			return this.verifyToken(this.securityProperties.getTokenDeviceIdHeaderName(), 
+			DecodedJWT x= this.verifyToken(this.securityProperties.getTokenDeviceIdHeaderName(), 
 					this.securityProperties.getTokenDeviceIdPreflix(), request, 
 					this.securityProperties.getjwtTokenDeviceIDAlgorithm());
-			
+			return x.getSubject();
 		}
 
 		@Override
-		public DecodedJWT jwtTokenAuthorizationUserTokenValidator(HttpServletRequest request) {
+		public AuthorizationUserTokenValue jwtTokenAuthorizationUserTokenValidator(HttpServletRequest request) {
 			// TODO Auto-generated method stub
-			return this.verifyToken(this.securityProperties.getTokenAuthorizationUserHederName(), 
+			DecodedJWT x= this.verifyToken(this.securityProperties.getTokenAuthorizationUserHederName(), 
 					this.securityProperties.getTokenAuthorizationUserPreflix(), request, 
 					this.securityProperties.getjwtTokenAuthorizationUserAlgorithm());
-		
+			return new authorizationTokenValue(x);
 		}
 
 
 
+		public static class authorizationTokenValue implements AuthorizationUserTokenValue{
 
+			private long userID;
+			private String deviceID;
+			private long version;
+			private boolean userEnable;
+			private UserEntity entity;
+			public authorizationTokenValue(DecodedJWT token) {
+				this.userID=Long.valueOf(token.getSubject());
+				this.deviceID=token.getClaim(jwtToken.deviceIDToken_claimName).asString();
+				this.version=token.getClaim(jwtToken.version_claimName).asLong();
+				this.userEnable=token.getClaim(jwtToken.isUserActive_claimName).asBoolean();
+			}
+			@Override
+			public long getUserID() {
+				// TODO Auto-generated method stub
+				return this.userID;
+			}
+
+			@Override
+			public String getDeviceID() {
+				// TODO Auto-generated method stub
+				return this.deviceID;
+			}
+
+			@Override
+			public long getDatabaseVersion() {
+				// TODO Auto-generated method stub
+				return this.version;
+			}
+
+			@Override
+			public boolean isUserEnable() {
+				// TODO Auto-generated method stub
+				return this.userEnable;
+			}
+			
+
+		}
 		
 		
 		

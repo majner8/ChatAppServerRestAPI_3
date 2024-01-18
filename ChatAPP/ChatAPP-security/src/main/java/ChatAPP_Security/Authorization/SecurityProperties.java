@@ -12,16 +12,23 @@ public interface SecurityProperties {
 	public String getTokenAuthorizationUserPreflix();
 	public String getTokenDeviceIdHeaderName();
 	public String getTokenAuthorizationUserHederName();
-	public Calendar getJwtTokenDeviceIdDuration();
+	public Calendar getJwtTokenDeviceIdDuration(); 
 	public Calendar getJwtTokenAuthorizationUserDuration();
-	public String getDeviceIDAuthority();
-
 	
+	
+	
+	public String isUserActiveAuthorityName();
+	public String isUserUnActiveAuthorityName();
+	public String getDeviceIDClaimName();
+	
+//	public String getDeviceIDAuthority();
+
+	/*
 	public String getDeviceId_TokenClaimName();
 	public String getVersion_TokenClaimName();
 	public String getUserIsActive_TokenClaimName();
 	
-	public String getUserEntity_TokenClaimName();
+	public String getUserEntity_TokenClaimName();*/
 	
 }
 

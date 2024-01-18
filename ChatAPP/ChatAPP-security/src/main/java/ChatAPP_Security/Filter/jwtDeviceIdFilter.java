@@ -30,8 +30,8 @@ public class jwtDeviceIdFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		DecodedJWT token=this.jwtValidator.jwtTokenDeviceIDTokenValidator(request);
-		request.setAttribute(this.securityProperties.getDeviceId_TokenClaimName(), token.getSubject());
+		String id=this.jwtValidator.jwtTokenDeviceIDTokenValidator(request);
+		request.setAttribute(this.securityProperties.getDeviceIDClaimName(), id);
 		filterChain.doFilter(request, response);
 
 	}
