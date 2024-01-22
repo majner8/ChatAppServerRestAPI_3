@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,7 +32,7 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	private HttpRequestUserEntity userEntityScope;
 	
 	@Override
-	public ResponseEntity<TokenDTO> register(@Valid UserAuthorizationDTO userData) {
+	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,@Valid UserAuthorizationDTO userData) {
 		// TODO Auto-generated method stub
 		String deviceID=CustomSecurityContextHolder.getCustomSecurityContext().getDeviceID();
 	
@@ -61,7 +62,7 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	}
 
 	@Override
-	public ResponseEntity<TokenDTO> login(@Valid UserAuthorizationDTO userData) {
+	public ResponseEntity<TokenDTO> login(@RequestAttribute String deviceID,@Valid UserAuthorizationDTO userData) {
 		String deviceID=CustomSecurityContextHolder.getCustomSecurityContext().getDeviceID();
 		if(!this.autService.doesUserExist(userData.getProfile(), true)) {
 			//email/phone has not been registred
@@ -82,7 +83,7 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	}
 
 	@Override
-	public ResponseEntity<TokenDTO> finishRegistration(@Valid UserProfileRegistrationDTO user) {
+	public ResponseEntity<TokenDTO> finishRegistration(@RequestAttribute String deviceID,@Valid UserProfileRegistrationDTO user) {
 	
 		HttpStatus status;
 		String deviceID=CustomSecurityContextHolder.getCustomSecurityContext().getDeviceID();

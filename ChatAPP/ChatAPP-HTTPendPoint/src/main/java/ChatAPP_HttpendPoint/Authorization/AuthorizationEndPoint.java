@@ -3,6 +3,7 @@ package ChatAPP_HttpendPoint.Authorization;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import chatAPP_DTO.Authorization.TokenDTO;
@@ -21,12 +22,12 @@ public interface AuthorizationEndPoint {
 	
 	public static final String deviceIDPath="";
 	
-	public ResponseEntity<TokenDTO> register(@RequestBody @Valid UserAuthorizationDTO 
+	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,@RequestBody @Valid UserAuthorizationDTO 
 			userData);
 
-	public ResponseEntity<TokenDTO> login(@RequestBody @Valid UserAuthorizationDTO 
+	public ResponseEntity<TokenDTO> login(@RequestAttribute String deviceID,@RequestBody @Valid UserAuthorizationDTO 
 			userData);
-	public ResponseEntity<TokenDTO>finishRegistration(@RequestBody @Valid UserProfileRegistrationDTO user);
+	public ResponseEntity<TokenDTO>finishRegistration(@RequestAttribute String deviceID,@RequestBody @Valid UserProfileRegistrationDTO user);
 	
 	
 	

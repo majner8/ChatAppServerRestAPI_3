@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 public interface SecurityProperties {
 
+	public static final String deviceIDRequestAttributeName="deviceID";
 	public Algorithm getjwtTokenDeviceIDAlgorithm();
 	public Algorithm getjwtTokenAuthorizationUserAlgorithm();
 	public String getTokenDeviceIdPreflix();
@@ -19,7 +20,9 @@ public interface SecurityProperties {
 	
 	public String isUserActiveAuthorityName();
 	public String isUserUnActiveAuthorityName();
-	public String getDeviceIDClaimName();
+	public default String getRequestAttributeName(){
+		return this.deviceIDRequestAttributeName;
+	};
 	
 //	public String getDeviceIDAuthority();
 
