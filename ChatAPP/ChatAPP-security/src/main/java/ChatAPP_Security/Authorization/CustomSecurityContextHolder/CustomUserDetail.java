@@ -1,15 +1,32 @@
 package ChatAPP_Security.Authorization.CustomSecurityContextHolder;
 
+import java.security.Principal;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import ChatAPP_Security.Authorization.JwtToken.AuthorizationUserTokenValue;
+import chatAPP_CommontPart.Log4j2.Log4j2;
 
 
 public class CustomUserDetail implements UserDetails{
 
+	/**Metod return object, saved in SecurityContext
+	 * @return null if None of object is saved in Security context, or principal is not
+	 * instance of CustomUserDetails*/
+	public static CustomUserDetail getCurrentCustomUserDetail() {
+		Object o=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(o==null) {
+			Log4j2.log.warn(Log4j2.MarkerLog.Security.getMarker(),"Metod SecurityContextHolder.getContext().getAuthentication().getPrincipal() return null");
+		}
+		if(!(o instanceof CustomUserDetail)) {
+			Log4j2.log.warn(Log4j2.MarkerLog.Security.getMarker(),"Metod SecurityContextHolder.getContext().getAuthentication().getPrincipal() return object which is not insntance of CustomUserDetail");
+			return null;
+		}
+		return (CustomUserDetail)o;
+	}
 	protected final long userID;
 	protected final long databaseVersion;
 	protected final Collection<? extends GrantedAuthority> authority;

@@ -8,11 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.context.annotation.RequestScope;
 
-import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomSecurityContextHolder;
 import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDetail;
 import chatAPP_DTO.User.UserDTO.UserAuthPasswordDTO;
 import chatAPP_DTO.User.UserDTO.UserComunicationDTO;

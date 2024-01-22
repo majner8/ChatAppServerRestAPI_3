@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
-import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomSecurityContextHolder;
+import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDetail;
 import ChatAPP_Security.Authorization.DeviceID.AuthorizationService;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
 import chatAPP_CommontPart.Log4j2.Log4j2;
@@ -34,7 +35,6 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	@Override
 	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,@Valid UserAuthorizationDTO userData) {
 		// TODO Auto-generated method stub
-		String deviceID=CustomSecurityContextHolder.getCustomSecurityContext().getDeviceID();
 	
 		if(this.autService.doesUserExist(userData.getProfile(), false)) {
 			//email/phone has been registred
@@ -63,7 +63,6 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 
 	@Override
 	public ResponseEntity<TokenDTO> login(@RequestAttribute String deviceID,@Valid UserAuthorizationDTO userData) {
-		String deviceID=CustomSecurityContextHolder.getCustomSecurityContext().getDeviceID();
 		if(!this.autService.doesUserExist(userData.getProfile(), true)) {
 			//email/phone has not been registred
 			Log4j2.log.info(Log4j2.MarkerLog.Authorization.getMarker(),"Login was not sucessfull, email/phone were incorecct, user was not found");
@@ -86,8 +85,8 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	public ResponseEntity<TokenDTO> finishRegistration(@RequestAttribute String deviceID,@Valid UserProfileRegistrationDTO user) {
 	
 		HttpStatus status;
-		String deviceID=CustomSecurityContextHolder.getCustomSecurityContext().getDeviceID();
-		long userID=CustomSecurityContextHolder.getCustomSecurityContext().getUserID();
+		CustomUserDetail userDetail=CustomUserDetail.getCurrentCustomUserDetail();
+		long userID=userDetail.getUserID();
 		try {
 			this.autService.FinishRegistration(user,userID);
 			status=HttpStatus.OK;

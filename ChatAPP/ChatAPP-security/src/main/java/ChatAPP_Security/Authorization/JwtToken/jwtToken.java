@@ -21,9 +21,6 @@ import chatAPP_database.User.UserEntity;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 public interface jwtToken {
-	public static final String deviceIDToken_claimName="";
-	public static final String version_claimName="";
-	public static final String isUserActive_claimName="";
 
 
 public interface jwtTokenGenerator {
@@ -58,9 +55,9 @@ public interface jwtTokenGenerator {
 					JWT.create()
 					.withSubject(String.valueOf(userEntity.getUserId()))
 					.withIssuedAt(new Date())
-					.withClaim(jwtToken.deviceIDToken_claimName, deviceID)
-					.withClaim(jwtToken.version_claimName,userEntity.getVersion())
-					.withClaim(jwtToken.isUserActive_claimName, userEntity.isUserActive())
+					.withClaim(securityProperties.getDeviceId_TokenClaimName(), deviceID)
+					.withClaim(securityProperties.getVersion_TokenClaimName(),userEntity.getVersion())
+					.withClaim(securityProperties.getUserIsActive_TokenClaimName(), userEntity.isUserActive())
 					.withExpiresAt(validUntil.getTime());
 
 			
@@ -140,11 +137,11 @@ public interface jwtTokenValidator {
 			DecodedJWT x= this.verifyToken(this.securityProperties.getTokenAuthorizationUserHederName(), 
 					this.securityProperties.getTokenAuthorizationUserPreflix(), request, 
 					this.securityProperties.getjwtTokenAuthorizationUserAlgorithm());
-			return new authorizationTokenValue(x);
+			return new authorizationTokenValue(x,this.securityProperties);
 		}
 
 
-
+		
 		public static class authorizationTokenValue implements AuthorizationUserTokenValue{
 
 			private long userID;
@@ -152,11 +149,11 @@ public interface jwtTokenValidator {
 			private long version;
 			private boolean userEnable;
 			private UserEntity entity;
-			public authorizationTokenValue(DecodedJWT token) {
+			public authorizationTokenValue(DecodedJWT token,SecurityProperties securityProperties) {
 				this.userID=Long.valueOf(token.getSubject());
-				this.deviceID=token.getClaim(jwtToken.deviceIDToken_claimName).asString();
-				this.version=token.getClaim(jwtToken.version_claimName).asLong();
-				this.userEnable=token.getClaim(jwtToken.isUserActive_claimName).asBoolean();
+				this.deviceID=token.getClaim(securityProperties.getDeviceId_TokenClaimName()).asString();
+				this.version=token.getClaim(securityProperties.getVersion_TokenClaimName()).asLong();
+				this.userEnable=token.getClaim(securityProperties.getUserIsActive_TokenClaimName()).asBoolean();
 			}
 			@Override
 			public long getUserID() {
