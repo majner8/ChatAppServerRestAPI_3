@@ -14,18 +14,18 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@ComponentScan(basePackages = {"chatAPP_database"})
+@ComponentScan(basePackages = {"chatAPP_database,ChatAPP_security"
+		+ ",ChatAPP_RabitMQ"})
 @EntityScan(basePackages={"chatAPP_database"})
 @EnableJpaRepositories(basePackages = {"chatAPP_database"})
 @EnableAutoConfiguration
 @EnableAspectJAutoProxy
 public class Main {
+
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
 		Log4j2.log.info("Starting application");
-
-		
 	}
 
 

@@ -1,9 +1,9 @@
 package ChatAPP_Security.Authorization;
 
-import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.util.Date;
 
 import com.auth0.jwt.algorithms.Algorithm;
+
 
 public interface SecurityProperties {
 
@@ -13,40 +13,16 @@ public interface SecurityProperties {
 	public String getTokenAuthorizationUserPreflix();
 	public String getTokenDeviceIdHeaderName();
 	public String getTokenAuthorizationUserHederName();
-	public LocalDateTime getJwtTokenDeviceIdDuration(); 
-	public LocalDateTime getJwtTokenAuthorizationUserDuration();
-	
-	
-	
+	public Date getJwtTokenDeviceIdDuration();
+	public Date getJwtTokenAuthorizationUserDuration();
+
+
+
 	public String isUserActiveAuthorityName();
 	public String isUserUnActiveAuthorityName();
-	public String getDeviceIDRequestAttributeName();	
+	public String getDeviceIDRequestAttributeName();
 	public String getDeviceId_TokenClaimName();
 	public String getVersion_TokenClaimName();
 	public String getUserIsActive_TokenClaimName();
-	
-	
-//	public String getDeviceIDAuthority();
-
-	/*
-	
-	public String getUserEntity_TokenClaimName();*/
-	
 }
 
-/* 
-public static final String userIsActiveRole="Role_active";
-
-public static final String jwtTokenPreflix="Bearer ";
-
-public static final String	userIsActiveClaimName="Role_Active";
-public static final String	userIsNotActiveRole="Role_UnActive";	
-public static final String	VersionClaimName="version";
-public static final String	DeviceIdClaimName="deviceId";
-public static final String 	userIdClaimName="userId";
-public static final String hashTokenPassword="dsaewaas";
-
-public static final String userEntityClaimName="";
-//each login has own id
-public static final String loginIdClaimName="LoginId";
-*/

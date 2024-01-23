@@ -1,5 +1,6 @@
 package ChatAPP_Security.Authorization.JwtToken;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -50,7 +51,7 @@ public interface jwtTokenGenerator {
 				String deviceID,
 				UserEntity userEntity) {
 			
-			Calendar validUntil=this.securityProperties.getJwtTokenAuthorizationUserDuration();
+			Date validUntil=this.securityProperties.getJwtTokenAuthorizationUserDuration();
 			JWTCreator.Builder jwtBuilder= 
 					JWT.create()
 					.withSubject(String.valueOf(userEntity.getUserId()))
@@ -58,7 +59,7 @@ public interface jwtTokenGenerator {
 					.withClaim(securityProperties.getDeviceId_TokenClaimName(), deviceID)
 					.withClaim(securityProperties.getVersion_TokenClaimName(),userEntity.getVersion())
 					.withClaim(securityProperties.getUserIsActive_TokenClaimName(), userEntity.isUserActive())
-					.withExpiresAt(validUntil.getTime());
+					.withExpiresAt(validUntil);
 
 			
 			String jwtToken=jwtBuilder		
@@ -66,19 +67,19 @@ public interface jwtTokenGenerator {
 
 			TokenDTO token=new TokenDTO();
 			token.setUserActive(userEntity.isUserActive());
-			token.setValidUntil(validUntil.getTime());
+			token.setValidUntil(validUntil);
 			token.setToken(jwtToken);
 			return token;
 		}
 		
 		public String generateDeviceToken(
 				String deviceID) {
-			Calendar validUntil=this.securityProperties.getJwtTokenDeviceIdDuration();
+			Date validUntil=this.securityProperties.getJwtTokenDeviceIdDuration();
 
 			return JWT.create()
 					.withSubject(deviceID)
 					.withIssuedAt(new Date())
-					.withExpiresAt(validUntil.getTime())
+					.withExpiresAt(validUntil)
 					.sign(this.securityProperties.getjwtTokenDeviceIDAlgorithm());
 		
 		}
