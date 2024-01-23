@@ -12,7 +12,6 @@ public class StoamptConnectionListener {
 	@EventListener
 	public void userConnect(SessionConnectedEvent event) {
 		 StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
-		 headers.getUser().
 		 
 
 	}

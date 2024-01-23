@@ -9,11 +9,6 @@
   <groupId>ChatAPP-Starter</groupId>
   <artifactId>ChatAPP-Starter</artifactId>
   <dependencies>
-	  
-  	<dependency>
-  		<groupId>ChatAPP-commontPart</groupId>
-  		<artifactId>ChatAPP-commontPart</artifactId>
-  	</dependency>
   	<dependency>
   		<groupId>ChatAPP</groupId>
   		<artifactId>chatAPP-Database</artifactId>
@@ -27,6 +22,26 @@
   	<dependency>
   		<groupId>ChatAPP-RabitMQ</groupId>
   		<artifactId>ChatAPP-RabitMQ</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>ChatAPP-HTTPendPoint</groupId>
+  		<artifactId>ChatAPP-HTTPendPoint</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>ChatAPP-Chat</groupId>
+  		<artifactId>ChatAPP-Chat</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>ChatAPP-WebSocket</groupId>
+  		<artifactId>ChatAPP-WebSocket</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>ChatAPP-WebSocket-EndPoint</groupId>
+  		<artifactId>ChatAPP-WebSocket-EndPoint</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>

@@ -4,11 +4,12 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-
+import org.springframework.stereotype.Component;
 
 import ChatAPP_RabitMQ.Listener.RabbitMQMessageRelayInterface;
 import ChatAPP_WebSocket.WebSocketHeaderAttributeName;
 
+@Component
 public class StompMessageRelayService implements RabbitMQMessageRelayInterface {
 
 	@Autowired
