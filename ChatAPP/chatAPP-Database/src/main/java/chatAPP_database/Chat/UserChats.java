@@ -15,7 +15,7 @@ import chatAPP_DTO.Message.ChatInformationDTO.UserChatInformationDTO;
 
 
 
-@Entity()
+@Entity(name=UserChats.userChatsTableName)
 public class UserChats {
 	public static final String userChatsTableName="users_chat";
 	

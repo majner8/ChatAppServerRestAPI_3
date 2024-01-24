@@ -15,13 +15,15 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"chatAPP_database,ChatAPP_security"
-		+ ",ChatAPP_RabitMQ","ChatAPP_commontPart","chatAPP_DTO",
-		"ChatAPP_HTTPendPoint","ChatAPP_Chat",
-		"ChatAPP_WebSocket","ChatAPP_WebSocket_EndPoint"})
+		+ ",ChatAPP_RabitMQ","ChatAPP_WebSocket"})
 @EntityScan(basePackages={"chatAPP_database"})
 @EnableJpaRepositories(basePackages = {"chatAPP_database"})
 @EnableAutoConfiguration
 @EnableAspectJAutoProxy
+/*
+ * ,"ChatAPP_commontPart","chatAPP_DTO", "ChatAPP_HttpendPoint","ChatAPP_Chat",
+ * "ChatAPP_WebSocket","ChatAPP_WebSocket_EndPoint"
+ */
 public class Main {
 
 	

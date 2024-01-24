@@ -15,7 +15,7 @@ public class StompMessageRelayService implements RabbitMQMessageRelayInterface {
 	@Autowired
 	private SimpMessagingTemplate SimpMessageTemplate;
 	@Autowired
-	private WebSocketHeaderAttributeName attribute;
+	private WebSocketHeaderAttributeName attributes;
 	@Autowired
 	
 	@Override
@@ -26,7 +26,7 @@ public class StompMessageRelayService implements RabbitMQMessageRelayInterface {
 	public void SendConsumedMessage(String webSocketEndPointPath, String messageID, String message,
 			String recipientID) {
 		HashMap<String,Object>header=new HashMap<String,Object>();
-		header.put(this.attribute.getAcknowledgeIdHeaderName(), messageID);
+
 		this.SimpMessageTemplate.convertAndSendToUser(messageID, webSocketEndPointPath, message, header);
 	}
 	

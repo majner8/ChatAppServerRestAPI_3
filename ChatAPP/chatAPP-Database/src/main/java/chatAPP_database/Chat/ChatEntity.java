@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 import chatAPP_DTO.Message.ChatInformationDTO;
 import chatAPP_DTO.Message.UserChatOverViewDTO;
 
-@Entity()
+@Entity(name=ChatEntity.chatEntityTableName)
 public class ChatEntity {
 	public static final String chatEntityTableName="chats";
 		
