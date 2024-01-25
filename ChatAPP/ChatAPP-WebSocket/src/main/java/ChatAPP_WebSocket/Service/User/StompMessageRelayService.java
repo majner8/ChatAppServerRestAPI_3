@@ -7,16 +7,12 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import ChatAPP_RabitMQ.Listener.RabbitMQMessageRelayInterface;
-import ChatAPP_WebSocket.WebSocketHeaderAttributeName;
 
 @Component
 public class StompMessageRelayService implements RabbitMQMessageRelayInterface {
 
 	@Autowired
 	private SimpMessagingTemplate SimpMessageTemplate;
-	@Autowired
-	private WebSocketHeaderAttributeName attributes;
-	@Autowired
 	
 	@Override
 	public void MessageTimeoutExpired(String recipientID, String messageID) {

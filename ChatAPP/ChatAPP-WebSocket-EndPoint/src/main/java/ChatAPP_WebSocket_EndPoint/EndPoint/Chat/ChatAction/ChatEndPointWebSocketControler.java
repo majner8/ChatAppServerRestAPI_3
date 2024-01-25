@@ -24,7 +24,6 @@ public class ChatEndPointWebSocketControler implements WebSocketChatEndPoint{
 	}
 
 	@MessageMapping(WebSocketEndPointPath.Chat_changeMessagePath)
-
 	@Override
 	public void ChangeMessage(MessageDTO message,SimpMessageHeaderAccessor session) {
 		this.MessageService.ChangeMessage(session,message);

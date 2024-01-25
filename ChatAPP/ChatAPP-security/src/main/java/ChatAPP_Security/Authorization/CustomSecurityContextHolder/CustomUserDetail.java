@@ -9,9 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import ChatAPP_Security.Authorization.JwtToken.AuthorizationUserTokenValue;
 import chatAPP_CommontPart.Log4j2.Log4j2;
+import chatAPP_CommontPart.Security.CustomUserDetailsInterface;
 
 
-public class CustomUserDetail implements UserDetails{
+public class CustomUserDetail implements CustomUserDetailsInterface{
 
 	/**Metod return object, saved in SecurityContext
 	 * @return null if None of object is saved in Security context, or principal is not

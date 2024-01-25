@@ -11,13 +11,17 @@ public interface WebSocketThreadLocalSessionInterface {
 	public  void setSimpMessageHeaderAccessor(SimpMessageHeaderAccessor session);
 	
 	public static interface WebSocketThreadLocalSessionValue{
+		public default CustomUserDetailsInterface 
+		
 		public long getSessionOwnerUserID();
+		
 		public SimpMessageHeaderAccessor getSimpMessageHeaderAccessor();
 		public String getProcessingWebSocketDestination();
 		/**Metod return unique ID for currect connected device
 		 * ID is contain deviceID+UserID */
 		public default String getConnectionID() 
-		{return this.getSimpMessageHeaderAccessor().getUser().getName();}
+		{return this.getSim
+				this.getSimpMessageHeaderAccessor().getUser().getName();}
 		public boolean IsUserConsumingNow();
 		public SimpleMessageListenerContainer getSimpleMessageListenerContainer();
 		
@@ -28,4 +32,6 @@ public interface WebSocketThreadLocalSessionInterface {
 		 * otherwise true */
 		public boolean setSimpleMessageListenerContainer(SimpleMessageListenerContainer container);
 	}
+
+	
 }
