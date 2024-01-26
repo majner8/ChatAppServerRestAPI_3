@@ -1,29 +1,37 @@
 package chatAPP_CommontPart.ThreadLocal;
 
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.data.util.Pair;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
-public interface WebSocketThreadLocalSessionInterface {
+import chatAPP_CommontPart.Security.CustomUserDetailsInterface;
 
+public interface WebSocketThreadLocalSessionInterface {
+	
+	//public static final ThreadLocal<Pair<SimpMessageHeaderAccessor,CustomUserDetailsInterface>> wsSession=new ThreadLocal<Pair<SimpMessageHeaderAccessor,CustomUserDetailsInterface>>();
+
+	
+	
 	/**Metod clear current ThreadLocalValue */
-	public  void clear();
+	public void clear();
 	//public void setSimpMessageHeaderAccessor(SimpMessageHeaderAccessor par,RabitMQConsumingMessageProperties mesType);
 	public  void setSimpMessageHeaderAccessor(SimpMessageHeaderAccessor session);
 	
 	public static interface WebSocketThreadLocalSessionValue{
-		public default CustomUserDetailsInterface 
+		public CustomUserDetailsInterface getCustomUserDetails();
 		
-		public long getSessionOwnerUserID();
+		public default long getSessionOwnerUserID() {
+			return this.getCustomUserDetails().getUserID();
+		};
 		
 		public SimpMessageHeaderAccessor getSimpMessageHeaderAccessor();
-		public String getProcessingWebSocketDestination();
 		/**Metod return unique ID for currect connected device
 		 * ID is contain deviceID+UserID */
-		public default String getConnectionID() 
-		{return this.getSim
-				this.getSimpMessageHeaderAccessor().getUser().getName();}
+		public  String getConnectionID();
+				
 		public boolean IsUserConsumingNow();
-		public SimpleMessageListenerContainer getSimpleMessageListenerContainer();
+		
+		public  SimpleMessageListenerContainer getSimpleMessageListenerContainer();
 		
 		
 		
