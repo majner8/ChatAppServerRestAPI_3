@@ -12,9 +12,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
-@Component
+/*@Component
 @PropertySource("classpath:additional-config.properties")
-@ConfigurationProperties(prefix = "some.prefix")
+@ConfigurationProperties(prefix = "some.prefix")*/
 public class WebSocketPropertiesss {
 	@Autowired
 	private Environment env;

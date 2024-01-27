@@ -31,7 +31,7 @@ public @interface RabitMQAnnotationAOP {
 		public static class rabitmqAOPClass{
 		  @Autowired
 		  private RabitMQThreadLocalSession rabitMQSession;
-		  @Around("execution(void *.*(..)) && @annotation(RabitMQAnnotationAOP)")
+		  @Around(" @annotation(RabitMQAnnotationAOP)")
 		  public void AnnotationMetodCall(ProceedingJoinPoint joinPoint,RabitMQAnnotationAOP aop) throws Throwable  {
 				if(Log4j2.log.isDebugEnabled()) {
 					String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
