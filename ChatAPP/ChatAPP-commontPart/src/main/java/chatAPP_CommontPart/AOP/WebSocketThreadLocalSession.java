@@ -23,7 +23,7 @@ public @interface WebSocketThreadLocalSession {
 		@Autowired
 		private WebSocketThreadLocalSessionInterface WebSocketSession;
 		@Around("execution( public void *.*(..)) && @annotation(WebSocketThreadLocalSession)")
-		private void calledMetod(ProceedingJoinPoint joinPoint) throws Throwable {
+		public void calledMetod(ProceedingJoinPoint joinPoint) throws Throwable {
 			String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
 
 			if(Log4j2.log.isTraceEnabled()) {

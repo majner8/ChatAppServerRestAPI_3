@@ -15,7 +15,7 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 @Component
 @PropertySource("classpath:additional-config.properties")
 @ConfigurationProperties(prefix = "some.prefix")
-public class WebSocketPropertie {
+public class WebSocketPropertiesss {
 	@Autowired
 	private Environment env;
 	private  Map<String,WebSocketEndPointAndMessageType> map=Collections.synchronizedMap(new HashMap());

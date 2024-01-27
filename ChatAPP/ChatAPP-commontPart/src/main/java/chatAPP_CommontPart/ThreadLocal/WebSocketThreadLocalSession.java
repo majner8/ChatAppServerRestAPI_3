@@ -12,7 +12,7 @@ import chatAPP_CommontPart.Security.CustomUserDetailsInterface;
 public class WebSocketThreadLocalSession implements WebSocketThreadLocalSessionInterface, WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue {
 	private  final ThreadLocal<Pair<SimpMessageHeaderAccessor,CustomUserDetailsInterface>> wsSession=new ThreadLocal<Pair<SimpMessageHeaderAccessor,CustomUserDetailsInterface>>();
 
-	private String rabitMQContainerHeaderName;
+	private String rabitMQContainerHeaderName="xxx";
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub

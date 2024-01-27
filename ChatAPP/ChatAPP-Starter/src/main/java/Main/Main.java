@@ -15,7 +15,7 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = {"chatAPP_database,ChatAPP_security"
-		+ ",ChatAPP_RabitMQ","ChatAPP_WebSocket"})
+		+ ",ChatAPP_RabitMQ","ChatAPP_WebSocket","ChatAPP_commontPart"})
 @EntityScan(basePackages={"chatAPP_database"})
 @EnableJpaRepositories(basePackages = {"chatAPP_database"})
 @EnableAutoConfiguration
