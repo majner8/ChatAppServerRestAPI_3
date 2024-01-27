@@ -22,7 +22,7 @@ public @interface WebSocketThreadLocalSession {
 	public static class WebSocketAnnotationClass{
 		@Autowired
 		private WebSocketThreadLocalSessionInterface WebSocketSession;
-		@Around("execution(public void(..)) && @annotation(WebSocketThreadLocalSession)")
+		//@Around("execution(public void(..)) && @annotation(WebSocketThreadLocalSession)")
 		public void calledMetod(ProceedingJoinPoint joinPoint) throws Throwable {
 			String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
 

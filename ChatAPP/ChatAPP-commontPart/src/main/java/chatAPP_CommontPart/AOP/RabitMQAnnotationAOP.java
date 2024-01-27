@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +33,7 @@ public @interface RabitMQAnnotationAOP {
 		  @Autowired
 		  private RabitMQThreadLocalSession rabitMQSession;
 		  @Around(" @annotation(RabitMQAnnotationAOP)")
-		  public void AnnotationMetodCall(ProceedingJoinPoint joinPoint,RabitMQAnnotationAOP aop) throws Throwable  {
+		  public void AnnotationMetodCall(ProceedingJoinPoint joinPoint) throws Throwable  {
 				if(Log4j2.log.isDebugEnabled()) {
 					String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
 
@@ -41,8 +42,8 @@ public @interface RabitMQAnnotationAOP {
 					 evnokedBy);
 					 Log4j2.log.debug(Log4j2.MarkerLog.Aspect.getMarker(), message);
 				 }
-				RabitMQConsumingMessageProperties x=RabitMQConsumingMessageProperties.create(aop);
-				this.rabitMQSession.setRabitMQConsumingMessageProperties(x);
+				//RabitMQConsumingMessageProperties x=RabitMQConsumingMessageProperties.create(aop);
+			//	this.rabitMQSession.setRabitMQConsumingMessageProperties(x);
 					joinPoint.proceed();
 				this.rabitMQSession.clear();
 				
