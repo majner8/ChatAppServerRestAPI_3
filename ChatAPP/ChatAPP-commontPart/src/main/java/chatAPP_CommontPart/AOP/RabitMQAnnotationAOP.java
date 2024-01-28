@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +31,8 @@ public @interface RabitMQAnnotationAOP {
 		public static class rabitmqAOPClass{
 		  @Autowired
 		  private RabitMQThreadLocalSession rabitMQSession;
-		  @Around(" @annotation(RabitMQAnnotationAOP)")
-		  public Object AnnotationMetodCall(ProceedingJoinPoint joinPoint) throws Throwable  {
+		  @Around("execution(void *.*(RabitMQAnnotationAOP))&& args(aop) && @annotation(RabitMQAnnotationAOP)")
+		  public Object AnnotationMetodCall(ProceedingJoinPoint joinPoint,RabitMQAnnotationAOP aop) throws Throwable  {
 				
 			  if(Log4j2.log.isDebugEnabled()) {
 					String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();

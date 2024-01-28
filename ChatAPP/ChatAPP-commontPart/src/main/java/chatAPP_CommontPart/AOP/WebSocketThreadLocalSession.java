@@ -7,8 +7,10 @@ import java.lang.annotation.Target;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
@@ -18,12 +20,15 @@ import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 @Target({ElementType.TYPE,ElementType.METHOD}) // This annotation can only be applied to methods
 public @interface WebSocketThreadLocalSession {
 
-	
+	@Aspect
+	@Component
 	public static class WebSocketAnnotationClass{
 		@Autowired
 		private WebSocketThreadLocalSessionInterface WebSocketSession;
 		//@Around("execution(public void(..)) && @annotation(WebSocketThreadLocalSession)")
-		public void calledMetod(ProceedingJoinPoint joinPoint) throws Throwable {
+		
+		 @Around("execution(void *.*(org.springframework.messaging.simp.SimpMessageHeaderAccessor))&& args(session) && @annotation(WebSocketThreadLocalSession)")
+		public void calledMetod(ProceedingJoinPoint joinPoint,SimpMessageHeaderAccessor session) throws Throwable {
 			String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
 
 			if(Log4j2.log.isTraceEnabled()) {
@@ -34,7 +39,7 @@ public @interface WebSocketThreadLocalSession {
 				 Log4j2.log.debug(Log4j2.MarkerLog.Aspect.getMarker(), message);	
 			}
 			
-			SimpMessageHeaderAccessor ses = null;
+		/*	SimpMessageHeaderAccessor ses = null;
 			 for(Object x:joinPoint.getArgs()) {
 			 		if(x instanceof SimpMessageHeaderAccessor) {
 			 			ses=(SimpMessageHeaderAccessor)x;
@@ -46,8 +51,8 @@ public @interface WebSocketThreadLocalSession {
 				 joinPoint.proceed();			 
 				 
 				 return;
-			 }
-			 this.WebSocketSession.setSimpMessageHeaderAccessor(ses);
+			 }*/
+			 this.WebSocketSession.setSimpMessageHeaderAccessor(session);
 			 joinPoint.proceed();			 
 			 this.WebSocketSession.clear();
 			
