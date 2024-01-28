@@ -33,8 +33,9 @@ public @interface RabitMQAnnotationAOP {
 		  @Autowired
 		  private RabitMQThreadLocalSession rabitMQSession;
 		  @Around(" @annotation(RabitMQAnnotationAOP)")
-		  public void AnnotationMetodCall(ProceedingJoinPoint joinPoint) throws Throwable  {
-				if(Log4j2.log.isDebugEnabled()) {
+		  public Object AnnotationMetodCall(ProceedingJoinPoint joinPoint) throws Throwable  {
+				
+			  if(Log4j2.log.isDebugEnabled()) {
 					String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
 
 					 String message=String.format("Running aspect metod rabitMQAOP"+System.lineSeparator()
@@ -46,7 +47,7 @@ public @interface RabitMQAnnotationAOP {
 			//	this.rabitMQSession.setRabitMQConsumingMessageProperties(x);
 					joinPoint.proceed();
 				this.rabitMQSession.clear();
-				
+				return null;
 					
 				
 		  };
