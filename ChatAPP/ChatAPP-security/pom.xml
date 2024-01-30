@@ -19,5 +19,10 @@
   		<artifactId>chatAPP-Database</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
-  </dependencies>
+  	<dependency>
+  		<groupId>ChatAPP-Chat</groupId>
+  		<artifactId>ChatAPP-Chat</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+    </dependencies>
 </project>

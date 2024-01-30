@@ -42,8 +42,8 @@ public @interface RabitMQAnnotationAOP {
 					 evnokedBy);
 					 Log4j2.log.debug(Log4j2.MarkerLog.Aspect.getMarker(), message);
 				 }
-				//RabitMQConsumingMessageProperties x=RabitMQConsumingMessageProperties.create(aop);
-			//	this.rabitMQSession.setRabitMQConsumingMessageProperties(x);
+			RabitMQConsumingMessageProperties x=RabitMQConsumingMessageProperties.create(aop);
+			this.rabitMQSession.setRabitMQConsumingMessageProperties(x);
 					joinPoint.proceed();
 				this.rabitMQSession.clear();
 				return null;

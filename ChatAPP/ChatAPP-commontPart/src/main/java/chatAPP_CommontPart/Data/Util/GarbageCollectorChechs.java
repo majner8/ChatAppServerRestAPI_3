@@ -1,6 +1,6 @@
 package chatAPP_CommontPart.Data.Util;
 
 
-public interface GarbageCollectorChech {
+public interface GarbageCollectorChechs {
 	public void PeriodicChech();
 }

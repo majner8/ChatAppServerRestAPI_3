@@ -1,25 +1,11 @@
 package ChatAPP_Chat.ChatManagement;
 
-import java.util.List;
+import java.util.Set;
 
-import org.springframework.stereotype.Component;
-
-/*Interface work with threadLocal* */
 public interface ChatManagementInterface {
+	/**Metod return list of member of chat
+	 * @param shouldLoadedChat-true, if active chat does not exist-will be loaded from database
+	 * otherwise, it return null*/
+	public Set<Long> getUserIDofMembers(String chatID,boolean shouldLoadedChat);
 
-	public List<Long> getUserIDofMembers(String chatID);
-	
-	
-	
-	
-	@Component
-	public static class justForComponent implements ChatManagementInterface{
-
-		@Override
-		public List<Long> getUserIDofMembers() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-	}
 }

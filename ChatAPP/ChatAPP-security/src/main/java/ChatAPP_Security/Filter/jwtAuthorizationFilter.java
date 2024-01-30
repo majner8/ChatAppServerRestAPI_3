@@ -17,10 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import ChatAPP_Security.Authorization.SecurityProperties;
 import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDetail;
 import ChatAPP_Security.Authorization.JwtToken.AuthorizationUserTokenValue;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
+import ChatAPP_Security.Properties.SecurityProperties;
 
 public class jwtAuthorizationFilter extends OncePerRequestFilter {
 	@Autowired

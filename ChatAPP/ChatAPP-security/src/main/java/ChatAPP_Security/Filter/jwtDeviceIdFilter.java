@@ -12,8 +12,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import ChatAPP_Security.Authorization.SecurityProperties;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
+import ChatAPP_Security.Properties.SecurityProperties;
 
 public class jwtDeviceIdFilter extends OncePerRequestFilter {
 	@Autowired

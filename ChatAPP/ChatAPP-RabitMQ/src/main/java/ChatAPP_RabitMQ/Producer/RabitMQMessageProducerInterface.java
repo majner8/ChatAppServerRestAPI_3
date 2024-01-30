@@ -1,6 +1,7 @@
 package ChatAPP_RabitMQ.Producer;
 
 import java.util.List;
+import java.util.Set;
 
 import chatAPP_DTO.DTO;
 
@@ -12,7 +13,7 @@ public interface RabitMQMessageProducerInterface {
 
 
 	public void PushMessageToRabitMQ(DTO message,long UserRecipientId);
-	public default void PushMessageToRabitMQ(DTO message,List<Long> UserRecipientIds) {
+	public default void PushMessageToRabitMQ(DTO message,Set<Long> UserRecipientIds) {
 		UserRecipientIds.forEach((x)->{
 			this.PushMessageToRabitMQ(message, x);
 		});

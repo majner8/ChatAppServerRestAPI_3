@@ -1,4 +1,4 @@
-package ChatAPP_Security.Authorization;
+package ChatAPP_Security.Properties;
 
 import java.util.Date;
 

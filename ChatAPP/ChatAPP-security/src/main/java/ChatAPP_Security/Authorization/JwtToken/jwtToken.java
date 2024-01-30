@@ -16,7 +16,7 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import ChatAPP_Security.Authorization.SecurityProperties;
+import ChatAPP_Security.Properties.SecurityProperties;
 import chatAPP_DTO.Authorization.TokenDTO;
 import chatAPP_database.User.UserEntity;
 import io.jsonwebtoken.UnsupportedJwtException;
