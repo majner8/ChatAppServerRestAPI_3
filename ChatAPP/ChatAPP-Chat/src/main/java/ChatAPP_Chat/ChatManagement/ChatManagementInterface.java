@@ -7,7 +7,11 @@ import org.springframework.stereotype.Component;
 /*Interface work with threadLocal* */
 public interface ChatManagementInterface {
 
-	public List<Long> getUserIDofMembers();
+	public List<Long> getUserIDofMembers(String chatID);
+	
+	
+	
+	
 	@Component
 	public static class justForComponent implements ChatManagementInterface{
 
