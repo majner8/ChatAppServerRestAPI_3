@@ -4,11 +4,13 @@ import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import ChatAPP_RabitMQ.RabitMQProperties;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
 import chatAPP_DTO.DTO;
 
+@Component
 public class PushMessageRabitMQService implements RabitMQMessageProducerInterface {
 
 

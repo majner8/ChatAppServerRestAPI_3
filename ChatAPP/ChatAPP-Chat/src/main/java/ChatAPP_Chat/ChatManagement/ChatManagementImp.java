@@ -1,5 +1,5 @@
 package ChatAPP_Chat.ChatManagement;
 
-public class ChatManagementImp {
+public class ChatManagementImp implements  {
 
 }
