@@ -51,7 +51,9 @@ public class MessageRequestPermisionImplementation implements MessageRequestPerm
 		if(memberID==null) {
 			//permision have to be verify from database
 			//chat was not loaded for security performance reason
-			sucesfull=this.chatRepo.existsByPrimaryKeyUserIdAndPrimaryKeyChatId(senderBodyId, chatID);
+			sucesfull=this.chatRepo
+					.existsByPrimaryKeyUserIDAndPrimaryKeyChatID(senderBodyId, chatID);
+					
 		}
 		else {
 			sucesfull=memberID.contains(senderBodyId);

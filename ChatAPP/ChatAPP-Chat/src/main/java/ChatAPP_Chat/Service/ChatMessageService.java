@@ -9,13 +9,14 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import ChatAPP_Chat.ChatConfig.ChatProperties;
 import ChatAPP_Chat.ChatManagement.ActiveChat;
 import ChatAPP_Chat.ChatManagement.Active_chat_int;
 import ChatAPP_Chat.ChatManagement.ChatManagementInterface;
 import chatAPP_database.Chat.UserChatsRepository;
-
+@Component
 public class ChatMessageService implements ChatManagementInterface{
 
 	private final Map<String,Active_chat_int> chat=Collections.synchronizedMap(new HashMap<String,Active_chat_int>());

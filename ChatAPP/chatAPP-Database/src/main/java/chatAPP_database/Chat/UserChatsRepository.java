@@ -15,5 +15,5 @@ public interface UserChatsRepository extends CustomJpaRepository<UserChats,Compo
 			,nativeQuery=true)
 	public Set<Long>getUserId(String chatid);
 	
-	boolean existsByPrimaryKeyUserIdAndPrimaryKeyChatId(long userId, String chatId);	
+	boolean existsByPrimaryKeyUserIDAndPrimaryKeyChatID(long userId, String chatId);
 }
