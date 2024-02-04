@@ -48,6 +48,7 @@ public class rabitMQListenerService implements ChannelAwareMessageListener,Rabbi
 			new ChatAPP_RabitMQ.Listener.rabitMQListenerService.unAcknowledgeMessages.AcknowledgeMessage(messageID,properties.getDeliveryTag(),
 					channel,System.currentTimeMillis(),haveToBeMessageRequired)
 			.NackMessage();
+			
 			Log4j2.log.warn(Log4j2.MarkerLog.RabitMQ.getMarker(),
 					String.format(
 							"Cannot find unAcknowledgeMessages in Map. Messages was Nack and return to rabitMQ Queue"+System.lineSeparator()+
