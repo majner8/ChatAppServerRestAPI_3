@@ -10,6 +10,8 @@ public interface RabitMQProperties {
 	
 	public String getHaveToBeMessageRequiredHeaderName();
 	
+	public String getContainerHeaderName();
+	
 	@Component
 	public static class RabitMQPropertiesClass implements RabitMQProperties{
 
@@ -27,6 +29,12 @@ public interface RabitMQProperties {
 
 		@Override
 		public String getHaveToBeMessageRequiredHeaderName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String getContainerHeaderName() {
 			// TODO Auto-generated method stub
 			return null;
 		}

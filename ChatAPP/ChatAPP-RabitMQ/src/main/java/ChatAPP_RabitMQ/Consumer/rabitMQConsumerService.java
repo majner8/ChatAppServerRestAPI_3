@@ -10,10 +10,9 @@ import org.springframework.stereotype.Component;
 import com.rabbitmq.client.Channel;
 
 import ChatAPP_RabitMQ.RabitMQProperties;
-import ChatAPP_RabitMQ.Listener.RabbitMQMessageRelayInterface;
 
 @Component
-public class rabitMQListenerService implements ChannelAwareMessageListener{
+public class rabitMQConsumerService implements ChannelAwareMessageListener{
 	@Autowired
 	private UnAcknowledgeMessageListManager messageManager;
 	

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.core.annotation.Order;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 
 import com.rabbitmq.client.Channel;
@@ -21,12 +22,12 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 			Collections.synchronizedMap(new HashMap<>());
 	
 	@Override
-	public void startConsume(String userdeviceID) {
+	public void startConsume(String userdeviceID,StompHeaderAccessor headerAccessor) {
 		this.listOfMessage.put(userdeviceID, Collections.synchronizedMap(new HashMap<String,Messages>()));
 	}
 
 	@Override
-	public void stopConsume(String userdeviceID, boolean DoesDeviceDisconect)  {
+	public void stopConsume(String userdeviceID,StompHeaderAccessor headerAccessor)  {
 		Map<String,Messages> mes;
 		//have to nack all messages
 		synchronized(this.listOfMessage) {

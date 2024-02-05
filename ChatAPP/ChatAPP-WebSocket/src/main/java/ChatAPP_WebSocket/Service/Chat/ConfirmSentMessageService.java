@@ -15,6 +15,8 @@ public class ConfirmSentMessageService {
 	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue session;
 	
 	public void ConfirmMessage(SimpMessageHeaderAccessor session,String messageID) {
-		this.rabitMQ.AckMessage(this.session.getConnectionID(), messageID);
+		this.rabitMQ.
+		.ack
+		AckMessage(this.session.getConnectionID(), messageID);
 	}
 }

@@ -5,12 +5,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 
 public interface RabbitMQConsumerManager {
 
-	public void startConsume(String userdeviceID);
-	public void stopConsume(String userdeviceID,boolean DoesDeviceDisconect);
+	public void startConsume(String userdeviceID,StompHeaderAccessor headerAccessor);
+	public void stopConsume(String userdeviceID,StompHeaderAccessor headerAccessor);
 
 
 	@Component
@@ -25,16 +26,16 @@ public interface RabbitMQConsumerManager {
                       .collect(Collectors.toList());
 		}
 		@Override
-		public void startConsume(String userdeviceID) {
+		public void startConsume(String userdeviceID,StompHeaderAccessor headerAccessor) {
 			this.list.forEach((X)->{
-				X.startConsume(userdeviceID);
+				X.startConsume(userdeviceID,headerAccessor);
 			});
 		}
 
 		@Override
-		public void stopConsume(String userdeviceID, boolean DoesDeviceDisconect) {
+		public void stopConsume(String userdeviceID,StompHeaderAccessor headerAccessor) {
 			this.list.forEach((X)->{
-				X.stopConsume(userdeviceID, DoesDeviceDisconect);
+				X.stopConsume(userdeviceID, headerAccessor);
 			});			
 		}
 		

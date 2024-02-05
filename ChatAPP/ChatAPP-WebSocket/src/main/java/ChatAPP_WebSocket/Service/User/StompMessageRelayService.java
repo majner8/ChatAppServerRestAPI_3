@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import ChatAPP_RabitMQ.Listener.RabbitMQMessageRelayInterface;
+import ChatAPP_RabitMQ.Consumer.RabbitMQMessageRelayInterface;
 
 @Component
 public class StompMessageRelayService implements RabbitMQMessageRelayInterface {
@@ -14,10 +14,7 @@ public class StompMessageRelayService implements RabbitMQMessageRelayInterface {
 	@Autowired
 	private SimpMessagingTemplate SimpMessageTemplate;
 	
-	@Override
-	public void MessageTimeoutExpired(String recipientID, String messageID) {
-		//have to be done 
-	}
+	
 	@Override
 	public void SendConsumedMessage(String webSocketEndPointPath, String messageID, String message,
 			String recipientID) {
