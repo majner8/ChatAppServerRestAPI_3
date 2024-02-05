@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import com.rabbitmq.client.Channel;
 
 import ChatAPP_RabitMQ.RabitMQProperties;
-import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerControlInterface;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 @Service
 public class rabitMQListenerService implements ChannelAwareMessageListener,RabbitMQConsumerControlInterface{
@@ -65,7 +64,6 @@ public class rabitMQListenerService implements ChannelAwareMessageListener,Rabbi
 		//eventually, load DTO class name, and work with them,
 		
 		String convertMessage=new String(message.getBody());
-		
 		this.relay.SendConsumedMessage(webSocketEndPoint, messageID, convertMessage, recipientID);
 		
 	}

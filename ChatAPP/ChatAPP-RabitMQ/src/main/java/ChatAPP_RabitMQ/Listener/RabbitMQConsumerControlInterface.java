@@ -1,6 +1,6 @@
-package ChatAPP_RabitMQ.Consumer;
+package ChatAPP_RabitMQ.Listener;
 
-public interface RabbitMQConsumerControlInterfaces {
+public interface RabbitMQConsumerControlInterface {
 
 	public void startConsume(String userdeviceID);
 	public void stopConsume(String userdeviceID,boolean DoesDeviceDisconect);
