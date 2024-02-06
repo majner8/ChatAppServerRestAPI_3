@@ -26,7 +26,7 @@ import ChatAPP_Security.Properties.SecurityProperties;
 @Component
 public class jwtAuthorizationFilter extends OncePerRequestFilter {
 	@Autowired
-	private SkipPathServiceInterface skip;
+	private DefineFilterSkipPath.pathForAuthorizationFilterFilter skip;
 	@Autowired 
 	private jwtToken.jwtTokenValidator jwtValidator;
 	@Autowired
@@ -35,10 +35,11 @@ public class jwtAuthorizationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		if(skip.canSkipUserAuthorizationFilterPath(request.getRequestURI())) {
+		if(this.skip.getPathAuthorizationFilterFilter().contains(request.getRequestURI())) {
 			filterChain.doFilter(request, response);
 			return;
 		}
+		
 		AuthorizationUserTokenValue token=this.jwtValidator.jwtTokenAuthorizationUserTokenValidator(request);
 		ArrayList<SimpleGrantedAuthority> authority=new ArrayList<SimpleGrantedAuthority>();
 		SimpleGrantedAuthority author=token.isUserEnable()? 

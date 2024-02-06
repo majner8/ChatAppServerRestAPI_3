@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +13,10 @@ import com.rabbitmq.client.Channel;
 import ChatAPP_RabitMQ.RabitMQProperties;
 
 @Component
+@Qualifier("customChannelAwareMessageListener")
 public class rabitMQConsumerService implements ChannelAwareMessageListener{
 	@Autowired
 	private UnAcknowledgeMessageListManager messageManager;
-	
 	@Autowired
 	private RabitMQProperties RabitMQProperties;
 	@Autowired

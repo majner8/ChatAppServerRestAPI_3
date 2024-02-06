@@ -4,6 +4,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class rabitMQListenerService implements RabbitMQConsumerManager{
     @Autowired
     private ConnectionFactory connectionFactory;
     @Autowired
+    @Qualifier("customChannelAwareMessageListener")
     private ChannelAwareMessageListener listener;
 
 	@Override

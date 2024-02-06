@@ -19,7 +19,7 @@ import ChatAPP_Security.Properties.SecurityProperties;
 @Component
 public class jwtDeviceIdFilter extends OncePerRequestFilter {
 	@Autowired
-	private SkipPathServiceInterface skip;
+	private DefineFilterSkipPath.pathForDeviceIdFilter skip;
 
 	@Autowired
 	private SecurityProperties securityProperties;
@@ -28,14 +28,17 @@ public class jwtDeviceIdFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		if(skip.canSkipDeviceIDFilter(request.getRequestURI())) {
+		if(this.skip.getPathForDeviceIDFilter().contains(request.getRequestURI())) {
 			filterChain.doFilter(request, response);
 			return;
 		}
+		
 		String id=this.jwtValidator.jwtTokenDeviceIDTokenValidator(request);
 		request.setAttribute(this.securityProperties.getDeviceIDRequestAttributeName(), id);
 		filterChain.doFilter(request, response);
 
 	}
+	
+	
 
 }
