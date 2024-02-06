@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -15,6 +16,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
 import ChatAPP_Security.Properties.SecurityProperties;
 
+@Component
 public class jwtDeviceIdFilter extends OncePerRequestFilter {
 	@Autowired
 	private SkipPathServiceInterface skip;

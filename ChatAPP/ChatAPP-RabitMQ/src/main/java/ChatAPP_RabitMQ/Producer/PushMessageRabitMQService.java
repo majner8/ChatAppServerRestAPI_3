@@ -35,7 +35,7 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 			  // messageProperties.setType(mesType.name());
 			   messageProperties.setPriority(this.rabitMQPropertiesThreadLocal.getRabitMQPriority()); 
 			   messageProperties.setHeader(this.properties.getHaveToBeMessageRequiredHeaderName(), this.rabitMQPropertiesThreadLocal.isHaveToBeMessageReDeliver());
-			   messageProperties.setHeader(this.properties.getMessagePropertiesWebSocketEndPointName(), this.rabitMQPropertiesThreadLocal.getWebSocketEndPointPath());
+			   messageProperties.setHeader(this.properties.getMessagePropertiesWebSocketEndPointHeaderName(), this.rabitMQPropertiesThreadLocal.getWebSocketEndPointPath());
 			   return RBMQMessage;
 	        };
 	}

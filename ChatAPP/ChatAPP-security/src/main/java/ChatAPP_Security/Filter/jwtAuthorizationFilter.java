@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -22,6 +23,7 @@ import ChatAPP_Security.Authorization.JwtToken.AuthorizationUserTokenValue;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
 import ChatAPP_Security.Properties.SecurityProperties;
 
+@Component
 public class jwtAuthorizationFilter extends OncePerRequestFilter {
 	@Autowired
 	private SkipPathServiceInterface skip;

@@ -1,0 +1,19 @@
+ChatApp je jednoduchá chatovací aplikace vyvíjená v Javě s použitím frameworku Spring Boot. Tento projekt je navržen s důrazem na principy Interface-based programming a je organizován jako multi-modulový Maven projekt.
+
+Stav projektu
+Projekt je ve fázi vývoje. Aktuálně probíhá testování jednotlivých tříd v modulu ChatApp-test, zaměřující se na zajištění kvality a spolehlivosti aplikace.
+
+Struktura projektu
+Projekt je strukturován do několika modulů, které jsou rozděleny a pojmenovány podle své funkce:
+
+ChatApp-parent: Hlavní projekt, který obsahuje externí závislosti.
+ChatApp-Starter: Obsahuje konfigurační soubory a spouštěcí třídu aplikace.
+
+Tech Stack
+Aplikace využívá následující technologie a nástroje:
+
+RabbitMQ Server: : Pro asynchronní zpracování zpráv a zajištění komunikace v případě nestabilního spojení s klientem. 
+Queue jsou zakládány dynamicky, přičemž každé zařízení má vlastní frontu. 
+V případě delší neaktivity dochází k průběžnému mazání front, čímž se optimalizuje využití zdrojů a udržuje efektivní správa zpráv.
+MySQL Server 8: Zajišťuje perzistenci dat (zpráv), čímž umožňuje uchovávání zpráv pro offline komunikaci mezi uživateli.
+Logování: org.apache.logging.log4j

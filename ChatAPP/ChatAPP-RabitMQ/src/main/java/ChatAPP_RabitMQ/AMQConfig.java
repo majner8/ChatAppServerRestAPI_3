@@ -17,7 +17,7 @@ public class AMQConfig {
 	@Autowired
     private AmqpAdmin amqpAdmin;
 	
-	@Value("${topicExchangeName}")
+	@Value("${rabbitmq.topicExchangeName}")
 	private String topicExchangeName;
 	@Autowired
 	private TopicExchange ex;

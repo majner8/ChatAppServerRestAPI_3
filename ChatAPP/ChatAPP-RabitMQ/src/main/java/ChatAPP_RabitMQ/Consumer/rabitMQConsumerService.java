@@ -27,7 +27,7 @@ public class rabitMQConsumerService implements ChannelAwareMessageListener{
 		String recipientID=properties.getConsumerQueue();
 		boolean haveToBeMessageRequired=properties.getHeader(this.RabitMQProperties.getHaveToBeMessageRequiredHeaderName());
 		long deliveryTag=properties.getDeliveryTag();
-		String webSocketEndPoint=properties.getHeader(this.RabitMQProperties.getMessagePropertiesWebSocketEndPointName());
+		String webSocketEndPoint=properties.getHeader(this.RabitMQProperties.getMessagePropertiesWebSocketEndPointHeaderName());
 //		Name is same as userdeviceID, userID+deviceID
 		this.messageManager.addMessageToList(recipientID,messageID, channel, deliveryTag, haveToBeMessageRequired);
 		
