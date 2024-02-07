@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 
+import chatAPP_CommontPart.Data.Util.AbstractMultiInstanceBeanValidator;
+
 public interface RabbitMQConsumerManager {
 
 	public void startConsume(String userdeviceID,StompHeaderAccessor headerAccessor);
@@ -16,14 +18,13 @@ public interface RabbitMQConsumerManager {
 
 	@Component
 	@Primary
-	public static class RabbitMQConsumerManagerInterfaceService implements RabbitMQConsumerManager{
+	public static class RabbitMQConsumerManagerInterfaceService  extends AbstractMultiInstanceBeanValidator implements RabbitMQConsumerManager{
 
 		private List<RabbitMQConsumerManager> list;
 		@Autowired
 		public RabbitMQConsumerManagerInterfaceService(List<RabbitMQConsumerManager> list) {
-			  this.list = list.stream()
-                      .filter(manager -> !(manager instanceof RabbitMQConsumerManagerInterfaceService))
-                      .collect(Collectors.toList());
+			super(list,RabbitMQConsumerManagerInterfaceService.class); 
+			this.list =list;
 		}
 		@Override
 		public void startConsume(String userdeviceID,StompHeaderAccessor headerAccessor) {

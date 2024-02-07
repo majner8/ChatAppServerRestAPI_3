@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import chatAPP_CommontPart.Data.Util.AbstractMultiInstanceBeanValidator;
+
 
 public interface DefineFilterSkipPath {
 
@@ -16,15 +18,12 @@ public interface DefineFilterSkipPath {
 		public List<String> getPathForDeviceIDFilter();
 		@Primary
 		@Component
-		public static class MainDefinePathToSkip implements pathForDeviceIdFilter{
+		public static class MainDefinePathToSkip extends AbstractMultiInstanceBeanValidator implements pathForDeviceIdFilter{
 			
 			private	List<String>pathToSkip;
 			@Autowired
 			public MainDefinePathToSkip(List<pathForDeviceIdFilter> list) {
-				list=Collections.synchronizedList(list);
-				  list = list.stream()
-	                      .filter(manager -> !(manager instanceof MainDefinePathToSkip))
-	                      .collect(Collectors.toList());
+				super(list,MainDefinePathToSkip.class);
 				  this.pathToSkip=list.stream()
 						  .flatMap((element)->{
 							return element.getPathForDeviceIDFilter().stream();  
@@ -42,15 +41,12 @@ public interface DefineFilterSkipPath {
 		public List<String> getPathAuthorizationFilterFilter();
 		@Primary
 		@Component
-		public static class MainDefinePathToSkip implements pathForAuthorizationFilterFilter{
+		public static class MainDefinePathToSkip extends AbstractMultiInstanceBeanValidator implements pathForAuthorizationFilterFilter{
 			
 			private	List<String>pathToSkip;
 			@Autowired
 			public MainDefinePathToSkip(List<pathForAuthorizationFilterFilter> list) {
-				list=Collections.synchronizedList(list);
-				  list = list.stream()
-	                      .filter(manager -> !(manager instanceof MainDefinePathToSkip))
-	                      .collect(Collectors.toList());
+					super(list,MainDefinePathToSkip.class);
 				  this.pathToSkip=list.stream()
 						  .flatMap((element)->{
 							return element.getPathAuthorizationFilterFilter().stream();  
