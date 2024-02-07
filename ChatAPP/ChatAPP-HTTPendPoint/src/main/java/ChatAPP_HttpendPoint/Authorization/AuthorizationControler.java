@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDetail;
@@ -21,7 +22,7 @@ import chatAPP_DTO.User.UserDTO.UserAuthorizationDTO;
 import chatAPP_DTO.User.UserDTO.UserProfileRegistrationDTO;
 import chatAPP_database.User.HttpRequestUserEntity;
 
-@RequestMapping()
+@RestController
 public class AuthorizationControler implements AuthorizationEndPoint {
 
 	@Autowired

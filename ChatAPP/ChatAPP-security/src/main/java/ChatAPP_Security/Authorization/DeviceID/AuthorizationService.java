@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDetail;
 import chatAPP_DTO.User.UserDTO.UserAuthPasswordDTO;
@@ -19,7 +20,7 @@ import chatAPP_database.User.UserAuthEntityRepository;
 import chatAPP_database.User.UserEntity;
 import chatAPP_database.User.UserEntityRepository;
 
-
+@Component
 public class AuthorizationService {
 
 	@Autowired

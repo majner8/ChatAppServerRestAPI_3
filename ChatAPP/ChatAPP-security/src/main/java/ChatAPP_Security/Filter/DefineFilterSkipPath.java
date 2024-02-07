@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import chatAPP_CommontPart.Data.Util.AbstractMultiInstanceBeanValidator;
 
 
+
 public interface DefineFilterSkipPath {
 
 	
@@ -46,7 +47,7 @@ public interface DefineFilterSkipPath {
 			private	List<String>pathToSkip;
 			@Autowired
 			public MainDefinePathToSkip(List<pathForAuthorizationFilterFilter> list) {
-					super(list,MainDefinePathToSkip.class);
+				super(list,MainDefinePathToSkip.class);
 				  this.pathToSkip=list.stream()
 						  .flatMap((element)->{
 							return element.getPathAuthorizationFilterFilter().stream();  
