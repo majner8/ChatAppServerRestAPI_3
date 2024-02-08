@@ -66,12 +66,12 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 		if(!this.autService.doesUserExist(userData.getProfile(), true)) {
 			//email/phone has not been registred
 			Log4j2.log.info(Log4j2.MarkerLog.Authorization.getMarker(),"Login was not sucessfull, email/phone were incorecct, user was not found");
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		if(!this.autService.login(userData.getPassword())) {
 			//incorect password
 			Log4j2.log.info(Log4j2.MarkerLog.Authorization.getMarker(),"Login was not sucessfull, email/phone or password were incorecct");
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		TokenDTO token=this.jwtTokenGenerator.generateAuthorizationToken(deviceID, this.userEntityScope.getUserEntity());
 		Log4j2.log.info(Log4j2.MarkerLog.Authorization.getMarker(),

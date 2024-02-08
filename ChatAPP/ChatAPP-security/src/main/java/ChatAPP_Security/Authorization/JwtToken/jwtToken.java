@@ -76,7 +76,7 @@ public interface jwtTokenGenerator {
 				String deviceID) {
 			Date validUntil=this.securityProperties.getJwtTokenDeviceIdDuration();
 
-			return JWT.create()
+			return this.securityProperties.getTokenDeviceIdPreflix()+JWT.create()
 					.withSubject(deviceID)
 					.withIssuedAt(new Date())
 					.withExpiresAt(validUntil)
@@ -129,7 +129,12 @@ public interface jwtTokenValidator {
 			DecodedJWT x= this.verifyToken(this.securityProperties.getTokenDeviceIdHeaderName(), 
 					this.securityProperties.getTokenDeviceIdPreflix(), request, 
 					this.securityProperties.getjwtTokenDeviceIDAlgorithm());
+			
+			if(x.getSubject()==null) {
+				throw new UnsupportedJwtException(null);
+			}
 			return x.getSubject();
+
 		}
 
 		@Override

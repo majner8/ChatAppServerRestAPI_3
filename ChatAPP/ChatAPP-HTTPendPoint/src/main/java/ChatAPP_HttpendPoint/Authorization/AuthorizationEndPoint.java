@@ -30,7 +30,7 @@ public interface AuthorizationEndPoint {
 	public ResponseEntity<TokenDTO>finishRegistration(@RequestAttribute String deviceID,@RequestBody @Valid UserProfileRegistrationDTO user);
 	
 	@Component
-	public static final class AuthorizationPath implements UnAuthorizatePath,DefineFilterSkipPath.pathForAuthorizationFilterFilter,DefineFilterSkipPath.pathForDeviceIdFilter{
+	public static final class AuthorizationPath implements UnAuthorizatePath,DefineFilterSkipPath.pathForAuthorizationFilterFilter{
 
 
 		private List<String> path;
@@ -51,11 +51,7 @@ public interface AuthorizationEndPoint {
 			return this.UnPath;
 		}
 
-		@Override
-		public List<String> getPathForDeviceIDFilter() {
-			// TODO Auto-generated method stub
-			return this.path;
-		}
+		
 
 		@Override
 		public List<String> getPathAuthorizationFilterFilter() {

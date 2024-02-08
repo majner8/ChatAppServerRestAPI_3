@@ -21,7 +21,8 @@ public interface DeviceIDEndPoint {
 	public ResponseEntity<String> getDeviceIDToken(HttpServletRequest request);
 	
 	@Component
-	public static final class AuthorizationPath implements UnAuthorizatePath,DefineFilterSkipPath.pathForDeviceIdFilter{
+	public static final class AuthorizationPath implements UnAuthorizatePath,DefineFilterSkipPath.pathForDeviceIdFilter,
+	DefineFilterSkipPath.pathForAuthorizationFilterFilter{
 
 		private String[] deviceID;
 		private List<String>path;
@@ -46,6 +47,14 @@ public interface DeviceIDEndPoint {
 
 		@Override
 		public List<String> getPathForDeviceIDFilter() {
+			// TODO Auto-generated method stub
+			return this.path;
+		}
+
+
+
+		@Override
+		public List<String> getPathAuthorizationFilterFilter() {
 			// TODO Auto-generated method stub
 			return this.path;
 		}

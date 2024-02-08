@@ -57,7 +57,7 @@ public class SecurityPropertiesImplementation implements SecurityProperties {
 	//have to be done in PostConc
 	private Algorithm deviceAlgo;
 	
-	private final String securityRequestAttributeDeviceid="device_id";
+	private final String securityRequestAttributeDeviceid="deviceID";
 	private final String userIsActiveAuthorityName="user_enable";
 	private final String userIsUnActiveAuthorityName="user_disable";
 	/*

@@ -13,6 +13,7 @@ import chatAPP_database.Device.DeviceIdEntity;
 
 public interface deviceIdGenerationRepository extends CustomJpaRepository<DeviceIdEntity,String> {
 
+	
 	/**Metod generate deviceId and persist them
 	 * Metod has implement mechanism to prevent duplicate id error */
 	public default String deviceIdGeneration() {
@@ -37,7 +38,7 @@ public interface deviceIdGenerationRepository extends CustomJpaRepository<Device
 			finish=true;
 		}
 		while(i<3&&finish==false);
-		if(finish==true) {
+		if(finish==false) {
 			throw ex;
 		}
 		
