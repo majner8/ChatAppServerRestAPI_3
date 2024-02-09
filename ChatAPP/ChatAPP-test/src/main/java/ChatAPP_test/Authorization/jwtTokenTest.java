@@ -1,10 +1,14 @@
 package ChatAPP_test.Authorization;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,8 +53,31 @@ public class jwtTokenTest {
 	
 	private static String deviceIDToken="523SA";
 
-	@Test
+	@Test()
 	@Order(1)
+	public void TestDeviceIDGenerator() {
+
+		//have to set static generate String on UUID
+		try(MockedStatic<UUID> mockedUuid = Mockito.mockStatic(UUID.class)){
+		    UUID fixedUUID = UUID.fromString("4155ef35-ab19-4221-955b-998e33c929b9");
+
+		 mockedUuid.when(() -> UUID.randomUUID()).thenReturn(fixedUUID);
+		
+		 ResponseSpec deviceIDToken=this.webTestClient
+					.get()
+					.uri("/authorization/generateDeviceID")			
+					.exchange()	;
+					deviceIDToken.expectStatus().isOk()
+					.expectBody(String.class)
+					.consumeWith((device)->{
+						this.deviceIDToken=device.getResponseBody();
+					})
+					;	
+		}
+	}
+	
+	@Test
+	@Order(5)
 	public void getDeviceIDTokenTest() {
 		ResponseSpec deviceIDToken=this.webTestClient
 				.get()
@@ -65,7 +92,7 @@ public class jwtTokenTest {
 	}
 
 	@Test
-	@Order(2)
+	@Order(6)
 	public void TestAuthorizatedPath() {
 		ResponseSpec res=this.webTestClient
 		.post()
@@ -85,7 +112,7 @@ public class jwtTokenTest {
 	}
 	
 	@Test
-	@Order(3)
+	@Order(7)
 	public void TryLogin() {
 		ResponseSpec registration=this.webTestClient
 				.post()
@@ -98,7 +125,7 @@ public class jwtTokenTest {
 	
 	}
 	@Test
-	@Order(4)
+	@Order(8)
 	public void testRegistration() {
 		
 		 TokenDTO[] rawToken= new TokenDTO[1];
@@ -117,7 +144,7 @@ public class jwtTokenTest {
 	}
 	
 	@Test
-	@Order(5)
+	@Order(9)
 	public void makeLogin() {
 		ResponseSpec registration=this.webTestClient
 				.post()
@@ -133,7 +160,7 @@ public class jwtTokenTest {
 	}
 	private static String authorizatedToken;
 	@Test
-	@Order(6)
+	@Order(10)
 	public void finishRegistration() {
 		UserProfileDTO prof=new UserProfileDTO();
 		prof.setLastName("Bicak");

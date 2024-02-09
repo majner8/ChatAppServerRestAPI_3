@@ -11,18 +11,22 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_database.CustomJpaRepository;
 import chatAPP_database.Device.DeviceIdEntity;
 
-public interface deviceIdGenerationRepository extends CustomJpaRepository<DeviceIdEntity,String> {
+public interface deviceIdRepository extends CustomJpaRepository<DeviceIdEntity,String> {
 
 	
 	/**Metod generate deviceId and persist them
 	 * Metod has implement mechanism to prevent duplicate id error */
 	public default String deviceIdGeneration() {
+		
 		boolean finish=false;
 		DataIntegrityViolationException ex = null;
 		int i=0;
 		String id=null;
 		do {
 			id=UUID.randomUUID().toString();
+			if(Log4j2.log.isTraceEnabled()) {
+				Log4j2.log.trace(Log4j2.MarkerLog.Security.getMarker(),"Generated random device UUID-UUID: "+id);
+			}
 			try {
 				DeviceIdEntity entity=new DeviceIdEntity();
 				entity.setDeviceId(id);
