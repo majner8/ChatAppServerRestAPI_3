@@ -14,7 +14,6 @@ public class UserDTO {
 		
 		private String nickName;
 		
-		private String userID;
 		
 		
 		public String getSerName() {
@@ -44,16 +43,6 @@ public class UserDTO {
 
 		public void setNickName(String nickName) {
 			this.nickName = nickName;
-		}
-
-
-		public String getUserID() {
-			return userID;
-		}
-
-
-		public void setUserID(String userID) {
-			this.userID = userID;
 		}
 
 

@@ -16,6 +16,7 @@ import chatAPP_DTO.Authorization.TokenDTO;
 import chatAPP_DTO.User.UserDTO.UserAuthPasswordDTO;
 import chatAPP_DTO.User.UserDTO.UserAuthorizationDTO;
 import chatAPP_DTO.User.UserDTO.UserComunicationDTO;
+import chatAPP_DTO.User.UserDTO.UserProfileDTO;
 
 @SpringBootTest(classes=Main.Main.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient
@@ -127,7 +128,24 @@ public class jwtTokenTest {
 		registration.expectStatus().isOk()
 		.expectBody(TokenDTO.class)
 		.consumeWith((token)->{
-			//rawToken[0]=token.getResponseBody();
+			this.authorizatedToken=token.getResponseBody().getToken();
 		});
+	}
+	private static String authorizatedToken;
+	@Test
+	@Order(6)
+	public void finishRegistration() {
+		UserProfileDTO prof=new UserProfileDTO();
+		prof.setLastName("Bicak");
+		prof.setSerName("Antonin");
+		prof.setNickName("majner8");
+		
+		ResponseSpec registration=this.webTestClient
+				.post()
+				.uri("/authorization/finishRegistration")
+				.bodyValue(prof)
+				.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
+				.header(this.securityProperties.getTokenAuthorizationUserHederName(), this.authorizatedToken)
+				.exchange();
 	}
 }
