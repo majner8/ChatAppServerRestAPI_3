@@ -1,6 +1,7 @@
 package ChatAPP_test.Authorization;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -12,9 +13,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
+import ChatAPP_Security.Authorization.DeviceID.DeviceIDGenerator;
 import ChatAPP_Security.Properties.SecurityProperties;
 import chatAPP_DTO.Authorization.TokenDTO;
 import chatAPP_DTO.User.UserDTO.UserAuthPasswordDTO;
@@ -31,12 +34,27 @@ public class jwtTokenTest {
     private WebTestClient webTestClient;
 	 @Autowired
 	private SecurityProperties securityProperties;
-	 
+	@MockBean
+	private DeviceIDGenerator generator;
 	@BeforeEach
 	   public void setUp() {
 //	        MockitoAnnotations.openMocks(this);
 		this.initRegistrationUser();
+		this.initMockBean();
 	    }
+	private void initMockBean() {
+		 // Using an Answer to delegate to the real method after the first call
+	    AtomicInteger count = new AtomicInteger();
+	    Mockito.when(this.generator.generateDeviceID()).thenAnswer(invocation -> {
+            return "03df76fc-a253-4003-a505-56a8c8e57436"; // First call returns this
+
+         /*   if (count.getAndIncrement() == 0) {
+	            return "03df76fc-a253-4003-a505-56a8c8e57436"; // First call returns this
+	        } else {
+	            return invocation.callRealMethod(); // Subsequent calls invoke the real method
+	        }*/
+	    });
+	}
 	private void initRegistrationUser() {
 		this.user=new UserAuthorizationDTO();
 		//create fake profile and fill it with data
@@ -58,11 +76,6 @@ public class jwtTokenTest {
 	public void TestDeviceIDGenerator() {
 
 		//have to set static generate String on UUID
-		try(MockedStatic<UUID> mockedUuid = Mockito.mockStatic(UUID.class)){
-		    UUID fixedUUID = UUID.fromString("4155ef35-ab19-4221-955b-998e33c929b9");
-
-		 mockedUuid.when(() -> UUID.randomUUID()).thenReturn(fixedUUID);
-		
 		 ResponseSpec deviceIDToken=this.webTestClient
 					.get()
 					.uri("/authorization/generateDeviceID")			
@@ -73,8 +86,22 @@ public class jwtTokenTest {
 						this.deviceIDToken=device.getResponseBody();
 					})
 					;	
-		}
+					
+
+					//have to set static generate String on UUID
+					  deviceIDToken=this.webTestClient
+								.get()
+								.uri("/authorization/generateDeviceID")			
+								.exchange()	;
+								deviceIDToken.expectStatus().isOk()
+								.expectBody(String.class)
+								.consumeWith((device)->{
+									this.deviceIDToken=device.getResponseBody();
+								})
+								;	
+		
 	}
+
 	
 	@Test
 	@Order(5)

@@ -1,21 +1,55 @@
 package ChatAPP_Security.Authorization.DeviceID;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
-import ChatAPP_Security.Properties.SecurityProperties;
-import chatAPP_database.Device.deviceIdGenerationRepository;
+import chatAPP_CommontPart.Log4j2.Log4j2;
+import chatAPP_database.Device.deviceIdRepository;
 
 @Component
 public class deviceIDService {
 
 	@Autowired
-	private deviceIdGenerationRepository deviceIDRepo;
+	private deviceIdRepository deviceIDRepo;
+	@Autowired
+	private DeviceIDGenerator deviceIDGenerator;
 	@Autowired
 	private jwtToken.jwtTokenGenerator jwtTokenGenerator;
 	public String generateDeviceID() {
-		return this.deviceIDRepo.deviceIdGeneration();
+
+
+		boolean finish=false;
+		DataIntegrityViolationException ex = null;
+		int i=0;
+		String id=null;
+		do {
+			id=this.deviceIDGenerator.generateDeviceID();
+			
+			try {
+			this.deviceIDRepo.persist(id);
+			}
+			catch(DataIntegrityViolationException e) {
+				ex=e;
+				Log4j2.log.warn(Log4j2.MarkerLog.Database.getMarker(),"DataIntegrityViolationException occurs, system try generate Id again");
+				i++;
+				continue;
+			}
+			finish=true;
+		}
+		while(i<3&&finish==false);
+		if(Log4j2.log.isTraceEnabled()) {
+			Log4j2.log.trace(Log4j2.MarkerLog.Security.getMarker(),"Generated random device UUID-UUID: "+id);
+		}
+		
+		if(finish==false) {
+			throw ex;
+		}
+		
+		return id;
+
 	}
 	
 	public String generateDeviceJwtToken(String deviceID) {

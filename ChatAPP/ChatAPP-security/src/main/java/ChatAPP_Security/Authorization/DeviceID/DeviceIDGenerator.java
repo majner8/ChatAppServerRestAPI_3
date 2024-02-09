@@ -1,6 +1,9 @@
 package ChatAPP_Security.Authorization.DeviceID;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Component;
+
 
 public interface DeviceIDGenerator {
 	/**Metod generate deviceId and persist them
@@ -13,7 +16,8 @@ public interface DeviceIDGenerator {
 
 		@Override
 		public String generateDeviceID() {
-			// TODO Auto-generated method stub
-			return null;
+			return UUID.randomUUID().toString();
+
+			
 		}}
 }

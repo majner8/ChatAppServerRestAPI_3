@@ -1,6 +1,7 @@
 package chatAPP_database.Device;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,9 +16,9 @@ public class DeviceIdEntity {
 	public static final String deviceId_name="deviceid";
 	@Id
 	@Column(name=deviceId_name)
-	private String deviceId;
+	 private String deviceId;
 	@Column(name=last_seen_name)
-	private LocalDate lastSeen;
+	private LocalDateTime lastSeen;
 
 	public String getDeviceId() {
 		return deviceId;
@@ -27,11 +28,11 @@ public class DeviceIdEntity {
 		this.deviceId = deviceId;
 	}
 
-	public LocalDate getLastSeen() {
+	public LocalDateTime getLastSeen() {
 		return lastSeen;
 	}
 
-	public void setLastSeen(LocalDate lastSeen) {
+	public void setLastSeen(LocalDateTime lastSeen) {
 		this.lastSeen = lastSeen;
 	}
 	

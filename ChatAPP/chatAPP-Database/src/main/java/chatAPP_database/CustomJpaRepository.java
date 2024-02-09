@@ -10,7 +10,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 
 @NoRepositoryBean
-public abstract interface CustomJpaRepository<T,ID> extends JpaRepository<T,ID>  {
+public abstract interface CustomJpaRepository<T,ID> extends AllowPersistOperationJPARepository<T>,JpaRepository<T,ID>  {
 
 	/** Metod return saved entity, aling by primaryKey
 	 * @throws RunTimeException EntityNotFoundException if message was not found with assign primaryKey */
