@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
@@ -34,7 +35,7 @@ public class jwtTokenTest {
     private WebTestClient webTestClient;
 	 @Autowired
 	private SecurityProperties securityProperties;
-	@MockBean
+	@SpyBean
 	private DeviceIDGenerator generator;
 	@BeforeEach
 	   public void setUp() {
@@ -46,13 +47,12 @@ public class jwtTokenTest {
 		 // Using an Answer to delegate to the real method after the first call
 	    AtomicInteger count = new AtomicInteger();
 	    Mockito.when(this.generator.generateDeviceID()).thenAnswer(invocation -> {
-            return "03df76fc-a253-4003-a505-56a8c8e57436"; // First call returns this
 
-         /*   if (count.getAndIncrement() == 0) {
+            if (count.getAndIncrement() == 0) {
 	            return "03df76fc-a253-4003-a505-56a8c8e57436"; // First call returns this
 	        } else {
 	            return invocation.callRealMethod(); // Subsequent calls invoke the real method
-	        }*/
+	        }
 	    });
 	}
 	private void initRegistrationUser() {
@@ -86,19 +86,6 @@ public class jwtTokenTest {
 						this.deviceIDToken=device.getResponseBody();
 					})
 					;	
-					
-
-					//have to set static generate String on UUID
-					  deviceIDToken=this.webTestClient
-								.get()
-								.uri("/authorization/generateDeviceID")			
-								.exchange()	;
-								deviceIDToken.expectStatus().isOk()
-								.expectBody(String.class)
-								.consumeWith((device)->{
-									this.deviceIDToken=device.getResponseBody();
-								})
-								;	
 		
 	}
 

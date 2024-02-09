@@ -21,4 +21,6 @@ public abstract interface CustomJpaRepository<T,ID> extends JpaRepository<T,ID> 
 		return entity.get();
 	}
 	
+	
+	
 }
