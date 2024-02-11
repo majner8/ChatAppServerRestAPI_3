@@ -40,6 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 .exceptionHandling()
 		 .authenticationEntryPoint((request, response, authException)->{
 			 if(authException!=null) {
+				 
 				 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			 }
 		 })

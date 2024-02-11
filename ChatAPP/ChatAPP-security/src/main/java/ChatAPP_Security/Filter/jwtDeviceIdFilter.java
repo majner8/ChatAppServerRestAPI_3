@@ -41,7 +41,13 @@ public class jwtDeviceIdFilter extends OncePerRequestFilter {
 				i++;
 			}
 		}
+		
+		
 		if(this.skip.getPathForDeviceIDFilter().contains(request.getRequestURI())) {
+			if(request.getHeader(this.securityProperties.getTokenDeviceIdHeaderName())!=null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
 			filterChain.doFilter(request, response);
 			return;
 		}

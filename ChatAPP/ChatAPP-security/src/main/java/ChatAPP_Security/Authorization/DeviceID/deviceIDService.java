@@ -26,6 +26,9 @@ public class deviceIDService {
 		int i=0;
 		String id=null;
 		do {
+			if(i!=0) {
+				Log4j2.log.warn(Log4j2.MarkerLog.Database.getMarker(),"DataIntegrityViolationException occurs, system try generate Id again");
+			}
 			id=this.deviceIDGenerator.generateDeviceID();
 			
 			try {
@@ -33,7 +36,6 @@ public class deviceIDService {
 			}
 			catch(DataIntegrityViolationException e) {
 				ex=e;
-				Log4j2.log.warn(Log4j2.MarkerLog.Database.getMarker(),"DataIntegrityViolationException occurs, system try generate Id again");
 				i++;
 				continue;
 			}

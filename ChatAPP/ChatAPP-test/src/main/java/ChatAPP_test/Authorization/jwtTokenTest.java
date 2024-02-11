@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
@@ -29,6 +30,8 @@ import chatAPP_DTO.User.UserDTO.UserProfileDTO;
 @SpringBootTest(classes=Main.Main.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+/** authorization jwtToken test
+ * To ensure, that test will be working properly, set hibernate to create-drop */
 public class jwtTokenTest {
 
 	@Autowired
@@ -48,7 +51,7 @@ public class jwtTokenTest {
 	    AtomicInteger count = new AtomicInteger();
 	    Mockito.when(this.generator.generateDeviceID()).thenAnswer(invocation -> {
 
-            if (count.getAndIncrement() == 0) {
+            if (count.getAndIncrement() <3) {
 	            return "03df76fc-a253-4003-a505-56a8c8e57436"; // First call returns this
 	        } else {
 	            return invocation.callRealMethod(); // Subsequent calls invoke the real method
@@ -73,9 +76,10 @@ public class jwtTokenTest {
 
 	@Test()
 	@Order(1)
+	/**Metod try to get deviceID, when duplicate primary Key error occurs */
 	public void TestDeviceIDGenerator() {
 
-		//have to set static generate String on UUID
+		//calling request first time, to fill empty database with ID
 		 ResponseSpec deviceIDToken=this.webTestClient
 					.get()
 					.uri("/authorization/generateDeviceID")			
@@ -84,27 +88,33 @@ public class jwtTokenTest {
 					.expectBody(String.class)
 					.consumeWith((device)->{
 						this.deviceIDToken=device.getResponseBody();
-					})
-					;	
+
+					});
+					
+					//call it second time, but with generatedID
+					  deviceIDToken=this.webTestClient
+								.get()
+								.uri("/authorization/generateDeviceID")									.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
+								.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)		
+								.exchange()	;
+								deviceIDToken.expectStatus().isBadRequest();	
+
+					//call it third time, with mock same ID.	
+					  deviceIDToken=this.webTestClient
+								.get()
+								.uri("/authorization/generateDeviceID")			
+								.exchange()	;
+								deviceIDToken.expectStatus().isOk()
+								.expectBody(String.class)
+								.consumeWith((device)->{
+									this.deviceIDToken=device.getResponseBody();
+
+								})
+								;	
+								
+
 		
 	}
-
-	
-	@Test
-	@Order(5)
-	public void getDeviceIDTokenTest() {
-		ResponseSpec deviceIDToken=this.webTestClient
-				.get()
-				.uri("/authorization/generateDeviceID")			
-				.exchange()	;
-				deviceIDToken.expectStatus().isOk()
-				.expectBody(String.class)
-				.consumeWith((device)->{
-					this.deviceIDToken=device.getResponseBody();
-				})
-				;	
-	}
-
 	@Test
 	@Order(6)
 	public void TestAuthorizatedPath() {
@@ -155,6 +165,19 @@ public class jwtTokenTest {
 		.consumeWith((token)->{
 			rawToken[0]=token.getResponseBody();
 		});
+		
+		//try it again, with same value
+		 registration=this.webTestClient
+				.post()
+				.uri("/authorization/register")
+				.bodyValue(user)
+				.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
+				.exchange();
+	registration.expectStatus().isEqualTo(HttpStatus.CONFLICT)
+	.expectBody(TokenDTO.class)
+	.consumeWith((token)->{
+		rawToken[0]=token.getResponseBody();
+	});
 	}
 	
 	@Test
