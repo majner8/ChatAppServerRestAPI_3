@@ -56,7 +56,7 @@ public class ConsumingMessageRabbitMQTest {
 		this.PushMessageToRabbitMQAnnotation();
 	}
 	@RabitMQAnnotationAOP(dtoClass = DTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
-	private void PushMessageToRabbitMQAnnotation(RabitMQAnnotationAOP aop) {
+	private void PushMessageToRabbitMQAnnotation() {
 		this.push.PushMessageToRabitMQ(()->{
 			return "Ahojjas";
 		}, userID);
