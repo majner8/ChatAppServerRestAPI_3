@@ -32,8 +32,12 @@ public interface RabitMQThreadLocalSession {
 		}
 	}
 	@Component
-	public static class classJustForImplementation implements RabitMQThreadLocalSession,RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue{}
+	public static class classJustForImplementationRabitMQThreadLocalSession implements RabitMQThreadLocalSession{}
 	
+	@Component
+	public static class classJustForImplementationRabitMQThreadLocalSessionValue implements RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue{
+		
+	}
 	
 	public static class RabitMQConsumingMessageProperties {
 

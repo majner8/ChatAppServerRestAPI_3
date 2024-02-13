@@ -22,6 +22,8 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 //	private ThreadLocalSimpMessageHeaderAccessor threadLocalWebSocketSession;
 	@Autowired
 	private RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue rabitMQPropertiesThreadLocal;
+
+	
 	private void PushMessageToRabitMQ(String exchangeKey,DTO message,MessagePostProcessor messagePostProcessor ) {
 	
         this.rabbitTemplate.convertAndSend(exchangeKey, message, messagePostProcessor);
