@@ -129,11 +129,9 @@ public class ConsumingMessageRabbitMQTest {
 
         if(completed==false) {
     		assertTrue(false);
-
         }
         else {
     		Assertions.assertEquals(this.messageID,dto.getMessageID());
-
         }
 	}
 	
