@@ -23,6 +23,7 @@ public class rabitMQConsumerService implements ChannelAwareMessageListener{
 	private RabbitMQMessageRelayInterface relay;
 	@Override
 	public void onMessage(Message message, Channel channel) throws Exception {
+		
 		MessageProperties properties=message.getMessageProperties();
 		String messageID=properties.getMessageId();
 		String recipientID=properties.getConsumerQueue();

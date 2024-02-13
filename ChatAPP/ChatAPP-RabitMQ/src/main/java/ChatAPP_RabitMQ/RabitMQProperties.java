@@ -12,4 +12,5 @@ public interface RabitMQProperties {
 	
 	public String getContainerHeaderName();
 	
+	public String getTopicExchangeName();
 }

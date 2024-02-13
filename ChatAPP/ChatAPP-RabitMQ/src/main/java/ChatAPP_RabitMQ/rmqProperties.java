@@ -16,6 +16,8 @@ public class rmqProperties implements RabitMQProperties {
 	private String ContainerHeaderName;
 	@Value("${rabbitmq.WebSocketEndPointHeaderName}")
 	private String WebSocketEndPointHeaderName;
+	@Value("${rabbitmq.topicExchangeName}")
+	private String topicExchangeName;
 	
 
 	@Override
@@ -42,6 +44,13 @@ public class rmqProperties implements RabitMQProperties {
 	public String getMessagePropertiesWebSocketEndPointHeaderName() {
 		// TODO Auto-generated method stub
 		return this.WebSocketEndPointHeaderName;
+	}
+
+
+	@Override
+	public String getTopicExchangeName() {
+		// TODO Auto-generated method stub
+		return this.topicExchangeName;
 	}
 
 }

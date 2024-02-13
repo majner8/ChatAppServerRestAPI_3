@@ -24,10 +24,8 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 	private RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue rabitMQPropertiesThreadLocal;
 
 	
-	private void PushMessageToRabitMQ(String exchangeKey,DTO message,MessagePostProcessor messagePostProcessor ) {
-	
-        this.rabbitTemplate.convertAndSend(exchangeKey, message, messagePostProcessor);
-
+	private void PushMessageToRabitMQ(String routingKey,DTO message,MessagePostProcessor messagePostProcessor ) {
+        this.rabbitTemplate.convertAndSend(this.properties.getTopicExchangeName(), routingKey, message, messagePostProcessor);
 	}
 	
 	private MessagePostProcessor getMessagePostProcessor(DTO message) {
@@ -38,6 +36,7 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 			   messageProperties.setPriority(this.rabitMQPropertiesThreadLocal.getRabitMQPriority()); 
 			   messageProperties.setHeader(this.properties.getHaveToBeMessageRequiredHeaderName(), this.rabitMQPropertiesThreadLocal.isHaveToBeMessageReDeliver());
 			   messageProperties.setHeader(this.properties.getMessagePropertiesWebSocketEndPointHeaderName(), this.rabitMQPropertiesThreadLocal.getWebSocketEndPointPath());
+			   messageProperties.setReceivedExchange(this.properties.getTopicExchangeName());
 			   return RBMQMessage;
 	        };
 	}

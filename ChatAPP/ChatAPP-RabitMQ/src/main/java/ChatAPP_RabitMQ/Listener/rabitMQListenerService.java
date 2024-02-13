@@ -19,18 +19,12 @@ public class rabitMQListenerService implements RabbitMQConsumerManager{
 
 	@Autowired
 	private RabitMQProperties amqProp;
-    @Autowired
-    private ConnectionFactory connectionFactory;
-    @Autowired
-    @Qualifier("customChannelAwareMessageListener")
-    private ChannelAwareMessageListener listener;
 
+	@Autowired
+	private SimpleMessageListenerContainerManager containerManager;
 	@Override
 	public void startConsume(String userdeviceID, StompHeaderAccessor headerAccessor) {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-	    container.setConnectionFactory(connectionFactory);
-	    container.setQueueNames(userdeviceID);
-	    container.setMessageListener(listener);
+		SimpleMessageListenerContainer container = this.containerManager.createSimpleMessageListenerContainer(userdeviceID);
 	    headerAccessor.setHeader(userdeviceID, container);
 	    headerAccessor.setHeader(this.amqProp.getContainerHeaderName(), container);
 	    container.start();

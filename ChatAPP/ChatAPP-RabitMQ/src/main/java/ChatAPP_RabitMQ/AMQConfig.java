@@ -18,9 +18,9 @@ public class AMQConfig {
 
 	@Autowired
     private AmqpAdmin amqpAdmin;
-	
-	@Value("${rabbitmq.topicExchangeName}")
-	private String topicExchangeName;
+	@Autowired
+	private RabitMQProperties properties;
+
 	@Autowired
 	private TopicExchange ex;
     @Autowired
@@ -28,12 +28,12 @@ public class AMQConfig {
 
 	@PostConstruct
 	private void init() {
-		Log4j2.log.info(Log4j2.MarkerLog.RabitMQ.getMarker(),"Creating topicExchange with name: "+this.topicExchangeName);
+		Log4j2.log.info(Log4j2.MarkerLog.RabitMQ.getMarker(),"Creating topicExchange with name: "+this.properties.getTopicExchangeName());
 		this.amqpAdmin.declareExchange(ex);
 	}
 	@Bean
 	public TopicExchange createTopicExchange() {
-		TopicExchange x= new TopicExchange(this.topicExchangeName);
+		TopicExchange x= new TopicExchange(this.properties.getTopicExchangeName());
 		return x;
 	}
 
