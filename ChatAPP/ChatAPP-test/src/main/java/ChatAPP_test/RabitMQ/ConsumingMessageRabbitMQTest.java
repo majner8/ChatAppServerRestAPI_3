@@ -50,7 +50,6 @@ public class ConsumingMessageRabbitMQTest {
 
 	@Autowired
 	private RabbitMQQueueManagerInterface QueueManag;
-
 	
 	@SpyBean
 	private WebSocketThreadLocalSessionValue ses;
@@ -88,7 +87,6 @@ public class ConsumingMessageRabbitMQTest {
 	 private void initSpyBean() throws Exception {
 		    Mockito.doReturn(this.connectionID).when(ses).getConnectionID();
 	        Mockito.doReturn(this.userID).when(ses).getSessionOwnerUserID();
-
 	 }
 	 
 	 @Test
@@ -153,6 +151,4 @@ public class ConsumingMessageRabbitMQTest {
 			// TODO Auto-generated method stub
 			return this.MessageID;
 		}}
-
-	
 }
