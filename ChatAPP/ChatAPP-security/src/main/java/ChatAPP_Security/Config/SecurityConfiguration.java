@@ -30,16 +30,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private UnAuthorizatePath skipPath;
 	@Override
 	 protected void configure(HttpSecurity http)throws Exception {
-		 
-		 
-		 http.csrf().disable()
-		 .formLogin().disable()
-		 .logout().disable()	
-		 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		 .and()
-		 .exceptionHandling()
-		 .authenticationEntryPoint((request, response, authException)->{
-			 if(authException!=null) {
+		http.csrf().disable()
+		.formLogin().disable()
+		.logout().disable()	
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.exceptionHandling()
+		.authenticationEntryPoint((request, response, authException)->{
+		
+			if(authException!=null) {
 				 
 				 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			 }
