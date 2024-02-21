@@ -48,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 .addFilterAfter(this.autFilter, this.deviceFilter.getClass())
 		 .authorizeRequests()
 		 .antMatchers(this.skipPath.getUnAuthorizatedPath()).permitAll()
-		 .anyRequest().fullyAuthenticated();
+		 .anyRequest().authenticated()
 		 ;
 	 }
 }

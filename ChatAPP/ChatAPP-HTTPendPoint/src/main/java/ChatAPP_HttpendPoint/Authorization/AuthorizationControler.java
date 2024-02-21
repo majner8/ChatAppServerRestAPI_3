@@ -83,7 +83,10 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 
 	@Override
 	public ResponseEntity<TokenDTO> finishRegistration(@RequestAttribute String deviceID,@Valid UserProfileRegistrationDTO user) {
-	
+		
+		if(Log4j2.log.isTraceEnabled()) {
+			Log4j2.log.trace(Log4j2.MarkerLog.Authorization.getMarker(),"I am processing finish registration EndPoint");
+		}
 		HttpStatus status;
 		CustomUserDetail userDetail=CustomUserDetail.getCurrentCustomUserDetail();
 		long userID=userDetail.getUserID();

@@ -11,8 +11,10 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,17 +26,20 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 
 
 @SpringBootTest(classes=Main.Main.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ActiveProfiles("test")
 public class EstabilishConnectionWebSocketTest {
 
     @LocalServerPort
@@ -42,24 +47,29 @@ public class EstabilishConnectionWebSocketTest {
     private WebSocketStompClient stompClient;
     @Value("${websocket.stoamp.endpoint}")
    	private String webSocketStoamppreflix;
+    @Autowired
+    private jwtTokenTestAuthorizationToken autToken;
     @BeforeEach
     public void setup() {
         this.stompClient = new WebSocketStompClient(new StandardWebSocketClient());
         this.stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         this.stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
+        this.handshakePath="ws://localhost:"+this.port+"//"+webSocketStoamppreflix;
+        Log4j2.log.info(Log4j2.MarkerLog.Test.getMarker(),"EstabilishConnectionTest, handshakePAth: "+handshakePath);
     }
-    
-    
+    private static String handshakePath;
+   
+    @Order(1)
     @Test
-    public void MakeConnection() throws InterruptedException  {
+    public void MakeConnectionWithoutAuthrozation() throws InterruptedException  {
     	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
       
          };         
-         WebSocketHttpHeaders hed;
+      //   WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
          
-         String handshakePath="ws://localhost:"+this.port+"//"+webSocketStoamppreflix;
-         Log4j2.log.info(Log4j2.MarkerLog.Test.getMarker(),"EstabilishConnectionTest, handshakePAth: "+handshakePath);
-        ListenableFuture< StompSession> ses=
+      //   this.autToken.getAuthorizationHeaders().forEach(authorizationHeader::add);
+       
+         ListenableFuture< StompSession> ses=
         		 this.stompClient.connect(handshakePath, null, sessionHandler,new Object [0]);
         	try {
 				ses.get(10, TimeUnit.SECONDS);
@@ -81,4 +91,31 @@ public class EstabilishConnectionWebSocketTest {
 			}	 
     	 
     }
+    
+    @Test
+    @Order(2)
+    public void MakeConnectionWithAuthorization() throws InterruptedException  {
+    	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
+      
+         };         
+         WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
+         
+         this.autToken.getAuthorizationHeaders().forEach(authorizationHeader::add);
+         ListenableFuture< StompSession> ses=
+        		 this.stompClient.connect(handshakePath, authorizationHeader, sessionHandler,new Object [0]);
+        	try {
+				ses.get(10, TimeUnit.SECONDS);
+				assertTrue(true);
+			} 
+        	
+        	catch (ExecutionException e) {
+        		fail(e);
+        		
+			} catch (TimeoutException e) {
+				// TODO Auto-generated catch block
+        		fail("Cannot connect with server, in set time");
+			}	 
+    	 
+    }
+
 }

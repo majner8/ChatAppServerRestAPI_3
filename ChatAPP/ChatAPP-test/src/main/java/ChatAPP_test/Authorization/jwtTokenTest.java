@@ -204,13 +204,14 @@ public class jwtTokenTest {
 		prof.setSerName("Antonin");
 		prof.setNickName("majner8");
 		
-		ResponseSpec registration=this.webTestClient
+		this.webTestClient
 				.post()
 				.uri("/authorization/finishRegistration")
 				.bodyValue(prof)
 				.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
 				.header(this.securityProperties.getTokenAuthorizationUserHederName(), this.authorizatedToken)
 				.exchange()
-				.expectStatus().isOk();
+				.expectStatus().isOk()
+				.expectBody(TokenDTO.class);
 	}
 }

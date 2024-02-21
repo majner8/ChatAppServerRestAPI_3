@@ -22,6 +22,7 @@ import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDeta
 import ChatAPP_Security.Authorization.JwtToken.AuthorizationUserTokenValue;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
 import ChatAPP_Security.Properties.SecurityProperties;
+import chatAPP_CommontPart.Log4j2.Log4j2;
 
 @Component
 public class jwtAuthorizationFilter extends OncePerRequestFilter {
@@ -50,6 +51,7 @@ public class jwtAuthorizationFilter extends OncePerRequestFilter {
 		CustomUserDetail aut=CustomUserDetail.createUser(token,authority);
 		Authentication auth = new UsernamePasswordAuthenticationToken(aut, null, aut.getAuthorities()); 
 		SecurityContextHolder.getContext().setAuthentication(auth);
+		Log4j2.log.debug(Log4j2.MarkerLog.Security.getMarker(),"User is authorizated");
 	}
 
 }
