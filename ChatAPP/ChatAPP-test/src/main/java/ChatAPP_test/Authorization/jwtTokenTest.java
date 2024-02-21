@@ -210,6 +210,7 @@ public class jwtTokenTest {
 				.bodyValue(prof)
 				.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
 				.header(this.securityProperties.getTokenAuthorizationUserHederName(), this.authorizatedToken)
-				.exchange();
+				.exchange()
+				.expectStatus().isOk();
 	}
 }
