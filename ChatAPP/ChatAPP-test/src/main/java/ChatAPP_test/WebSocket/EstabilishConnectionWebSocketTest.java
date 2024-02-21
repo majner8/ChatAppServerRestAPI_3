@@ -21,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -30,6 +31,7 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.WebSocketHttpHeaders;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.socket.sockjs.client.SockJsClient;
@@ -74,8 +76,12 @@ public class EstabilishConnectionWebSocketTest {
     @Test
     public void MakeConnectionWithoutAuthrozation() throws InterruptedException  {
     	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-      
-         };         
+    		 @Override
+    		 public void handleException(StompSession session, StompCommand command, StompHeaders headers, byte[] payload, Throwable exception) {
+    			 assertTrue((exception instanceof  javax.websocket.DeploymentException));
+    		 }
+         }
+    	 ;         
       //   WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
          
       //   this.autToken.getAuthorizationHeaders().forEach(authorizationHeader::add);
@@ -87,15 +93,7 @@ public class EstabilishConnectionWebSocketTest {
 			} 
         	
         	catch (ExecutionException e) {
-        	
-        		if(e.getCause()!=null) {
-        			//it end by exception, 401 response-does not contain device and User jwtToken
-        				assertTrue(e.getCause()instanceof javax.websocket.DeploymentException);
-        				
-        		}
-        		else {
-        			fail(e);
-        		}
+  
 			} catch (TimeoutException e) {
 				// TODO Auto-generated catch block
         		fail("Cannot connect with server, in set time");
