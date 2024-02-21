@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +32,9 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.web.socket.sockjs.client.SockJsClient;
+import org.springframework.web.socket.sockjs.client.Transport;
+import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
 import chatAPP_CommontPart.Log4j2.Log4j2;
@@ -51,7 +55,14 @@ public class EstabilishConnectionWebSocketTest {
     private jwtTokenTestAuthorizationToken autToken;
     @BeforeEach
     public void setup() {
-        this.stompClient = new WebSocketStompClient(new StandardWebSocketClient());
+    	// Create a list of transports, including SockJS fallback options
+    	List<Transport> transports = new ArrayList<>();
+    	transports.add(new WebSocketTransport(new StandardWebSocketClient()));
+
+    	// Initialize the SockJsClient with the transports
+    	SockJsClient sockJsClient = new SockJsClient(transports);
+
+        this.stompClient = new WebSocketStompClient(sockJsClient);
         this.stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         this.stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
         this.handshakePath="ws://localhost:"+this.port+"//"+webSocketStoamppreflix;

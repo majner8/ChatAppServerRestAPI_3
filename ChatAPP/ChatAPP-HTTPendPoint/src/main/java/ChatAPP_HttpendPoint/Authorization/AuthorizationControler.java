@@ -112,8 +112,11 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 
 		TokenDTO token=
 				this.jwtTokenGenerator.generateAuthorizationToken(deviceID, this.userEntityScope.getUserEntity());
-		return ResponseEntity.status(status)
-				.body(token);
+		return ResponseEntity				
+				.status(status)
+				.body(token)
+				
+				;
 		
 		}
 

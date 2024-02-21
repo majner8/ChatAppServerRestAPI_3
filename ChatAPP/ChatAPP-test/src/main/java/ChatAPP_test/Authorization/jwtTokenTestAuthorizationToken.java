@@ -76,7 +76,7 @@ public class jwtTokenTestAuthorizationToken {
 		prof.setLastName("Bicak");
 		prof.setSerName("Antonin");
 		prof.setNickName("majner8");
-		ResponseSpec registration=this.webTestClient
+	this.webTestClient
 				.post()
 				.uri("/authorization/finishRegistration")
 				.bodyValue(prof)

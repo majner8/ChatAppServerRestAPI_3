@@ -52,6 +52,8 @@ public class jwtAuthorizationFilter extends OncePerRequestFilter {
 		Authentication auth = new UsernamePasswordAuthenticationToken(aut, null, aut.getAuthorities()); 
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		Log4j2.log.debug(Log4j2.MarkerLog.Security.getMarker(),"User is authorizated");
+		filterChain.doFilter(request, response);
+
 	}
 
 }
