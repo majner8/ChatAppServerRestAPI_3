@@ -17,6 +17,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import ChatAPP_Security.Properties.SecurityProperties;
+import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_DTO.Authorization.TokenDTO;
 import chatAPP_database.User.UserEntity;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -64,7 +65,7 @@ public interface jwtTokenGenerator {
 			
 			String jwtToken=jwtBuilder		
 					.sign(this.securityProperties.getjwtTokenAuthorizationUserAlgorithm());
-
+			jwtToken=this.securityProperties.getTokenAuthorizationUserPreflix()+jwtToken;
 			TokenDTO token=new TokenDTO();
 			token.setUserActive(userEntity.isUserActive());
 			token.setValidUntil(validUntil);
@@ -105,10 +106,17 @@ public interface jwtTokenValidator {
 		
 		private DecodedJWT verifyToken(String headerName, String tokenPreflix, HttpServletRequest request
 				,Algorithm tokenAlgo) {
+			
 			// TODO Auto-generated method stub
 			String rawToken=request.getHeader(headerName);
 			if(rawToken==null) {
 				throw new UnsupportedJwtException(null);
+			}
+			if(Log4j2.log.isTraceEnabled()) {
+				Log4j2.log.trace(Log4j2.MarkerLog.Security.getMarker(),
+						String.format("I am verifyToken, TokenPreflix: %s %s receivedToken %s", 
+								tokenPreflix,System.lineSeparator(),rawToken));
+				
 			}
 			if(!rawToken.startsWith(tokenPreflix)) {
 				throw new UnsupportedJwtException(null);
