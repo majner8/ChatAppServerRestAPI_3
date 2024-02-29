@@ -20,5 +20,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     	.withSockJS();
     }
 
-    // Other configurations...
 }
