@@ -3,6 +3,7 @@ package chatAPP_CommontPart.ThreadLocal;
 import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
+import chatAPP_CommontPart.Log4j2.Log4j2;
 
 public interface RabitMQThreadLocalSession {
 
@@ -10,9 +11,12 @@ public interface RabitMQThreadLocalSession {
 			new ThreadLocal<RabitMQConsumingMessageProperties>();
 	
 	public default void setRabitMQConsumingMessageProperties(RabitMQConsumingMessageProperties value) {
+		Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(),"Setting RabbitMQTreadLocalSession");
 		this.rabitMQprop.set(value);
 	}
 	public default void clear() {
+		Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(),"Removing RabbitMQTreadLocalSession");
+
 		this.rabitMQprop.remove();
 	}
 	

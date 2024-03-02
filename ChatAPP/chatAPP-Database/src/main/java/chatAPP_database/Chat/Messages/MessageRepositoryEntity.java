@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 
+import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.CustomJpaRepository;
 import chatAPP_database.Chat.Messages.MessageEntity.MessageEntityProjection;
+import chatAPP_database.Chat.Messages.MessageEntity.MessageTypeOfAction;
 
 
 
@@ -48,5 +50,33 @@ public interface MessageRepositoryEntity extends CustomJpaRepository<MessageEnti
 			)	
 	public List<MessageEntity> getQuickUserSynchronizationMessage(long userID,int offsetstart,int offsetend);
 	
-	
+	 public default MessageDTO convertEntityToDTO(MessageEntity entity) {
+		MessageDTO mes=new MessageDTO();
+		mes.setChatID(entity.getChatID());
+		mes.setMessage(entity.getMessage());
+		mes.setMessageID(entity.getMessageID());
+		mes.setOrder(entity.getOrder());
+		mes.setReceivedTime(entity.getReceivedTime());
+		mes.setReferencMessageID(entity.getReferenctMessageID());
+		mes.setSenderID(entity.getSenderID());
+		mes.setTypeOfAction(entity.getTypeOfMessage());
+		mes.setWasMessageRemoved(entity.isWasMessageRemoved());
+		mes.setVersion(entity.getVersion());
+		return mes;
+	}
+	    
+		public default MessageEntity convertDTOToEntity(MessageDTO messageDTO) {
+			MessageEntity entity=new MessageEntity();
+			entity.setOrder(messageDTO.getOrder());
+			entity.setChatID(messageDTO.getChatID());
+			entity.setSenderID(messageDTO.getSenderID());
+			entity.setMessageID(messageDTO.getMessageID());
+			entity.setMessage(messageDTO.getMessage());
+			entity.setReceivedTime(messageDTO.getReceivedTime());
+			entity.setWasMessageRemoved(messageDTO.isWasMessageRemoved());
+			entity.setReferenctMessageID(messageDTO.getReferencMessageID());
+			entity.setTypeOfMessage((MessageTypeOfAction)messageDTO.getTypeOfAction());
+			return entity;
+		}
+	 
 }

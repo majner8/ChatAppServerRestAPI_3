@@ -55,37 +55,12 @@ public class MessageEntity {
 	public static enum MessageTypeOfAction{
 		
 	}
-    
-	public  MessageEntity(MessageDTO messageDTO) {
-		this.order = messageDTO.getOrder();
-		this.chatID = messageDTO.getChatID();
-		this.senderID = messageDTO.getSenderID();
-		this.messageID = messageDTO.getMessageID();
-		this.message = messageDTO.getMessage();
-		this.receivedTime = messageDTO.getReceivedTime();
-		this.wasMessageRemoved = messageDTO.isWasMessageRemoved();
-		this.referenctMessageID = messageDTO.getReferencMessageID();
-		this.TypeOfMessage = (MessageTypeOfAction)messageDTO.getTypeOfAction();
 
-	}
 	
 	
 
 
-	public MessageDTO convertEntityToDTO() {
-		MessageDTO mes=new MessageDTO();
-		mes.setChatID(this.getChatID());
-		mes.setMessage(this.getMessage());
-		mes.setMessageID(this.getMessageID());
-		mes.setOrder(this.getOrder());
-		mes.setReceivedTime(this.getReceivedTime());
-		mes.setReferencMessageID(this.getReferenctMessageID());
-		mes.setSenderID(this.getSenderID());
-		mes.setTypeOfAction(this.getTypeOfMessage());
-		mes.setWasMessageRemoved(this.isWasMessageRemoved());
-		mes.setVersion(this.Version);
-		return mes;
-	}
+	
 
 
 

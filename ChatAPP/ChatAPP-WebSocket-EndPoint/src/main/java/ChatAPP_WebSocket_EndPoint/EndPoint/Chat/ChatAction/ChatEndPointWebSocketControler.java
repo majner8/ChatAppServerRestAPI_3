@@ -17,7 +17,6 @@ public class ChatEndPointWebSocketControler implements WebSocketChatEndPoint{
 	@Autowired
 	private ProcessChatMessageService MessageService;
 	@Override
-	
 	@MessageMapping(WebSocketEndPointPath.Chat_SendMessagePath)
 	public void SendMessage(MessageDTO message,SimpMessageHeaderAccessor session) {
 		this.MessageService.SendMessage(session,message);

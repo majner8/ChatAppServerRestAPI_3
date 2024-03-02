@@ -1,7 +1,6 @@
 package ChatAPP_WebSocket.Service.Chat;
 
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Service;
 
 import ChatAPP_Chat.ChatManagement.ChatManagementInterface;
-import ChatAPP_RabitMQ.Producer.PushMessageRabitMQService;
 import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
 import ChatAPP_WebSocket.WebSocketEndPointPath;
@@ -42,10 +40,10 @@ public class ProcessChatMessageService {
 		//verify if user has permision to write into chat
 		//if not exception will be thrown and catch by global handler
 		this.SecurityVerification.verifyUserAccestPermisionToChat(message.getSenderID(), message.getChatID());	
-		MessageEntity entity=new MessageEntity(message);
+		MessageEntity entity=this.messageRepo.convertDTOToEntity(message);
 		//message will be save, and update with order in table
 		this.messageRepo.saveAndFlush(entity);
-		message=entity.convertEntityToDTO();
+		message=this.messageRepo.convertEntityToDTO(entity);
 		
 		this.PushMessageToRabitMQService(message);
 	}
@@ -58,7 +56,7 @@ public class ProcessChatMessageService {
 		
 		//optimistic locking can be thrown, if message will be modify from other device
 		this.messageRepo.saveAndFlush(entity);
-		message=entity.convertEntityToDTO();
+		message=this.messageRepo.convertEntityToDTO(entity);
 			
 		this.PushMessageToRabitMQService(message);
 	}
@@ -73,5 +71,7 @@ public class ProcessChatMessageService {
 		Set<Long> membersID=this.chatManagement.getUserIDofMembers(message.getChatID(), true);
 		//push message to rabitMQ
 		this.rabitMQPush.PushMessageToRabitMQ(message, membersID);
+		
+		
 	}
 }

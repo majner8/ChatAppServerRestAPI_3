@@ -34,7 +34,9 @@ public class ChatControler implements htppChatEndPoint {
 		this.messagePermision.verifyUserAccestPermisionToChat(this.securityContextSession.getOwnerUserId(), chatID);
 
 		List<MessageDTO> res= this.messageRepo.findByChatID(chatID, offSetStart, offSetEnd)
-				.stream().map((En)->{return En.convertEntityToDTO();}).collect(Collectors.toList());
+				.stream().map((En)->{return
+						this.messageRepo.convertEntityToDTO(En);
+						}).collect(Collectors.toList());
 		return ResponseEntity.ok(res);
 		
 	}
@@ -53,7 +55,7 @@ public class ChatControler implements htppChatEndPoint {
 			
 				this.messageRepo.findByChatIDAndOrder(chatID, MessageOrder)
 				.map((E)->{
-					return E.convertEntityToDTO();
+					return this.messageRepo.convertEntityToDTO(E); 
 				});
 		if(mes.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -66,7 +68,7 @@ public class ChatControler implements htppChatEndPoint {
 		this.messagePermision.verifyGetQuickUserOverViewPermision(this.securityContextSession.getOwnerUserId(), offSetStart, offSetEnd);
 		List<MessageDTO> message=this.messageRepo.getQuickUserSynchronizationMessage(this.securityContextSession.getOwnerUserId(), offSetStart, offSetEnd)
 				.stream().map((MessageEntity-> {
-					return MessageEntity.convertEntityToDTO();
+					return	this.messageRepo.convertEntityToDTO(MessageEntity);
 				}
 				)).collect(Collectors.toList());
 		

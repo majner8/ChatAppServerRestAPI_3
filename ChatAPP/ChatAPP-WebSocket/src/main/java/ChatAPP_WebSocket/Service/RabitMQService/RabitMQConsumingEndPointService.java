@@ -81,7 +81,7 @@ public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceI
 							mesEnt.getReceivedTime()
 									));
 			}
-			return mesEnt.convertEntityToDTO();
+			return this.messageRepo.convertEntityToDTO(mesEnt);
 		}).collect(Collectors.toList());
 		Collections.reverse(dto);
 			//user WebSocket ID is same as queue-unique per device
