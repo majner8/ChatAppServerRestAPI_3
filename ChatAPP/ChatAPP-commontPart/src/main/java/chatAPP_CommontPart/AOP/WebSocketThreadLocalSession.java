@@ -17,7 +17,7 @@ import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 
 @Retention(RetentionPolicy.RUNTIME) // Make it available at runtime
-@Target({ElementType.TYPE,ElementType.METHOD}) // This annotation can only be applied to methods
+@Target({ElementType.METHOD}) // This annotation can only be applied to methods
 public @interface WebSocketThreadLocalSession {
 
 	@Aspect
@@ -26,16 +26,24 @@ public @interface WebSocketThreadLocalSession {
 		@Autowired
 		private WebSocketThreadLocalSessionInterface WebSocketSession;
 		//@Around("execution(public void(..)) && @annotation(WebSocketThreadLocalSession)")
-		 @Around("execution(void *.*(org.springframework.messaging.simp.SimpMessageHeaderAccessor))&& args(session) && @annotation(WebSocketThreadLocalSession)")
-		public void calledMetod(ProceedingJoinPoint joinPoint,SimpMessageHeaderAccessor session) throws Throwable {
+		 @Around("@annotation(WebSocketThreadLocalSession)")
+		public void calledMetod(ProceedingJoinPoint joinPoint,WebSocketThreadLocalSession WebSocketThreadLocalSession) throws Throwable {
 			String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
-
+			SimpMessageHeaderAccessor session=null;
+			for(Object O:joinPoint.getArgs()) {
+				if(O instanceof SimpMessageHeaderAccessor) {
+					session=(SimpMessageHeaderAccessor)O;
+					break;
+				}
+			}
 			if(Log4j2.log.isTraceEnabled()) {
-
-				String message=String.format("Running aspect metod rabitMQAOP, Evoked by: %s is running with these metod"+System.lineSeparator()
-				 +"endPoint path: %s"+System.lineSeparator(),
+			
+				String message=String.format("Running aspect metod WebSocketThreadLocalSession, Evoked by: %s",	
 				 evnokedBy);
-				 Log4j2.log.debug(Log4j2.MarkerLog.Aspect.getMarker(), message);	
+				 Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(), message);
+				 if(session==null) {
+					 Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(),evnokedBy+" Does not contain SimpMessageHeaderAccessor as parametr, AOP was skipped");
+				 }
 			}
 			
 		/*	SimpMessageHeaderAccessor ses = null;
@@ -51,6 +59,10 @@ public @interface WebSocketThreadLocalSession {
 				 
 				 return;
 			 }*/
+			if(session==null) {
+				 joinPoint.proceed();			 
+				return;
+			}
 			 this.WebSocketSession.setSimpMessageHeaderAccessor(session);
 			 joinPoint.proceed();			 
 			 this.WebSocketSession.clear();

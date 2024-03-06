@@ -7,14 +7,13 @@ import ChatAPP_RabitMQ.Consumer.MessageAcknowledger;
 import ChatAPP_RabitMQ.Listener.rabitMQListenerService;
 import chatAPP_CommontPart.AOP.WebSocketThreadLocalSession;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
-@WebSocketThreadLocalSession
 public class ConfirmSentMessageService {
 
 	@Autowired
 	private MessageAcknowledger rabitMQ;
 	@Autowired
 	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue session;
-	
+	@WebSocketThreadLocalSession
 	public void ConfirmMessage(SimpMessageHeaderAccessor session,String messageID) {
 	
 		this.rabitMQ.AckMessage(this.session.getConnectionID(), messageID);

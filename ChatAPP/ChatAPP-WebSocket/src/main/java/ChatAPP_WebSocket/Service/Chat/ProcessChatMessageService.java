@@ -20,7 +20,6 @@ import chatAPP_database.Chat.Messages.MessageEntity;
 import chatAPP_database.Chat.Messages.MessageRepositoryEntity;
 
 @Service
-@WebSocketThreadLocalSession
 public class ProcessChatMessageService {
 
 	@Autowired
@@ -36,6 +35,7 @@ public class ProcessChatMessageService {
 
 	/** */
 	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
+	@WebSocketThreadLocalSession
 	public void SendMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
 		//verify if user has permision to write into chat
 		//if not exception will be thrown and catch by global handler
@@ -47,7 +47,9 @@ public class ProcessChatMessageService {
 		
 		this.PushMessageToRabitMQService(message);
 	}
+
 	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_changeMessagePath, haveToBeMessageRequired = true)
+	@WebSocketThreadLocalSession
 	public void ChangeMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
 		//if message is not exist EntityWasNotFoundException would be thrown
 		MessageEntity entity=this.messageRepo.findByPrimaryKey(message.getMessageID());
@@ -60,7 +62,9 @@ public class ProcessChatMessageService {
 			
 		this.PushMessageToRabitMQService(message);
 	}
+	
 	@RabitMQAnnotationAOP(dtoClass = SawMessageDTO.class, getPath = WebSocketEndPointPath.Chat_sawMessagePath, haveToBeMessageRequired = false)
+	@WebSocketThreadLocalSession
 	public void sawMessage(SimpMessageHeaderAccessor session,SawMessageDTO message) {
 		
 		

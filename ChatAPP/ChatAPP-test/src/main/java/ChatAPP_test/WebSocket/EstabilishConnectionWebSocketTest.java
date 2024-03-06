@@ -104,8 +104,13 @@ public class EstabilishConnectionWebSocketTest {
     @Test
     @Order(2)
     public void MakeConnectionWithAuthorization() throws InterruptedException  {
+    	this.makeConnectionToServer();
+    	 
+    }
+
+    public void makeConnectionToServer() throws InterruptedException {
     	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-      
+    	      
          };         
          WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
          
@@ -113,6 +118,7 @@ public class EstabilishConnectionWebSocketTest {
          ListenableFuture< StompSession> ses=
         		 this.stompClient.connect(handshakePath, authorizationHeader, sessionHandler,new Object [0]);
         	try {
+        		ses.get().send
 				ses.get(10, TimeUnit.SECONDS);
 				assertTrue(true);
 			} 
@@ -124,7 +130,5 @@ public class EstabilishConnectionWebSocketTest {
 				// TODO Auto-generated catch block
         		fail("Cannot connect with server, in set time");
 			}	 
-    	 
     }
-
 }

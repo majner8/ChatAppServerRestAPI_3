@@ -1,4 +1,4 @@
-package ChatAPP_test.WebSocket;
+package ChatAPP_test.AOP;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
