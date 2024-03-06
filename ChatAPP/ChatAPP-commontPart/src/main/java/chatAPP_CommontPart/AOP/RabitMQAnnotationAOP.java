@@ -32,7 +32,7 @@ public @interface RabitMQAnnotationAOP {
 		public static class rabitmqAOPClass{
 		  @Autowired
 		  private RabitMQThreadLocalSession rabitMQSession;
-		  @Around("execution(@RabitMQAnnotationAOP void *(..)) && @annotation(aop)")
+		  @Around("@annotation(aop)")
 		  public Object AnnotationMetodCall(ProceedingJoinPoint joinPoint,RabitMQAnnotationAOP aop) throws Throwable  {
 				
 			  

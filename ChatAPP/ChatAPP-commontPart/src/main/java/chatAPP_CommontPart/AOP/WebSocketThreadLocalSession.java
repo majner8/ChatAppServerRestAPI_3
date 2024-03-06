@@ -26,7 +26,6 @@ public @interface WebSocketThreadLocalSession {
 		@Autowired
 		private WebSocketThreadLocalSessionInterface WebSocketSession;
 		//@Around("execution(public void(..)) && @annotation(WebSocketThreadLocalSession)")
-		
 		 @Around("execution(void *.*(org.springframework.messaging.simp.SimpMessageHeaderAccessor))&& args(session) && @annotation(WebSocketThreadLocalSession)")
 		public void calledMetod(ProceedingJoinPoint joinPoint,SimpMessageHeaderAccessor session) throws Throwable {
 			String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();

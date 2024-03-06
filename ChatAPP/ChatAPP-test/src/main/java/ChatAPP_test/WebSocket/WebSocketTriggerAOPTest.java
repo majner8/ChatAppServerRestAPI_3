@@ -1,10 +1,12 @@
 package ChatAPP_test.WebSocket;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -22,6 +24,7 @@ import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
 import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
+import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
@@ -51,6 +54,7 @@ public class WebSocketTriggerAOPTest {
 	@Autowired
 	private RabitMQThreadLocalSessionValue rabbitMQAOP;
 
+	@SpyBean RabitMQThreadLocalSession rabbitSession;
 	private static MessageDTO fakeMessage;
 	@BeforeEach
 	public void setUp() {
@@ -64,7 +68,15 @@ public class WebSocketTriggerAOPTest {
 		this.fakeMessage.setSenderID(0);
 		this.fakeMessage.setVersion(0);
 		this.fakeMessage.setWasMessageRemoved(true);
-		
+		AtomicInteger count = new AtomicInteger();
+		count.set(0);
+		Mockito.doAnswer((I)->{
+			if(count.get()>=1) {
+				return I.callRealMethod();
+			}
+			count.incrementAndGet();
+			return null;}).when(this.rabbitSession).clear();;
+		Mockito.doNothing().when(this.rabbitSession).clear();
 		Mockito.doNothing().when(this.SecurityVerification).verifyUserAccestPermisionToChat(Mockito.anyLong(), Mockito.anyString());;
 		//Mockito.doReturn(this.fakeMessage).when(this.messageRepo).convertDTOToEntity(Mockito.any());
 		Mockito.doNothing().when(this.rabitMQPush).PushMessageToRabitMQ(Mockito.any(), Mockito.anySet());
@@ -78,5 +90,6 @@ public class WebSocketTriggerAOPTest {
 		assertTrue(MessageDTO.class==this.rabbitMQAOP.getDTOClass());
 		assertTrue(this.rabbitMQAOP.getWebSocketEndPointPath().equals(WebSocketEndPointPath.Chat_SendMessagePath));
 		assertTrue(this.rabbitMQAOP.isHaveToBeMessageReDeliver());
+		this.rabbitSession.clear();
 	}	
 }
