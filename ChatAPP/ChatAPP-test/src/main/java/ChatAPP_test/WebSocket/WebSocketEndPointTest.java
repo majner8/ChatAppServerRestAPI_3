@@ -105,7 +105,6 @@ public class WebSocketEndPointTest {
     }
     private static String handshakePath;
    
-    @Order(1)
     @Test
     public void MakeConnectionWithoutAuthrozation() throws InterruptedException  {
     	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
@@ -135,7 +134,6 @@ public class WebSocketEndPointTest {
     }
     
     @Test
-    @Order(3)
     public void MakeConnectionWithAuthorization() throws InterruptedException  {
     	this.makeConnectionToServer();
     	 
@@ -153,7 +151,16 @@ public class WebSocketEndPointTest {
          };         
          WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
          
-         this.autToken.getAuthorizationHeaders().forEach(authorizationHeader::add);
+         this.autToken.getAuthorizationHeaders().forEach(
+        		 (K,V)->{
+        			 Log4j2.log.debug(Log4j2.MarkerLog.Test.getMarker(),"Authorization HeaderName: "+K);
+        			 Log4j2.log.debug(Log4j2.MarkerLog.Test.getMarker(),"Authorization Value: "+V);
+
+        			 authorizationHeader.add(K, V);
+        		 }
+        		 );
+         
+         assertTrue(!authorizationHeader.isEmpty());
          ListenableFuture< StompSession> ses=
         		 this.stompClient.connect(handshakePath, authorizationHeader, sessionHandler,new Object [0]);
         	try {

@@ -115,17 +115,20 @@ public class jwtTokenTestAuthorizationToken {
             return "03df76fc-a253-4003-a505-56a8c8e57436"; // First call returns this
 	    });
 	}
+	//manage creating unique user
+	private static AtomicInteger integer=new AtomicInteger();
 	private void initRegistrationUser() {
 		this.user=new UserAuthorizationDTO();
 		//create fake profile and fill it with data
 				UserComunicationDTO userProfile=new UserComunicationDTO();
-				userProfile.setEmail("Antonin.bicak@gmail.com");
-				userProfile.setPhone("5353");
-				userProfile.setPhonePreflix("54");
+				userProfile.setEmail(String.format("Antonin.%dbicak@gmail.com", this.integer.get()));
+				userProfile.setPhone(String.valueOf(5353+this.integer.get()));
+				userProfile.setPhonePreflix(String.valueOf(54+this.integer.get()));
 				user.setProfile(userProfile);
 				UserAuthPasswordDTO pas=new UserAuthPasswordDTO();
 				pas.setPassword("dasdas");
 				user.setPassword(pas);
+				this.integer.incrementAndGet();
 	}
 
 	
