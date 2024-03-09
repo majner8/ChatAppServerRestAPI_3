@@ -19,14 +19,19 @@ public class StoamptConnectionListener {
 	
 	@EventListener
 	public void userConnect(SessionConnectedEvent event) {
-		
 		StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
-		CustomUserDetailsInterface userDetails=(CustomUserDetailsInterface)headers.getUser();
+		Log4j2.log.trace(Log4j2.MarkerLog.Test.getMarker(),"Principal SessionConnectedEvent class type :"+headers.getUser().getClass().getName());
+		CustomUserDetailsInterface userDetails=(CustomUserDetailsInterface)headers.getu;
 		Log4j2.log.info(Log4j2.MarkerLog.WebSocket.getMarker(),
 				String.format("Connection was Estabilish, UserID: %s deviceID: %s", userDetails.getUserID(),userDetails.getDeviceID())); 
 		this.rabitMQConsumer.startConsume(headers.getUser().getName(), headers);
-		 
+		
+
+		
 	}
+	
+	
+	
 	@EventListener
 	public void userDisconnect(SessionDisconnectEvent event) {
 		

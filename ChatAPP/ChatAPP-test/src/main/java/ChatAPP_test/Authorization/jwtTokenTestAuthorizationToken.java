@@ -31,7 +31,10 @@ import chatAPP_DTO.User.UserDTO.UserProfileDTO;
 public class jwtTokenTestAuthorizationToken {
     /** Method returns all headers needed to be processed through AuthorizationFilter */
 	public Map<String,String> getAuthorizationHeaders(){
+		synchronized(this.integer) {
+		
 		return this.getFullAuthorizatedUserHeader(this.getUserTokenHeader(this.getDeviceIDHeader()));
+		}
 	}
 	private TokenDTO tokenDTO;
 
@@ -42,7 +45,7 @@ public class jwtTokenTestAuthorizationToken {
 	this.webTestClient
 				.post()
 				.uri("/authorization/register")
-				.bodyValue(user)
+				.bodyValue(this.initRegistrationUser())
 				.headers(httpHeaders -> deviceHeader.forEach(httpHeaders::add))
 				.exchange()
 				.expectStatus().isOk()
@@ -100,35 +103,25 @@ public class jwtTokenTestAuthorizationToken {
 	@SpyBean
 	private DeviceIDGenerator generator;
 	
-	private UserAuthorizationDTO user;
 
-	@PostConstruct
-	   public void setUp() {
-//	        MockitoAnnotations.openMocks(this);
-		this.initRegistrationUser();
-		this.initMockBean();
-	    }
-	private void initMockBean() {
-		 // Using an Answer to delegate to the real method after the first call
-	    AtomicInteger count = new AtomicInteger();
-	    Mockito.when(this.generator.generateDeviceID()).thenAnswer(invocation -> {
-            return "03df76fc-a253-4003-a505-56a8c8e57436"; // First call returns this
-	    });
-	}
+	
 	//manage creating unique user
-	private static AtomicInteger integer=new AtomicInteger();
-	private void initRegistrationUser() {
-		this.user=new UserAuthorizationDTO();
+	private static  AtomicInteger integer=new AtomicInteger();
+	static {
+		integer.set(0);
+	}
+	private UserAuthorizationDTO initRegistrationUser() {
+		UserAuthorizationDTO user=new UserAuthorizationDTO();
 		//create fake profile and fill it with data
 				UserComunicationDTO userProfile=new UserComunicationDTO();
-				userProfile.setEmail(String.format("Antonin.%dbicak@gmail.com", this.integer.get()));
-				userProfile.setPhone(String.valueOf(5353+this.integer.get()));
-				userProfile.setPhonePreflix(String.valueOf(54+this.integer.get()));
+				userProfile.setEmail(String.format("Antonin.%dbicak@gmail.com", this.integer.incrementAndGet()));
+				userProfile.setPhone(String.valueOf(5353+this.integer.incrementAndGet()));
+				userProfile.setPhonePreflix(String.valueOf(54+this.integer.incrementAndGet()));
 				user.setProfile(userProfile);
 				UserAuthPasswordDTO pas=new UserAuthPasswordDTO();
-				pas.setPassword("dasdas");
+				pas.setPassword("dasdas"+String.valueOf(this.integer.incrementAndGet()));
 				user.setPassword(pas);
-				this.integer.incrementAndGet();
+				return user;
 	}
 
 	

@@ -23,7 +23,10 @@
     <artifactId>spring-boot-starter-webflux</artifactId>
     <scope>test</scope>
 </dependency>
-
+<dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-jsr310</artifactId>
+</dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-websocket</artifactId>
@@ -32,6 +35,11 @@
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-validator</artifactId>
     <version>6.0.10.Final</version>
+</dependency>
+
+<dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-jsr310</artifactId>
 </dependency>
 
 		<!-- Exclude the default Spring Boot's logging (Logback) -->

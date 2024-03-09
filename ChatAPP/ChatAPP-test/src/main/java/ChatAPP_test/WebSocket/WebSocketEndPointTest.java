@@ -41,6 +41,9 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
@@ -85,11 +88,17 @@ public class WebSocketEndPointTest {
     	// Initialize the SockJsClient with the transports
     	SockJsClient sockJsClient = new SockJsClient(transports);
 
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	objectMapper.registerModule(new JavaTimeModule()); // Register module for Java 8 Date/Time support    
+    	objectMapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    	MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
+    	messageConverter.setObjectMapper(objectMapper);
+        
+        
         this.stompClient = new WebSocketStompClient(sockJsClient);
-        this.stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        this.stompClient.setMessageConverter(messageConverter);
         this.stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
         this.handshakePath="ws://localhost:"+this.port+"//"+webSocketStoamppreflix;
-        Log4j2.log.info(Log4j2.MarkerLog.Test.getMarker(),"EstabilishConnectionTest, handshakePAth: "+handshakePath);
         this.initMock();
     }
     
@@ -106,6 +115,7 @@ public class WebSocketEndPointTest {
     private static String handshakePath;
    
     @Test
+    @Order(1)
     public void MakeConnectionWithoutAuthrozation() throws InterruptedException  {
     	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
     		 @Override
@@ -134,13 +144,14 @@ public class WebSocketEndPointTest {
     }
     
     @Test
+    @Order(2)
     public void MakeConnectionWithAuthorization() throws InterruptedException  {
     	this.makeConnectionToServer();
     	 
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     public void TryToSendMessage() throws InterruptedException {
     	StompSession ses=this.makeConnectionToServer();
     	ses.send(WebSocketEndPointPath.Chat_SendMessagePath, this.fakeMessage);

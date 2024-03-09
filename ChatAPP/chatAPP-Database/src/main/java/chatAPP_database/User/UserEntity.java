@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
@@ -29,6 +30,7 @@ public class UserEntity {
 	public static final String VersionColumnName="";
 
 	@Id
+	@GeneratedValue
 	@Column(name=UserEntity.userIdColumnName)
 	private long userId;
 	@Column(name=UserEntity.emailColumnName)

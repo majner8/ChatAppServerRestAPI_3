@@ -22,6 +22,7 @@ import chatAPP_database.Chat.Messages.MessageRepositoryEntity;
 @Service
 public class ProcessChatMessageService {
 
+	
 	@Autowired
 	private MessageRepositoryEntity messageRepo;
 	@Autowired
