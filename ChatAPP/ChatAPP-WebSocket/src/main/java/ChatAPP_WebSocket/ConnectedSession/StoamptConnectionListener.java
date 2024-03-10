@@ -3,6 +3,7 @@ package ChatAPP_WebSocket.ConnectedSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
@@ -20,14 +21,15 @@ public class StoamptConnectionListener {
 	@EventListener
 	public void userConnect(SessionConnectedEvent event) {
 		StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
-		Log4j2.log.trace(Log4j2.MarkerLog.Test.getMarker(),"Principal SessionConnectedEvent class type :"+headers.getUser().getClass().getName());
-		CustomUserDetailsInterface userDetails=(CustomUserDetailsInterface)headers.getu;
+		 UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken)headers.getUser();
+		 
+		CustomUserDetailsInterface userDetails=(CustomUserDetailsInterface)authenticationToken.getPrincipal();
 		Log4j2.log.info(Log4j2.MarkerLog.WebSocket.getMarker(),
 				String.format("Connection was Estabilish, UserID: %s deviceID: %s", userDetails.getUserID(),userDetails.getDeviceID())); 
 		this.rabitMQConsumer.startConsume(headers.getUser().getName(), headers);
 		
 
-		
+
 	}
 	
 	

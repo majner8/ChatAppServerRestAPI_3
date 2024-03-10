@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -44,6 +45,7 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerManager;
 import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
@@ -66,6 +68,8 @@ public class WebSocketEndPointTest {
     private jwtTokenTestAuthorizationToken autToken;
     @SpyBean
     private ProcessChatMessageService process;
+    @MockBean
+    private RabbitMQConsumerManager consumerManager;
     private static MessageDTO fakeMessage;
 	    @BeforeEach
     public void setup() {
@@ -103,14 +107,16 @@ public class WebSocketEndPointTest {
     }
     
     private void initMock() {
+    	
     	Mockito.doAnswer((x)->{
     		for(int i=0;i<10;i++) {
     			Log4j2.log.info("");
     		}
 			Log4j2.log.info("Retrieve Message, from SendMessage");
-
     		return null;
-    	}).when(this.process).SendMessage(Mockito.any(), Mockito.any());;
+    	}).when(this.process).SendMessage(Mockito.any(), Mockito.any());
+    	Mockito.doNothing().when(this.consumerManager).startConsume(Mockito.anyString(), Mockito.any());
+    	Mockito.doNothing().when(this.consumerManager).stopConsume(Mockito.anyString(), Mockito.any());
     }
     private static String handshakePath;
    
@@ -153,24 +159,22 @@ public class WebSocketEndPointTest {
     @Test
     @Order(3)
     public void TryToSendMessage() throws InterruptedException {
+
     	StompSession ses=this.makeConnectionToServer();
-    	ses.send(WebSocketEndPointPath.Chat_SendMessagePath, this.fakeMessage);
+    	ses.send("/app"+WebSocketEndPointPath.Chat_SendMessagePath, this.fakeMessage);
     }
     public StompSession makeConnectionToServer() throws InterruptedException {
     	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-    	      
+    	   
          };         
          WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
-         
          this.autToken.getAuthorizationHeaders().forEach(
         		 (K,V)->{
         			 Log4j2.log.debug(Log4j2.MarkerLog.Test.getMarker(),"Authorization HeaderName: "+K);
         			 Log4j2.log.debug(Log4j2.MarkerLog.Test.getMarker(),"Authorization Value: "+V);
-
         			 authorizationHeader.add(K, V);
         		 }
         		 );
-         
          assertTrue(!authorizationHeader.isEmpty());
          ListenableFuture< StompSession> ses=
         		 this.stompClient.connect(handshakePath, authorizationHeader, sessionHandler,new Object [0]);

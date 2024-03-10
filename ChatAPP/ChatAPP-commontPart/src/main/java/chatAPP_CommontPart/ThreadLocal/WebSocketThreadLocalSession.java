@@ -5,6 +5,8 @@ import java.util.Map;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.data.util.Pair;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Security.CustomUserDetailsInterface;
@@ -21,8 +23,11 @@ public class WebSocketThreadLocalSession implements WebSocketThreadLocalSessionI
 
 	@Override
 	public void setSimpMessageHeaderAccessor(SimpMessageHeaderAccessor session) {
-		// TODO Auto-generated method stub
-		this.wsSession.set(Pair.of(session,(CustomUserDetailsInterface)session.getUser()));
+		UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken)session.getUser();
+		CustomUserDetailsInterface userDetails=(CustomUserDetailsInterface)authenticationToken.getPrincipal();
+		this.wsSession.set(Pair.of(session,userDetails));
+	
+		
 	}
 	@Override
 	public CustomUserDetailsInterface getCustomUserDetails() {
