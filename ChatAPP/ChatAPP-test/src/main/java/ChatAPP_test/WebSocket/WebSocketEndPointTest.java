@@ -46,6 +46,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerManager;
+import ChatAPP_Security.RequestPermision.MessageRequestPermision;
 import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
@@ -70,6 +71,7 @@ public class WebSocketEndPointTest {
     private ProcessChatMessageService process;
     @MockBean
     private RabbitMQConsumerManager consumerManager;
+  
     private static MessageDTO fakeMessage;
 	    @BeforeEach
     public void setup() {
@@ -81,7 +83,7 @@ public class WebSocketEndPointTest {
 			this.fakeMessage.setOrder(0);
 			this.fakeMessage.setReceivedTime(LocalDateTime.now());
 			this.fakeMessage.setReferencMessageID("");
-			this.fakeMessage.setSenderID(0);
+			this.fakeMessage.setSenderID(1);
 			this.fakeMessage.setVersion(0);
 			this.fakeMessage.setWasMessageRemoved(true);
 
@@ -107,7 +109,6 @@ public class WebSocketEndPointTest {
     }
     
     private void initMock() {
-    	
     	Mockito.doAnswer((x)->{
     		for(int i=0;i<10;i++) {
     			Log4j2.log.info("");
