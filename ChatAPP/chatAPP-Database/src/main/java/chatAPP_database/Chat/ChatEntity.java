@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import chatAPP_DTO.Message.ChatInformationDTO;
+import chatAPP_DTO.Chat.ChatInformationDTO;
 import chatAPP_DTO.Message.UserChatOverViewDTO;
 
 @Entity(name=ChatEntity.chatEntityTableName)

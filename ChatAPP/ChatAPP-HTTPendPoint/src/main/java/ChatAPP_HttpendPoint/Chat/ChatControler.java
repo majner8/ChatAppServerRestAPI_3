@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import ChatAPP_Security.Authorization.CustomSecurityContextHolder.SecurityContextDataInterface;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
-import chatAPP_DTO.Message.ChatInformationDTO;
+import chatAPP_DTO.Chat.ChatInformationDTO;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.Chat.chatEntityRepository;
 import chatAPP_database.Chat.Messages.MessageEntity;

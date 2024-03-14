@@ -11,7 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import chatAPP_DTO.Message.ChatInformationDTO.UserChatInformationDTO;
+import chatAPP_DTO.Chat.UserChatInformationDTO;
+
 
 
 
@@ -65,62 +66,81 @@ public class UserChats {
 		private long userID;
 		@Column(name=UserChats.chatIDcolumnName)
 		private String chatID;	
+		
+		public static CompositePrimaryKey createCompositeKey(String chatID,long userID) {
+			return new CompositePrimaryKey()
+	    			.setChatID(chatID)
+	    			.setUserID(userID)
+	    			;
+		}
+		
 		public long getUserID() {
 			return userID;
 		}
-		public void setUserID(long userID) {
+		public CompositePrimaryKey setUserID(long userID) {
 			this.userID = userID;
+			return this;
 		}
 		public String getChatID() {
 			return chatID;
 		}
-		public void setChatID(String chatID) {
+		public CompositePrimaryKey setChatID(String chatID) {
 			this.chatID = chatID;
+			return this;
 		}
 	}
 
-	
+
+    public UserChats setPrimaryKey(String chatID,long userID) {
+    	this.setPrimaryKey(CompositePrimaryKey.createCompositeKey(chatID, userID)
+    			);
+    	return this;
+    }
 	public CompositePrimaryKey getPrimaryKey() {
 		return primaryKey;
 	}
 	public ChatEntity getChat() {
 		return chat;
 	}
-	public void setPrimaryKey(CompositePrimaryKey primaryKey) {
+	public UserChats setPrimaryKey(CompositePrimaryKey primaryKey) {
 		this.primaryKey = primaryKey;
-	}
-	public void setChat(ChatEntity chat) {
-		this.chat = chat;
-	}
-	public String getUserNickName() {
-		return userNickName;
-	}
-	public void setUserNickName(String userNickName) {
-		this.userNickName = userNickName;
+		return this;
 	}
 	public String getChatName() {
 		return chatName;
 	}
-	public void setChatName(String chatName) {
-		this.chatName = chatName;
-	}
 	public LocalDateTime getMemberFrom() {
 		return memberFrom;
-	}
-	public void setMemberFrom(LocalDateTime memberFrom) {
-		this.memberFrom = memberFrom;
 	}
 	public LocalDateTime getMemberUntil() {
 		return memberUntil;
 	}
-	public void setMemberUntil(LocalDateTime memberUntil) {
-		this.memberUntil = memberUntil;
-	}
 	public String getLastSeenMessageID() {
 		return lastSeenMessageID;
 	}
-	public void setLastSeenMessageID(String lastSeenMessageID) {
+	public UserChats setChatName(String chatName) {
+		this.chatName = chatName;
+		return this;
+
+	}
+	public UserChats setMemberFrom(LocalDateTime memberFrom) {
+		this.memberFrom = memberFrom;
+		return this;
+
+	}
+	public UserChats setMemberUntil(LocalDateTime memberUntil) {
+		this.memberUntil = memberUntil;
+		return this;
+
+	}
+	public UserChats setLastSeenMessageID(String lastSeenMessageID) {
 		this.lastSeenMessageID = lastSeenMessageID;
+		return this;
+
+	}
+	public UserChats setChat(ChatEntity chat) {
+		this.chat = chat;
+		return this;
 	}
 	
 	
