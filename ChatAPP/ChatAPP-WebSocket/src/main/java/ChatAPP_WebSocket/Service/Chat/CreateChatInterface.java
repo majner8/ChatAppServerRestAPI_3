@@ -6,9 +6,8 @@ import chatAPP_CommontPart.AOP.WebSocketThreadLocalSession;
 
 public interface CreateChatInterface {
 
-	public void createUserChat(SimpMessageHeaderAccessor session,long createdByUser,long otherUser);
+	public void createChat(SimpMessageHeaderAccessor session,long createdByUser,long... otherUsers);
 	
-	public void createGroupChat(SimpMessageHeaderAccessor session);
 
 }
 

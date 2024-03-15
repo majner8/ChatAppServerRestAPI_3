@@ -19,17 +19,10 @@ public interface UserChatsRepository extends CustomJpaRepository<UserChats,Compo
 	
 	boolean existsByPrimaryKeyUserIDAndPrimaryKeyChatID(long userId, String chatId);
 	
-	public default void createUserChatSchema(long userID,String chatID,ChatEntity chat) {
-		Optional<UserChats> entity=this.findById(CompositePrimaryKey.createCompositeKey(chatID, userID));
-		if(entity.isEmpty()) {
-			Log4j2.log.warn(Log4j2.MarkerLog.Database.getMarker(),String.format("createUserChatSchema was skipped, schema has been created yet"
-					+ " userId: %d chatID: %s"
-					+ "", userID,chatID));
-			return;
-		}
+	public default UserChats createUserChatSchema(long userID,String chatID,ChatEntity chat) {
 		UserChats userEntity=new UserChats()
 		.setPrimaryKey(chatID, userID)
 		.setChat(chat);
-		this.save(userEntity);
+		return this.InsertOrIgnore(userEntity, userEntity.getPrimaryKey());
 	}
 }

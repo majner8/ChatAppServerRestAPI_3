@@ -1,5 +1,8 @@
 package ChatAPP_WebSocket.Service.Chat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,31 +35,29 @@ public class CreateChatService implements CreateChatInterface{
 	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
 	@WebSocketThreadLocalSession
 	@Override
-	public void createUserChat(SimpMessageHeaderAccessor session, long createdByUser, long otherUser) {
-		// TODO Auto-generated method stub
-		String chatID=this.chatIdGenerator.generateIDForUserToUserChat(createdByUser, otherUser);
+	public void createChat(SimpMessageHeaderAccessor session, long createdByUser, long[] otherUser) {
+		String chatID=this.generateChatId(createdByUser, otherUser);
 		ChatEntity entity=this.chatRepo.createChatUserToUserDatabaseSchema(createdByUser, chatID);
-		if(entity==null) {
-			//schema was created before
-			return;
-		}
-			this.makeDatabaseSchemaOnUserChats(entity, createdByUser,otherUser);
+		List<UserChats> userChat=this.makeDatabaseSchemaOnUserChats(entity, createdByUser,otherUser);
 		
 		
 	}
-	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
-	@WebSocketThreadLocalSession
-	@Override
-	public void createGroupChat(SimpMessageHeaderAccessor session) {
-		// TODO Auto-generated method stub
-		
+	private String generateChatId(long createdByUser, long[] otherUsers) 
+	{
+		return otherUsers.length==1?
+				this.chatIdGenerator.generateIDForUserToUserChat(createdByUser, otherUsers[0])
+				:null;
 	}
-
 	
 	@Transactional
-	private void makeDatabaseSchemaOnUserChats(ChatEntity chat,long... userIds) {
+	private List<UserChats> makeDatabaseSchemaOnUserChats(ChatEntity chat,long createdBy,long[] userIds) {
+		ArrayList<UserChats> list=new ArrayList<UserChats>();
+		UserChats x=this.userChatRepo.createUserChatSchema(createdBy, chat.getChatID(), chat);
+		list.add(x);
 		for(long user:userIds) {
-			this.userChatRepo.createUserChatSchema(user,chat.getChatID(), chat);
+			x=this.userChatRepo.createUserChatSchema(user,chat.getChatID(), chat);
+			list.add(x);
 		}
+		return list;
 	}
 }
