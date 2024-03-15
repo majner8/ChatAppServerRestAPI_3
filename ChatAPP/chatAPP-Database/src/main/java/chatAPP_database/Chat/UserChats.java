@@ -142,6 +142,13 @@ public class UserChats {
 		this.chat = chat;
 		return this;
 	}
+	public String getUserNickName() {
+		return userNickName;
+	}
+	public UserChats setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
+		return this;
+	}
 	
 	
 }

@@ -29,8 +29,7 @@ public class ProcessChatMessageService {
 	private MessageRequestPermision SecurityVerification;
 	@Autowired
 	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue sessionAttributeInterface;
-	@Autowired
-	private ChatManagementInterface chatManagement;
+
 	@Autowired
 	private RabitMQMessageProducerInterface rabitMQPush;
 
@@ -72,11 +71,6 @@ public class ProcessChatMessageService {
 	}
 	
 	private void PushMessageToRabitMQService(MessageDTO message) {
-		//retrieved all memberIDOfChat
-		Set<Long> membersID=this.chatManagement.getUserIDofMembers(message.getChatID(), true);
-		//push message to rabitMQ
-		this.rabitMQPush.PushMessageToRabitMQ(message, membersID);
-		
-		
+		this.rabitMQPush.pushMessageToRabitMQ(message.getChatID(), message);		
 	}
 }

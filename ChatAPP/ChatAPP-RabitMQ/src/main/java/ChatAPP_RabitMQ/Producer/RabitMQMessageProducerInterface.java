@@ -28,4 +28,5 @@ public interface RabitMQMessageProducerInterface {
 		}
 	}
 	
+	public void pushMessageToRabitMQ(String chatID,DTO... message);
 	}

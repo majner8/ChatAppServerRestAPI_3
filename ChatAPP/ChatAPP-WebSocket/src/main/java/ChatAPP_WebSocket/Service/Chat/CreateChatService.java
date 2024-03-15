@@ -1,7 +1,9 @@
 package ChatAPP_WebSocket.Service.Chat;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -14,6 +16,7 @@ import ChatAPP_WebSocket.WebSocketEndPointPath;
 import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
 import chatAPP_CommontPart.AOP.WebSocketThreadLocalSession;
 import chatAPP_CommontPart.Data.Util.chatIdGenerator;
+import chatAPP_DTO.Chat.ChatInformationDTO;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.Chat.ChatEntity;
 import chatAPP_database.Chat.UserChats;
@@ -32,15 +35,15 @@ public class CreateChatService implements CreateChatInterface{
 	@Autowired
 	private RabitMQMessageProducerInterface rabbitMQproducer;
 	
-	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
+	@RabitMQAnnotationAOP(dtoClass = ChatInformationDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
 	@WebSocketThreadLocalSession
 	@Override
 	public void createChat(SimpMessageHeaderAccessor session, long createdByUser, long[] otherUser) {
 		String chatID=this.generateChatId(createdByUser, otherUser);
 		ChatEntity entity=this.chatRepo.createChatUserToUserDatabaseSchema(createdByUser, chatID);
-		List<UserChats> userChat=this.makeDatabaseSchemaOnUserChats(entity, createdByUser,otherUser);
-		
-		
+		Set<UserChats> userChat=this.makeDatabaseSchemaOnUserChats(entity, createdByUser,otherUser);
+		entity.setChat(userChat);
+		this.rabbitMQproducer.pushMessageToRabitMQ(chatID,this.chatRepo.convertEntityToDTO(entity));
 	}
 	private String generateChatId(long createdByUser, long[] otherUsers) 
 	{
@@ -50,8 +53,8 @@ public class CreateChatService implements CreateChatInterface{
 	}
 	
 	@Transactional
-	private List<UserChats> makeDatabaseSchemaOnUserChats(ChatEntity chat,long createdBy,long[] userIds) {
-		ArrayList<UserChats> list=new ArrayList<UserChats>();
+	private Set<UserChats> makeDatabaseSchemaOnUserChats(ChatEntity chat,long createdBy,long[] userIds) {
+		HashSet<UserChats> list=new HashSet<UserChats>();
 		UserChats x=this.userChatRepo.createUserChatSchema(createdBy, chat.getChatID(), chat);
 		list.add(x);
 		for(long user:userIds) {
