@@ -78,7 +78,7 @@ public  class ChatInformationDTO implements DTO{
 	@Override
 	public String getMessageID() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.getChatID();
 	}
 
 }
