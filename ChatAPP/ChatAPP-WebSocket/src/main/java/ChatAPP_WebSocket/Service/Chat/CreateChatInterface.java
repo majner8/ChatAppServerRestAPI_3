@@ -2,7 +2,6 @@ package ChatAPP_WebSocket.Service.Chat;
 
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
-import chatAPP_CommontPart.AOP.WebSocketThreadLocalSession;
 
 public interface CreateChatInterface {
 

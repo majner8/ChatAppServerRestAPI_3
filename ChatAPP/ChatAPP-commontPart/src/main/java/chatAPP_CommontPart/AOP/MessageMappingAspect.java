@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
+import chatAPP_CommontPart.Security.applyWebSocketFilter;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 @Aspect
@@ -17,8 +18,9 @@ import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 public class MessageMappingAspect {
 
 	@Autowired
+	private applyWebSocketFilter applyWSFilter;
+	@Autowired
 	private WebSocketThreadLocalSessionInterface WebSocketSession;
-	//@Around("execution(public void(..)) && @annotation(WebSocketThreadLocalSession)")
 	@Async
 	@Around("@annotation(MessageMapping)")
 	public void calledMetod(ProceedingJoinPoint joinPoint,MessageMapping WebSocketThreadLocalSession) throws Throwable {
@@ -36,7 +38,7 @@ public class MessageMappingAspect {
 			 evnokedBy);
 			 Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(), message);
 			 if(session==null) {
-				 Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(),evnokedBy+" Does not contain SimpMessageHeaderAccessor as parametr, AOP was skipped");
+				 Log4j2.log.warn(Log4j2.MarkerLog.Aspect.getMarker(),evnokedBy+" Does not contain SimpMessageHeaderAccessor as parametr, AOP was skipped");
 			 }
 		}	
 		if(session==null) {
@@ -44,10 +46,24 @@ public class MessageMappingAspect {
 			return;
 		}
 		 this.WebSocketSession.setSimpMessageHeaderAccessor(session);
-		 joinPoint.proceed();			 
-		 this.WebSocketSession.clear();
+		 try {
+			 this.applyWSFilter.applyFilter(session.getDestination());
+		 }
+		 catch(Exception e) {
+			 this.WebSocketSession.clear();
+		 }
+		 
+		 
+		try {
+		 joinPoint.proceed();
+		}
+		finally {
+			 this.WebSocketSession.clear();
+
+		}
 		
 	}
+	
 	
 }
 

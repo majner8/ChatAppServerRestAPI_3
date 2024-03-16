@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
 import ChatAPP_WebSocket.WebSocketEndPointPath;
 import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
-import chatAPP_CommontPart.AOP.WebSocketThreadLocalSession;
 import chatAPP_CommontPart.Data.Util.chatIdGenerator;
 import chatAPP_DTO.Chat.ChatInformationDTO;
 import chatAPP_DTO.Message.MessageDTO;
@@ -36,7 +35,6 @@ public class CreateChatService implements CreateChatInterface{
 	private RabitMQMessageProducerInterface rabbitMQproducer;
 	
 	@RabitMQAnnotationAOP(dtoClass = ChatInformationDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
-	@WebSocketThreadLocalSession
 	@Override
 	public void createChat(SimpMessageHeaderAccessor session, long createdByUser, long[] otherUser) {
 		String chatID=this.generateChatId(createdByUser, otherUser);

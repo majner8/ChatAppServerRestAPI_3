@@ -18,16 +18,15 @@ import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 @Retention(RetentionPolicy.RUNTIME) // Make it available at runtime
 @Target({ElementType.METHOD}) // This annotation can only be applied to methods
-public @interface WebSocketThreadLocalSession {
+public @interface WebSocketThreadLocalSessions {
 
 	@Aspect
 	@Component
 	public static class WebSocketAnnotationClass{
 		@Autowired
 		private WebSocketThreadLocalSessionInterface WebSocketSession;
-		//@Around("execution(public void(..)) && @annotation(WebSocketThreadLocalSession)")
 		 @Around("@annotation(WebSocketThreadLocalSession)")
-		public void calledMetod(ProceedingJoinPoint joinPoint,WebSocketThreadLocalSession WebSocketThreadLocalSession) throws Throwable {
+		public void calledMetod(ProceedingJoinPoint joinPoint,WebSocketThreadLocalSessions WebSocketThreadLocalSession) throws Throwable {
 			String evnokedBy=joinPoint.getClass().getName()+"."+joinPoint.getSignature().getName();
 			SimpMessageHeaderAccessor session=null;
 			for(Object O:joinPoint.getArgs()) {
