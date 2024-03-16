@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 
 import ChatAPP_Security.Authorization.JwtTokenExceptionGlobalHandler;
 import ChatAPP_Security.Authorization.UnAuthorizatePath;
-import ChatAPP_Security.Filter.jwtAuthorizationFilter;
-import ChatAPP_Security.Filter.jwtDeviceIdFilter;
+import ChatAPP_Security.Filter.HttpRequestFilter.jwtAuthorizationFilter;
+import ChatAPP_Security.Filter.HttpRequestFilter.jwtDeviceIdFilter;
 
 @EnableWebSecurity
 @Configuration

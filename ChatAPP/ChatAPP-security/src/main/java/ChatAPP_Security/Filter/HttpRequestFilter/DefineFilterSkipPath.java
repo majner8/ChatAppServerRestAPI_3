@@ -1,4 +1,4 @@
-package ChatAPP_Security.Filter;
+package ChatAPP_Security.Filter.HttpRequestFilter;
 
 import java.util.Collections;
 import java.util.List;

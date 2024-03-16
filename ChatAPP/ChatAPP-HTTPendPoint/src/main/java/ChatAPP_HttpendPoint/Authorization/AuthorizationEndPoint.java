@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import ChatAPP_Security.Authorization.UnAuthorizatePath;
-import ChatAPP_Security.Filter.DefineFilterSkipPath;
+import ChatAPP_Security.Filter.HttpRequestFilter.DefineFilterSkipPath;
 import chatAPP_DTO.Authorization.TokenDTO;
 import chatAPP_DTO.User.UserDTO.UserAuthorizationDTO;
 import chatAPP_DTO.User.UserDTO.UserProfileRegistrationDTO;

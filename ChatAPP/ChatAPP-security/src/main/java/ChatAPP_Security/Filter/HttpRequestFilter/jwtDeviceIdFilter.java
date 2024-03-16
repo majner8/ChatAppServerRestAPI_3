@@ -1,4 +1,4 @@
-package ChatAPP_Security.Filter;
+package ChatAPP_Security.Filter.HttpRequestFilter;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
+import ChatAPP_Security.Filter.HttpRequestFilter.DefineFilterSkipPath.pathForDeviceIdFilter;
 import ChatAPP_Security.Properties.SecurityProperties;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 

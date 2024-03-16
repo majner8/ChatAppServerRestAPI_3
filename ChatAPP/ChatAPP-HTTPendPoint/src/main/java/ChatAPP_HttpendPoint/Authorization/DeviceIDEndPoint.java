@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import ChatAPP_Security.Authorization.UnAuthorizatePath;
-import ChatAPP_Security.Filter.DefineFilterSkipPath;
+import ChatAPP_Security.Filter.HttpRequestFilter.DefineFilterSkipPath;
 
 
 public interface DeviceIDEndPoint {
