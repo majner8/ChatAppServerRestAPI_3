@@ -1,8 +1,6 @@
 package ChatAPP_WebSocket.Service.Chat;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -16,7 +14,6 @@ import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
 import chatAPP_CommontPart.Data.Util.chatIdGenerator;
 import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
 import chatAPP_DTO.Chat.ChatInformationDTO;
-import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.Chat.ChatEntity;
 import chatAPP_database.Chat.UserChats;
 import chatAPP_database.Chat.UserChatsRepository;

@@ -1,5 +1,7 @@
 package ChatAPP_Security.Filter.WebSocketFilter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,49 +11,75 @@ import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.Security.applyWebSocketFilter;
+import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
-public abstract class WebSocketFilter  implements applyWebSocketFilter {
+public abstract class WebSocketFilter<T>  implements applyWebSocketFilter {
 
-	private List<String> pathToSkip;
-	private List<String>pathToApply;
-	private boolean shouldBeApplyEveryTime;
-	private boolean definedPathToSkipPath;
+	@Autowired
+	protected WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue wsSession;
+	
+	private final Class<T> objectToVerify;
+	private List<String> pathToSkip=new ArrayList<String>();
+	private List<String>pathToApply=new ArrayList<String>();
+	private boolean applyEveryTime=false;;
+
 	
 	/**Constructor create instance, with defined path
-	 * If you defined both parametr as null, filter will be apply to all path
-	 * @throws IllegalArgumentException if both value are not null */
-	protected WebSocketFilter(String[] RegexpathToApplyFilter,String[]RegexpathToSkipFilter) {
-		if(RegexpathToApplyFilter!=null&&RegexpathToSkipFilter!=null) {
-			throw  new IllegalArgumentException();
+	 * If you defined both parametr as null, filter will be apply to all path, instead of defined path in skip
+	*/
+	protected WebSocketFilter(Class<T>objectToVerify,String[] RegexpathToApplyFilter,String[]RegexpathToSkipFilter) {
+		this.objectToVerify=objectToVerify;
+		if(RegexpathToApplyFilter==null) {
+			this.applyEveryTime=true;
 		}
+		if(RegexpathToSkipFilter==null) {
+			return;
+		}
+		this.pathToApply=Arrays.asList(RegexpathToApplyFilter);
+		this.pathToSkip=Arrays.asList(RegexpathToSkipFilter);
+		
 	}
 
 	/**Constructor create instance, with defined path
-	 * If you defined both parametr as null, filter will be apply to all path
-	 * @throws IllegalArgumentException if both value are not null */
-	protected WebSocketFilter(List<String> RegexpathToApplyFilter,List<String> RegexpathToSkipFilter) {
-		if(RegexpathToApplyFilter!=null&&RegexpathToSkipFilter!=null) {
-			throw  new IllegalArgumentException();
+	 * If you defined both parametr as null, filter will be apply to all path, instead of defined path in skip
+	*/
+	protected WebSocketFilter(Class<T>objectToVerify,List<String> RegexpathToApplyFilter,List<String> RegexpathToSkipFilter) {
+		this.objectToVerify=objectToVerify;
+		if(RegexpathToApplyFilter==null) {
+			this.applyEveryTime=true;
 		}
+		if(RegexpathToSkipFilter==null) {
+			return;
+		}
+		this.pathToApply=RegexpathToApplyFilter;
+		this.pathToSkip=RegexpathToSkipFilter;
 	}
 	
 	@Override
-	public final void applyFilter(String callEndPoint) {
-		if(this.shouldBeApplyEveryTime) {
-			this.runFilter(callEndPoint);
-			return;
+	public final void applyFilter(String callEndPoint,Object [] param) {
+		if(Log4j2.log.isDebugEnabled()) {
+			Log4j2.log.debug(Log4j2.MarkerLog.Security.getMarker(),
+					"Apply Ws security filter"+this.getClass().getName());
 		}
-		if(this.definedPathToSkipPath) {
-			if(this.pathToSkip.stream().anyMatch(s->s.matches(callEndPoint))) return;
-			
-			this.runFilter(callEndPoint);
-			return;
+		T ob=null;
+		for(Object object:param) {
+			if(this.objectToVerify.isInstance(object)) {
+				ob=(T)object;
+				break;
+			}
 		}
-		if(this.pathToApply.stream().anyMatch(s->s.matches(callEndPoint))) this.runFilter(callEndPoint);
+		if(ob==null)throw  new IllegalArgumentException();
+		if(this.pathToSkip.stream().anyMatch(s->s.matches(callEndPoint))) return;
+		if(this.applyEveryTime) {
+			this.runFilter(callEndPoint, ob);
+			return;
+		}	
+		
+		if(this.pathToApply.stream().anyMatch(s->s.matches(callEndPoint))) this.runFilter(callEndPoint,ob);
 		return;
 	}
 
-	public abstract void runFilter(String callEndPoint);
+	public abstract void runFilter(String callEndPoint,T parametrObject);
 	
 	@Component
 	@Primary
@@ -65,10 +93,10 @@ public abstract class WebSocketFilter  implements applyWebSocketFilter {
 		}
 		
 		@Override
-		public void applyFilter(String callEndPoint) {
+		public void applyFilter(String callEndPoint,Object [] para) {
 			Iterator<WebSocketFilter> fil=this.filters.iterator();
 			while(fil.hasNext()) {
-				fil.next().applyFilter(callEndPoint);
+				fil.next().applyFilter(callEndPoint,para);
 			}
 		}
 		

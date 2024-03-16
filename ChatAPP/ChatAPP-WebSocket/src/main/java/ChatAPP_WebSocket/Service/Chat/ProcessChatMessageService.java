@@ -25,8 +25,6 @@ public class ProcessChatMessageService {
 	@Autowired
 	private MessageRepositoryEntity messageRepo;
 	@Autowired
-	private MessageRequestPermision SecurityVerification;
-	@Autowired
 	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue sessionAttributeInterface;
 
 	@Autowired
@@ -35,9 +33,6 @@ public class ProcessChatMessageService {
 	/** */
 	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
 	public void SendMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
-		//verify if user has permision to write into chat
-		//if not exception will be thrown and catch by global handler
-		this.SecurityVerification.verifyUserAccestPermisionToChat(message.getSenderID(), message.getChatID());	
 		MessageEntity entity=this.messageRepo.convertDTOToEntity(message);
 		//message will be save, and update with order in table
 		this.messageRepo.saveAndFlush(entity);
@@ -51,8 +46,6 @@ public class ProcessChatMessageService {
 	public void ChangeMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
 		//if message is not exist EntityWasNotFoundException would be thrown
 		MessageEntity entity=this.messageRepo.findByPrimaryKey(message.getMessageID());
-		//verify, if user has permision to change message(E.t.c it is owner of message)
-		this.SecurityVerification.verifyUserAccestPermisionToChat(entity.getSenderID(), message.getChatID());
 		
 		//optimistic locking can be thrown, if message will be modify from other device
 		this.messageRepo.saveAndFlush(entity);

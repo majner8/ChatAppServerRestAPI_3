@@ -46,7 +46,7 @@ public class MessageMappingAspect {
 		}
 		 this.WebSocketSession.setSimpMessageHeaderAccessor(session);
 		 try {
-			 this.applyWSFilter.applyFilter(session.getDestination());
+			 this.applyWSFilter.applyFilter(session.getDestination(),joinPoint.getArgs());
 		 }
 		 catch(Exception e) {
 			 this.WebSocketSession.clear();

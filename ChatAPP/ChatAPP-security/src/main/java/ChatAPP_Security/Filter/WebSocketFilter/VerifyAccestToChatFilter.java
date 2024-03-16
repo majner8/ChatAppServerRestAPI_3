@@ -9,50 +9,49 @@ import org.springframework.stereotype.Component;
 import ChatAPP_Chat.ChatManagement.ChatManagementInterface;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
+import chatAPP_CommontPart.Security.SecurityParametrsFilter.chatFilter;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 import chatAPP_database.Chat.UserChatsRepository;
 
 @Component
-public class VerifyAccestToChatFilter extends WebSocketFilter{
+public class VerifyAccestToChatFilter extends WebSocketFilter<chatFilter>{
 
 	@Autowired
 	private ChatManagementInterface chatInt;
 	@Autowired
-	private WebSocketThreadLocalSessionInterface wsSession;
-	@Autowired
 	private UserChatsRepository chatRepo;
 	
 	protected VerifyAccestToChatFilter() {
-		super(new String[]{WebSocketEndPointPath.chatPreflix}, null);
+		super(chatFilter.class,new String[]{WebSocketEndPointPath.chatPreflix+".*"}, null);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void runFilter(String callEndPoint) {
-		// TODO Auto-generated method stub
 	
-		this.verifyMessageOwnership(senderBodyId);
-		
-		Set<Long> memberID=this.chatInt.getUserIDofMembers(chatID, false);
+
+
+	@Override
+	public void runFilter(String callEndPoint, chatFilter parametrObject) {
+		Set<Long> memberID=this.chatInt.getUserIDofMembers(parametrObject.getChatID(), false);
 		boolean sucesfull=false;
-		
+		long userID=this.wsSession.getSessionOwnerUserID();
 		if(memberID==null) {
-			//permision have to be verify from database
-			//chat was not loaded for security performance reason
 			sucesfull=this.chatRepo
-					.existsByPrimaryKeyUserIDAndPrimaryKeyChatID(senderBodyId, chatID);
-					
+			.existsByPrimaryKeyUserIDAndPrimaryKeyChatID(userID, parametrObject.getChatID());	
 		}
 		else {
-			sucesfull=memberID.contains(senderBodyId);
+			sucesfull=memberID.contains(userID);
 		}
+		
 		if(!sucesfull) {
 			Log4j2.log.info(Log4j2.MarkerLog.Security.getMarker(),
 					String.format("Acess denied, user does not have permission to write into chat"
 							+"%s chatID : %s %s userID : %s"					
-							, System.lineSeparator(),senderBodyId,System.lineSeparator(),senderBodyId));
+							, System.lineSeparator(),parametrObject.getChatID(),System.lineSeparator(),userID));
 			throw new AccessDeniedException("AccessDenied");
-		}
+		}		
 	}
+
+
+	
 
 }
