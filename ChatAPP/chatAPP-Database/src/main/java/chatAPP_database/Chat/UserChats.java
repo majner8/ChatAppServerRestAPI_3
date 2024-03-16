@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 
 import chatAPP_DTO.Chat.UserChatInformationDTO;
 
@@ -44,7 +45,11 @@ public class UserChats {
     @EmbeddedId
 	private CompositePrimaryKey primaryKey;
 	
-
+	@ManyToOne
+	//@Column(name=UserChats.joinChatColumnName)
+	@JoinColumn(name="chat",referencedColumnName=ChatEntity.chatIDColumnName)
+	private ChatEntity chat;
+	
 	public UserChatInformationDTO convertEntityToDTO() {
 		UserChatInformationDTO x=new UserChatInformationDTO();
 		x.setChatName(chatName);
@@ -60,12 +65,10 @@ public class UserChats {
 
 		@Column(name=UserChats.userIDcolumnName)
 		private long userID;
-		@ManyToOne
-		//@Column(name=UserChats.joinChatColumnName)
-		@JoinColumn(name="chat",referencedColumnName=ChatEntity.chatIDColumnName)
-		private ChatEntity chat;
+		@Column(name=UserChats.chatIDcolumnName)
+		private String chatID;	
 		
-		public static CompositePrimaryKey createCompositeKey(ChatEntity chatID,long userID) {
+		public static CompositePrimaryKey createCompositeKey(String chatID,long userID) {
 			return new CompositePrimaryKey()
 	    			.setChatID(chatID)
 	    			.setUserID(userID)
@@ -79,17 +82,17 @@ public class UserChats {
 			this.userID = userID;
 			return this;
 		}
-		public ChatEntity getChatID() {
-			return this.chat;
+		public String getChatID() {
+			return chatID;
 		}
-		public CompositePrimaryKey setChatID(ChatEntity chat) {
-			this.chat=chat;
+		public CompositePrimaryKey setChatID(String chatID) {
+			this.chatID = chatID;
 			return this;
 		}
 	}
 
 
-    public UserChats setPrimaryKey(ChatEntity chatID,long userID) {
+    public UserChats setPrimaryKey(String chatID,long userID) {
     	this.setPrimaryKey(CompositePrimaryKey.createCompositeKey(chatID, userID)
     			);
     	return this;
@@ -97,7 +100,9 @@ public class UserChats {
 	public CompositePrimaryKey getPrimaryKey() {
 		return primaryKey;
 	}
-	
+	public ChatEntity getChat() {
+		return chat;
+	}
 	public UserChats setPrimaryKey(CompositePrimaryKey primaryKey) {
 		this.primaryKey = primaryKey;
 		return this;
@@ -134,7 +139,10 @@ public class UserChats {
 		return this;
 
 	}
-	
+	public UserChats setChat(ChatEntity chat) {
+		this.chat = chat;
+		return this;
+	}
 	public String getUserNickName() {
 		return userNickName;
 	}

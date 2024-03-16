@@ -21,7 +21,8 @@ public interface UserChatsRepository extends CustomJpaRepository<UserChats,Compo
 	
 	public default UserChats createUserChatSchema(long userID,String chatID,ChatEntity chat) {
 		UserChats userEntity=new UserChats()
-		.setPrimaryKey(chat, userID);
+		.setPrimaryKey(chatID, userID)
+		.setChat(chat);
 		return this.InsertOrIgnore(userEntity, userEntity.getPrimaryKey());
 	}
 }
