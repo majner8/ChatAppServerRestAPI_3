@@ -13,7 +13,7 @@ import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_DTO.Message.SawMessageDTO;
 
 @Controller
-@Async
+
 public class ChatEndPointWebSocketControler implements WebSocketChatEndPoint{
 
 	

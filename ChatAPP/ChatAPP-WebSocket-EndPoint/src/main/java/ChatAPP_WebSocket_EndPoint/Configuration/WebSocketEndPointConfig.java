@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.RabitMQService.RabitMQConsumingEndPointService;
 
-@Async
+
 public class WebSocketEndPointConfig implements WebSocketEndPointConfigInterface {
 	
 	public static final String StartConsumingPath=WebSocketEndPointPath.Config_StartConsumingPath;

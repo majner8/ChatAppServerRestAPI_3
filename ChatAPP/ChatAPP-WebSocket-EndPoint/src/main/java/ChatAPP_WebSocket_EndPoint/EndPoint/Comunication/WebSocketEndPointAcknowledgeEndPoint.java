@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.Async;
 
 import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.Chat.ConfirmSentMessageService;
-@Async
 public class WebSocketEndPointAcknowledgeEndPoint implements WebSocketEndPointAcknowledgeEndPointInterface {
 
 	@Autowired

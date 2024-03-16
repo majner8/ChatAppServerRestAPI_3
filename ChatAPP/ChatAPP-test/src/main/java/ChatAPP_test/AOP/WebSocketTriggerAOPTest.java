@@ -24,6 +24,7 @@ import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
 import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
+import ChatAPP_WebSocket_EndPoint.EndPoint.Chat.ChatAction.WebSocketChatEndPoint;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue;
 import chatAPP_DTO.Message.MessageDTO;
@@ -50,7 +51,7 @@ public class WebSocketTriggerAOPTest {
 
 	
 	@Autowired
-	private ProcessChatMessageService processChatMessage;
+	private WebSocketChatEndPoint processChatMessage;
 	@Autowired
 	private RabitMQThreadLocalSessionValue rabbitMQAOP;
 
@@ -85,7 +86,7 @@ public class WebSocketTriggerAOPTest {
 	}
 	@Test
 	public void testRabbitMQAOP() {
-		this.processChatMessage.SendMessage(null, fakeMessage);
+		this.processChatMessage.SendMessage(fakeMessage, null);
 
 		assertTrue(MessageDTO.class==this.rabbitMQAOP.getDTOClass());
 		assertTrue(this.rabbitMQAOP.getWebSocketEndPointPath().equals(WebSocketEndPointPath.Chat_SendMessagePath));

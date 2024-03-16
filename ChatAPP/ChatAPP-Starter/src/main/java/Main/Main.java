@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
 //import chatAPP_database.Chat.Messages.MessageEntity;
@@ -22,6 +23,8 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 @EnableJpaRepositories(basePackages = {"chatAPP_database"})
 @EnableAutoConfiguration
 @EnableAspectJAutoProxy
+@EnableAsync
+
 /*
  * ,"ChatAPP_commontPart","chatAPP_DTO", "ChatAPP_HttpendPoint","ChatAPP_Chat",
  * "ChatAPP_WebSocket","ChatAPP_WebSocket_EndPoint"

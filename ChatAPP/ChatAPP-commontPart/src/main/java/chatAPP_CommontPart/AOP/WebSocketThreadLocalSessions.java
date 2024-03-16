@@ -20,7 +20,7 @@ import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 @Target({ElementType.METHOD}) // This annotation can only be applied to methods
 public @interface WebSocketThreadLocalSessions {
 
-	@Aspect
+	
 	@Component
 	public static class WebSocketAnnotationClass{
 		@Autowired
