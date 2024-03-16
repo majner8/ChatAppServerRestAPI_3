@@ -27,22 +27,21 @@ import chatAPP_DTO.User.UserDTO.UserProfileDTO;
 
 @Component
 @Profile("test")
-@Scope("prototype")
 public class jwtTokenTestAuthorizationToken {
     /** Method returns all headers needed to be processed through AuthorizationFilter */
-	public Map<String,String> getAuthorizationHeaders(){
+	public Map<String,String> getAuthorizationHeaders(WebTestClient webTestClient){
 		synchronized(this.integer) {
 		
-		return this.getFullAuthorizatedUserHeader(this.getUserTokenHeader(this.getDeviceIDHeader()));
+		return this.getFullAuthorizatedUserHeader(this.getUserTokenHeader(this.getDeviceIDHeader(webTestClient),webTestClient),webTestClient);
 		}
 	}
 	private TokenDTO tokenDTO;
 
 	/**Metod return all UserAuthorizationHeader, including deviceIDHeader */
-	private Map<String,String>getUserTokenHeader(Map<String,String>deviceHeader){
+	private Map<String,String>getUserTokenHeader(Map<String,String>deviceHeader,WebTestClient webTestClient){
 		
 		//make registration
-	this.webTestClient
+	webTestClient
 				.post()
 				.uri("/authorization/register")
 				.bodyValue(this.initRegistrationUser())
@@ -60,9 +59,9 @@ public class jwtTokenTestAuthorizationToken {
 	}
 	private 		 String deviceIDToken;
 
-	private Map<String,String> getDeviceIDHeader(){
+	private Map<String,String> getDeviceIDHeader(WebTestClient webTestClient){
 		//calling request first time, to fill empty database with ID
-		this.webTestClient
+		webTestClient
 		.get()
 		.uri("/authorization/generateDeviceID")			
 		.exchange()	
@@ -76,12 +75,12 @@ public class jwtTokenTestAuthorizationToken {
 		return map;
 	}
 	
-	private Map<String,String> getFullAuthorizatedUserHeader(Map<String,String> UserAuthorizatedHeader){
+	private Map<String,String> getFullAuthorizatedUserHeader(Map<String,String> UserAuthorizatedHeader,WebTestClient webTestClient){
 		UserProfileDTO prof=new UserProfileDTO();
 		prof.setLastName("Bicak");
 		prof.setSerName("Antonin");
 		prof.setNickName("majner8");
-	this.webTestClient
+	webTestClient
 				.post()
 				.uri("/authorization/finishRegistration")
 				.bodyValue(prof)
@@ -98,8 +97,7 @@ public class jwtTokenTestAuthorizationToken {
 	}
 	
 
-	@Autowired
-    private WebTestClient webTestClient;
+
 	 @Autowired
 	private SecurityProperties securityProperties;
 	@SpyBean

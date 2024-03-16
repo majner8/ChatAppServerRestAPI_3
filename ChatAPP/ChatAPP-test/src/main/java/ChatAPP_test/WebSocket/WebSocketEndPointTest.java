@@ -33,6 +33,7 @@ import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.WebSocketSession;
@@ -62,6 +63,8 @@ public class WebSocketEndPointTest {
 
     @LocalServerPort
     private int port;
+    @Autowired
+    private WebTestClient webTestClient;
     private WebSocketStompClient stompClient;
     @Value("${websocket.stoamp.endpoint}")
    	private String webSocketStoamppreflix;
@@ -170,7 +173,7 @@ public class WebSocketEndPointTest {
     	   
          };         
          WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
-         this.autToken.getAuthorizationHeaders().forEach(
+         this.autToken.getAuthorizationHeaders(webTestClient).forEach(
         		 (K,V)->{
         			 Log4j2.log.debug(Log4j2.MarkerLog.Test.getMarker(),"Authorization HeaderName: "+K);
         			 Log4j2.log.debug(Log4j2.MarkerLog.Test.getMarker(),"Authorization Value: "+V);

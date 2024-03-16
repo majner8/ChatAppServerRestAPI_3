@@ -27,6 +27,7 @@ public class ChatEntity {
 	private String ChatID;
 	@Column(name=ChatEntity.createdByUserIDColumnName)
 	private long createdByUserID;
+	
 	@OneToMany(mappedBy="chat")
 	private Set<UserChats> chat;
 	

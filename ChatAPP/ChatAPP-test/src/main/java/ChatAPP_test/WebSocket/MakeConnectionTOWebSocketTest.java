@@ -20,6 +20,7 @@ import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Component;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
@@ -36,17 +37,17 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 @Component
 @Profile("test")
 public class MakeConnectionTOWebSocketTest {
-
+	
 	@Autowired
 	private jwtTokenTestAuthorizationToken autToken;
 	
-	private static String handShakePath;
+
 	
     private WebSocketStompClient stompClient;
-    @Value("${websocket.stoamp.endpoint}")
-   	private String webSocketStoamppreflix;
     
-    @BeforeEach
+    public  MakeConnectionTOWebSocketTest() {
+    	this.init();
+    }
     public void init() {
     	// Create a list of transports, including SockJS fallback options
     	List<Transport> transports = new ArrayList<>();
@@ -63,17 +64,17 @@ public class MakeConnectionTOWebSocketTest {
         this.stompClient = new WebSocketStompClient(sockJsClient);
         this.stompClient.setMessageConverter(messageConverter);
         this.stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
-        this.handShakePath="ws://localhost:"+"%d"+"//"+webSocketStoamppreflix;
 
     }
 
    
-	  public StompSession makeConnectionToServer(int serverPort) throws InterruptedException {
+	  public StompSession makeConnectionToServer(int serverPort,WebTestClient webTestClient,String handShakePath) throws InterruptedException {
 	    	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
 	    	   
 	         };         
+	       
 	         WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
-	         this.autToken.getAuthorizationHeaders().forEach(
+	         this.autToken.getAuthorizationHeaders(webTestClient).forEach(
 	        		 (K,V)->{
 	        			 Log4j2.log.debug(Log4j2.MarkerLog.Test.getMarker(),"Authorization HeaderName: "+K);
 	        			 Log4j2.log.debug(Log4j2.MarkerLog.Test.getMarker(),"Authorization Value: "+V);
@@ -82,7 +83,7 @@ public class MakeConnectionTOWebSocketTest {
 	        		 );
 	         assertTrue(!authorizationHeader.isEmpty());
 	         ListenableFuture< StompSession> ses=
-	        		 this.stompClient.connect(String.format(handShakePath,serverPort), authorizationHeader, sessionHandler,new Object [0]);
+	        		 this.stompClient.connect(handShakePath, authorizationHeader, sessionHandler,new Object [0]);
 	        	try {
 	        		StompSession x=ses.get(10, TimeUnit.SECONDS);
 					assertTrue(true);
