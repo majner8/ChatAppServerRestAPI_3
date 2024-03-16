@@ -12,9 +12,9 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Service;
 
 import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
-import ChatAPP_WebSocket.WebSocketEndPointPath;
 import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
 import chatAPP_CommontPart.Data.Util.chatIdGenerator;
+import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
 import chatAPP_DTO.Chat.ChatInformationDTO;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.Chat.ChatEntity;

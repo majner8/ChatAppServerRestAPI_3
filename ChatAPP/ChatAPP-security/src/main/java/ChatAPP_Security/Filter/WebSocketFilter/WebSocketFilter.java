@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.Security.applyWebSocketFilter;
 
 public abstract class WebSocketFilter  implements applyWebSocketFilter {
@@ -19,8 +20,8 @@ public abstract class WebSocketFilter  implements applyWebSocketFilter {
 	/**Constructor create instance, with defined path
 	 * If you defined both parametr as null, filter will be apply to all path
 	 * @throws IllegalArgumentException if both value are not null */
-	protected WebSocketFilter(String[] pathToApplyFilter,String[]pathToSkipFilter) {
-		if(pathToApplyFilter!=null&&pathToSkipFilter!=null) {
+	protected WebSocketFilter(String[] RegexpathToApplyFilter,String[]RegexpathToSkipFilter) {
+		if(RegexpathToApplyFilter!=null&&RegexpathToSkipFilter!=null) {
 			throw  new IllegalArgumentException();
 		}
 	}
@@ -28,8 +29,8 @@ public abstract class WebSocketFilter  implements applyWebSocketFilter {
 	/**Constructor create instance, with defined path
 	 * If you defined both parametr as null, filter will be apply to all path
 	 * @throws IllegalArgumentException if both value are not null */
-	protected WebSocketFilter(List<String> pathToApplyFilter,List<String> pathToSkipFilter) {
-		if(pathToApplyFilter!=null&&pathToSkipFilter!=null) {
+	protected WebSocketFilter(List<String> RegexpathToApplyFilter,List<String> RegexpathToSkipFilter) {
+		if(RegexpathToApplyFilter!=null&&RegexpathToSkipFilter!=null) {
 			throw  new IllegalArgumentException();
 		}
 	}
@@ -41,20 +42,13 @@ public abstract class WebSocketFilter  implements applyWebSocketFilter {
 			return;
 		}
 		if(this.definedPathToSkipPath) {
-			if(this.pathToSkip.contains(callEndPoint)) {
-				return;
-			}
+			if(this.pathToSkip.stream().anyMatch(s->s.matches(callEndPoint))) return;
+			
 			this.runFilter(callEndPoint);
 			return;
 		}
-		else {
-			if(this.pathToApply.contains(callEndPoint)) {
-				this.runFilter(callEndPoint);
-				return;
-			}
-			return;
-		}
-		
+		if(this.pathToApply.stream().anyMatch(s->s.matches(callEndPoint))) this.runFilter(callEndPoint);
+		return;
 	}
 
 	public abstract void runFilter(String callEndPoint);

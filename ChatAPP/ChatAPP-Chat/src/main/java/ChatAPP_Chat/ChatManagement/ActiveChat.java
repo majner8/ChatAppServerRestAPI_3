@@ -24,7 +24,6 @@ public class ActiveChat implements Active_chat_int{
 
 	@Override
 	public boolean isChatActive(long timeout) {
-		long actualTime=System.currentTimeMillis();
 		return (System.currentTimeMillis()-this.LastTimeofUsed)<timeout;
 	}
 	

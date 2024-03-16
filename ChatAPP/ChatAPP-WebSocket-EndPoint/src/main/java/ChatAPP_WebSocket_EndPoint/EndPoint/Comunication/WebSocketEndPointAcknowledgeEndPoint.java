@@ -5,8 +5,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.scheduling.annotation.Async;
 
-import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.Chat.ConfirmSentMessageService;
+import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
 public class WebSocketEndPointAcknowledgeEndPoint implements WebSocketEndPointAcknowledgeEndPointInterface {
 
 	@Autowired

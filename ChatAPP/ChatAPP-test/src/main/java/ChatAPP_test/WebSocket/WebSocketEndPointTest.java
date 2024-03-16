@@ -47,10 +47,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerManager;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
-import ChatAPP_WebSocket.WebSocketEndPointPath;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
 import chatAPP_CommontPart.Log4j2.Log4j2;
+import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
 import chatAPP_DTO.Message.MessageDTO;
 
 

@@ -55,6 +55,9 @@ public class ChatMessageService implements ChatManagementInterface{
 	public Set<Long> getUserIDofMembers(String chatID, boolean shouldLoadedChat) {
 		// TODO Auto-generated method stub
 		Active_chat_int chat=this.chat.get(chatID);
+		if(chat==null&&!shouldLoadedChat) {
+			return null;
+		}
 		if(chat==null) {
 			//chat have to be loaded.
 			chat=this.loadChat(chatID);
