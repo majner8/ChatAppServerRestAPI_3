@@ -115,7 +115,7 @@ public class WebSocketEndPointTest {
     		}
 			Log4j2.log.info("Retrieve Message, from SendMessage");
     		return null;
-    	}).when(this.process).SendMessage(Mockito.any(), Mockito.any());
+    	}).when(this.process).SendMessage( Mockito.any());
     	Mockito.doNothing().when(this.consumerManager).startConsume(Mockito.anyString(), Mockito.any());
     	Mockito.doNothing().when(this.consumerManager).stopConsume(Mockito.anyString(), Mockito.any());
     }
@@ -157,6 +157,7 @@ public class WebSocketEndPointTest {
     	 
     }
 
+    
     @Test
     @Order(3)
     public void TryToSendMessage() throws InterruptedException {

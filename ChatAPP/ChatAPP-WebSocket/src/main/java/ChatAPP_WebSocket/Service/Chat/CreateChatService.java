@@ -1,6 +1,7 @@
 package ChatAPP_WebSocket.Service.Chat;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -33,7 +34,7 @@ public class CreateChatService implements CreateChatInterface{
 	
 	@RabitMQAnnotationAOP(dtoClass = ChatInformationDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
 	@Override
-	public void createChat(SimpMessageHeaderAccessor session, long createdByUser, long[] otherUser) {
+	public void createChat( long createdByUser, long[] otherUser) {
 		String chatID=this.generateChatId(createdByUser, otherUser);
 		ChatEntity entity=this.chatRepo.createChatUserToUserDatabaseSchema(createdByUser, chatID);
 		Set<UserChats> userChat=this.makeDatabaseSchemaOnUserChats(entity, createdByUser,otherUser);
@@ -58,4 +59,5 @@ public class CreateChatService implements CreateChatInterface{
 		}
 		return list;
 	}
+	
 }

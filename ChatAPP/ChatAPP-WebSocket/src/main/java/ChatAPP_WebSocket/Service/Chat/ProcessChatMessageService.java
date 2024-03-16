@@ -32,7 +32,7 @@ public class ProcessChatMessageService {
 
 	/** */
 	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_SendMessagePath, haveToBeMessageRequired = true)
-	public void SendMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
+	public void SendMessage(MessageDTO message) {
 		MessageEntity entity=this.messageRepo.convertDTOToEntity(message);
 		//message will be save, and update with order in table
 		this.messageRepo.saveAndFlush(entity);
@@ -43,7 +43,7 @@ public class ProcessChatMessageService {
 
 	@RabitMQAnnotationAOP(dtoClass = MessageDTO.class, getPath = WebSocketEndPointPath.Chat_changeMessagePath, haveToBeMessageRequired = true)
 	
-	public void ChangeMessage(SimpMessageHeaderAccessor session,MessageDTO message) {
+	public void ChangeMessage(MessageDTO message) {
 		//if message is not exist EntityWasNotFoundException would be thrown
 		MessageEntity entity=this.messageRepo.findByPrimaryKey(message.getMessageID());
 		
@@ -55,7 +55,7 @@ public class ProcessChatMessageService {
 	}
 	
 	@RabitMQAnnotationAOP(dtoClass = SawMessageDTO.class, getPath = WebSocketEndPointPath.Chat_sawMessagePath, haveToBeMessageRequired = false)
-	public void sawMessage(SimpMessageHeaderAccessor session,SawMessageDTO message) {
+	public void sawMessage(SawMessageDTO message) {
 		
 		
 	}

@@ -23,7 +23,7 @@ import ChatAPP_Chat.ChatManagement.ChatManagementInterface;
 import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
-import ChatAPP_WebSocket_EndPoint.EndPoint.Chat.ChatAction.WebSocketChatEndPoint;
+import ChatAPP_WebSocket_EndPoint.EndPoint.Chat.ChatAction.WebSocketChatComunicationEndPoint;
 import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue;
@@ -51,7 +51,7 @@ public class WebSocketTriggerAOPTest {
 
 	
 	@Autowired
-	private WebSocketChatEndPoint processChatMessage;
+	private WebSocketChatComunicationEndPoint processChatMessage;
 	@Autowired
 	private RabitMQThreadLocalSessionValue rabbitMQAOP;
 

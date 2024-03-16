@@ -48,11 +48,13 @@ public class jwtTokenTestAuthorizationToken {
 				.bodyValue(this.initRegistrationUser())
 				.headers(httpHeaders -> deviceHeader.forEach(httpHeaders::add))
 				.exchange()
+				
 				.expectStatus().isOk()
 				.expectBody(TokenDTO.class)
 	.consumeWith((token)->{
 		tokenDTO=token.getResponseBody();
 	});
+	
 	deviceHeader.put(this.securityProperties.getTokenAuthorizationUserHederName(), tokenDTO.getToken());
 	return deviceHeader;
 	}
@@ -104,7 +106,6 @@ public class jwtTokenTestAuthorizationToken {
 	private DeviceIDGenerator generator;
 	
 
-	
 	//manage creating unique user
 	private static  AtomicInteger integer=new AtomicInteger();
 	static {

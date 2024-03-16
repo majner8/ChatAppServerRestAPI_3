@@ -84,6 +84,7 @@ public class jwtTokenTest {
 					.get()
 					.uri("/authorization/generateDeviceID")			
 					.exchange()	;
+		 
 					deviceIDToken.expectStatus().isOk()
 					.expectBody(String.class)
 					.consumeWith((device)->{
