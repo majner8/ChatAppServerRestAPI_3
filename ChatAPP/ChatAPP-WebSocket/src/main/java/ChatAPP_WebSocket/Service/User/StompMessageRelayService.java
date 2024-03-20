@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import ChatAPP_RabitMQ.Consumer.RabbitMQMessageRelayInterface;
+import ChatAPP_RabitMQ.Listener.RabbitMQMessageRelayInterface;
 
 @Component
 public class StompMessageRelayService implements RabbitMQMessageRelayInterface {

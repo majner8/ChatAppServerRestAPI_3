@@ -1,4 +1,4 @@
-package ChatAPP_RabitMQ.Consumer;
+package ChatAPP_RabitMQ.Listener;
 
 
 public interface RabbitMQMessageRelayInterface {

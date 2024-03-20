@@ -23,8 +23,9 @@ public interface SimpleMessageListenerContainerManager {
 		@Override
 		public SimpleMessageListenerContainer createSimpleMessageListenerContainer(String userdeviceid) {
 			// TODO Auto-generated method stub
+			
 			SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-		    container.setConnectionFactory(connectionFactory);
+			container.setConnectionFactory(connectionFactory);
 		    container.setQueueNames(userdeviceid);
 		    container.setMessageListener(listener);
 		    return container;

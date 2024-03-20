@@ -7,9 +7,7 @@ public interface RabbitMQQueueManagerInterface {
 	/**Metod return deviceQueueName
 	 * if queue has not been created yet, metod manage creating new one
 	 *, bind them to user Key 
-	 * And start  async synchronization-send first X newest Chat, with fistMessages
-	 *  Metod does not synchronizated
-	 *  
+	   
 	 *  */
 	public RabitMQQueue getDeviceQueueName();
 }

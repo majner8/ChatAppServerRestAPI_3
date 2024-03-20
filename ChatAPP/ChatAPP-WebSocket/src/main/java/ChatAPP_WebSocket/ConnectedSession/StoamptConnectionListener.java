@@ -28,8 +28,6 @@ public class StoamptConnectionListener {
 				String.format("Connection was Estabilish, UserID: %s deviceID: %s", userDetails.getUserID(),userDetails.getDeviceID())); 
 		this.rabitMQConsumer.startConsume(headers.getUser().getName(), headers);
 		
-
-
 	}
 	
 	
