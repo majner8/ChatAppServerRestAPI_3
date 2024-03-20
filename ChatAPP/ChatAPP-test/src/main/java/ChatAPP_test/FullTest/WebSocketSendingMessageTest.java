@@ -2,6 +2,8 @@ package ChatAPP_test.FullTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -26,12 +28,13 @@ import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
 import ChatAPP_test.WebSocket.MakeConnectionTOWebSocketTest;
 import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
 import chatAPP_DTO.Chat.CreateChatDTO;
+import chatAPP_DTO.Message.MessageDTO;
 
 @SpringBootTest(classes=Main.Main.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("test")
-public class CreateChatWebSocketTest {
+public class WebSocketSendingMessageTest {
 
 	@MockBean
 	private RabbitMQConsumerManager rabitMQConsumer;
@@ -52,6 +55,8 @@ public class CreateChatWebSocketTest {
 	@Value("${websocket.stoamp.endpoint}")
    	private String webSocketStoamppreflix;
     
+	private MessageDTO fakeChatMessage;
+	
 	@BeforeEach
 	public void init() {
 	    this.handShakePath="ws://localhost:"+this.port+"//"+webSocketStoamppreflix;
@@ -61,22 +66,36 @@ public class CreateChatWebSocketTest {
 				.setOtherUser(new long[] {0});
 		
 	    assertTrue(3308 == this.port, "The server is running on port " + this.port + " instead of 3308");
+	   
+	    this.fakeChatMessage=new MessageDTO()
+	    		.setChatID("0userID1")
+	    		.setMessage("Ahoj jak to jde")
+	    		.setMessageID("asdxy")
+	    		.setSenderID(1);
+
 	    this.initMock();
 	}
 	private void initMock() {
 		Mockito.doNothing()
 		.when(this.rabitMQConsumer).startConsume(Mockito.anyString(),Mockito.any());
 	}
+	private static volatile StompSession WsSession;
 	@Test
 	@Order(1)
 	public void TryCreateChat() throws InterruptedException {
 		//just call it, it manage register new User, ID will be 0, if database is empty
 		this.autToken.getAuthorizationHeaders(this.webTestClient);
 		
-		StompSession ses=this.ws.makeConnectionToServer(this.port,this.webTestClient,this.handShakePath);
-		ses.send("/app"+WebSocketEndPointPath.createChatEndPoint, this.dto);
+		this.WsSession=this.ws.makeConnectionToServer(this.port,this.webTestClient,this.handShakePath);
 		assertTrue(true);
 	}
+	@Test
+	@Order(2)
+	public void SendMessageToChat() throws InterruptedException {
+		this.WsSession.send("/app"+WebSocketEndPointPath.Chat_SendMessagePath, this.fakeChatMessage);
+		assertTrue(true);
+	}
+	
 	//@MessageMapping(WebSocketEndPointPath.createChatEndPoint)
 	
 }

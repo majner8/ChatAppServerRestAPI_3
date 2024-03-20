@@ -25,67 +25,86 @@ public class MessageDTO implements DTO {
 		return version;
 	}
 
-	public void setVersion(long version) {
+	public MessageDTO setVersion(long version) {
 		this.version = version;
+		return this;
 	}
 
 	public String getReferencMessageID() {
 		return referencMessageID;
 	}
 
-	public void setReferencMessageID(String referencMessageID) {
+	public MessageDTO setReferencMessageID(String referencMessageID) {
 		this.referencMessageID = referencMessageID;
+		return this;
+
 	}
 
 	public Enum getTypeOfAction() {
 		return typeOfAction;
 	}
 
-	public void setTypeOfAction(Enum typeOfAction) {
+	public MessageDTO setTypeOfAction(Enum typeOfAction) {
 		this.typeOfAction = typeOfAction;
+		return this;
+
 	}
 
 	public long getOrder() {
 		return order;
 	}
-	public void setOrder(long order) {
+	public MessageDTO setOrder(long order) {
 		this.order = order;
+		return this;
+
 	}
 	public String getChatID() {
 		return chatID;
 	}
-	public void setChatID(String chatID) {
+	public MessageDTO setChatID(String chatID) {
 		this.chatID = chatID;
+		return this;
+
 	}
 	public long getSenderID() {
 		return senderID;
 	}
-	public void setSenderID(long senderID) {
+	public MessageDTO setSenderID(long senderID) {
 		this.senderID = senderID;
+		return this;
+
 	}
 	public String getMessageID() {
 		return messageID;
 	}
-	public void setMessageID(String messageID) {
+	public MessageDTO setMessageID(String messageID) {
 		this.messageID = messageID;
+		return this;
+
 	}
 	public String getMessage() {
 		return message;
 	}
-	public void setMessage(String message) {
+	public MessageDTO setMessage(String message) {
 		this.message = message;
+		return this;
+
 	}
 	public LocalDateTime getReceivedTime() {
 		return receivedTime;
 	}
-	public void setReceivedTime(LocalDateTime receivedTime) {
+	public MessageDTO setReceivedTime(LocalDateTime receivedTime) {
 		this.receivedTime = receivedTime;
+		return this;
+
 	}
 	public boolean isWasMessageRemoved() {
 		return wasMessageRemoved;
 	}
-	public void setWasMessageRemoved(boolean wasMessageRemoved) {
+	public MessageDTO setWasMessageRemoved(boolean wasMessageRemoved) {
 		this.wasMessageRemoved = wasMessageRemoved;
+		return this;
+
 	}
 	
 	

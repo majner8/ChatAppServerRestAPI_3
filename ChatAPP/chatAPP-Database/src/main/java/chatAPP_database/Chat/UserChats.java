@@ -47,7 +47,8 @@ public class UserChats {
 	
 	@ManyToOne
 	//@Column(name=UserChats.joinChatColumnName)
-	@JoinColumn(name="chat",referencedColumnName=ChatEntity.chatIDColumnName)
+	@MapsId("chatID")
+	@JoinColumn(name=UserChats.chatIDcolumnName,referencedColumnName=ChatEntity.chatIDColumnName)
 	private ChatEntity chat;
 	
 	public UserChatInformationDTO convertEntityToDTO() {
