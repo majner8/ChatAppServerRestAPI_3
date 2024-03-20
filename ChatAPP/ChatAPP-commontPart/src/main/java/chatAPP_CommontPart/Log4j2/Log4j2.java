@@ -19,6 +19,8 @@ public class Log4j2 {
 	RequestLogAuthorization(MarkerManager.getMarker("")),
 	Aspect(MarkerManager.getMarker(""))
 	,
+	Bean(MarkerManager.getMarker(""))
+,
 	ObjectReferenceRemoving(MarkerManager.getMarker("")),
 	RabitMQ(MarkerManager.getMarker("")),
 	StartApp(MarkerManager.getMarker("")),
