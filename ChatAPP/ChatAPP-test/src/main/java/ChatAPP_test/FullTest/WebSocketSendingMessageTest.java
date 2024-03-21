@@ -23,9 +23,9 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerManager;
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
 import ChatAPP_test.WebSocket.MakeConnectionTOWebSocketTest;
+import chatAPP_CommontPart.ApplicationListener.WebSocketSessionListener;
 import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
 import chatAPP_DTO.Chat.CreateChatDTO;
 import chatAPP_DTO.Message.MessageDTO;
@@ -35,9 +35,6 @@ import chatAPP_DTO.Message.MessageDTO;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("test")
 public class WebSocketSendingMessageTest {
-
-	@MockBean
-	private RabbitMQConsumerManager rabitMQConsumer;
 	
 	@Autowired
 	private MakeConnectionTOWebSocketTest ws;
@@ -76,10 +73,10 @@ public class WebSocketSendingMessageTest {
 	    this.initMock();
 	}
 	private void initMock() {
-		Mockito.doNothing()
-		.when(this.rabitMQConsumer).startConsume(Mockito.anyString(),Mockito.any());
+		
 	}
 	private static volatile StompSession WsSession;
+	
 	@Test
 	@Order(1)
 	public void TryCreateChat() throws InterruptedException {
@@ -87,6 +84,9 @@ public class WebSocketSendingMessageTest {
 		this.autToken.getAuthorizationHeaders(this.webTestClient);
 		
 		this.WsSession=this.ws.makeConnectionToServer(this.port,this.webTestClient,this.handShakePath);
+		
+		this.WsSession.send("/app"+WebSocketEndPointPath.Config_StartConsumingPath,null);
+
 		assertTrue(true);
 	}
 	@Test

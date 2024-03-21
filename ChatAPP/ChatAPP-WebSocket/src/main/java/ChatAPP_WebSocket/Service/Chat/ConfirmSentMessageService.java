@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
 import ChatAPP_RabitMQ.Consumer.MessageAcknowledger;
-import ChatAPP_RabitMQ.Listener.rabitMQListenerService;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 public class ConfirmSentMessageService {
 

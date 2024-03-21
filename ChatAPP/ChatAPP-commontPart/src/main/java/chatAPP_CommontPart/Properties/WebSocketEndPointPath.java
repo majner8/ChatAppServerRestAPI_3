@@ -4,7 +4,7 @@ package chatAPP_CommontPart.Properties;
 
 public class WebSocketEndPointPath  {
 
-	public static final String Config_StartConsumingPath="";
+	public static final String Config_StartConsumingPath="/Connected";
 	public static final String Config_StopConsumingPath="";
 	public static final String AcknowledgeEndPoint_ConfirmMessage="";
 	

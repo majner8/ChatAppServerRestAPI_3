@@ -6,28 +6,34 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 
 import com.rabbitmq.client.Channel;
 
+import chatAPP_CommontPart.ApplicationListener.WebSocketSessionListener;
 import chatAPP_CommontPart.Log4j2.Log4j2;
+import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 @Component
-@Order(1)
-public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListManager,MessageAcknowledger,RabbitMQConsumerManager {
+public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListManager,MessageAcknowledger,WebSocketSessionListener {
 
+	@Autowired
+	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue 
+	webSocketSession;
 	private final Map<String,Map<String,Messages>>listOfMessage=
 			Collections.synchronizedMap(new HashMap<>());
-	
 	@Override
-	public void startConsume(String userdeviceID,StompHeaderAccessor headerAccessor) {
-		this.listOfMessage.put(userdeviceID, Collections.synchronizedMap(new HashMap<String,Messages>()));
+	public void UserConnect() {
+		this.listOfMessage.put(this.webSocketSession.getConnectionID(), Collections.synchronizedMap(new HashMap<String,Messages>()));
+
 	}
 
 	@Override
-	public void stopConsume(String userdeviceID,StompHeaderAccessor headerAccessor)  {
+	public void UserDisconnect() {
+		String userdeviceID=this.webSocketSession.getConnectionID();
 		Map<String,Messages> mes;
 		//have to nack all messages
 		synchronized(this.listOfMessage) {
@@ -68,6 +74,8 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 		}
 		
 	}
+	
+
 		public static final class Messages{
 			private  String messageID;
 			private long deliveryTag;
@@ -175,6 +183,8 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 		
 		
 	}
+
+
 
 
 

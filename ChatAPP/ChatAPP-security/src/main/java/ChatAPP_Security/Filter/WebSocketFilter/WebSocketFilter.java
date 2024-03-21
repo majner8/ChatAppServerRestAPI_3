@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
@@ -61,6 +62,8 @@ public abstract class WebSocketFilter<T>  implements applyWebSocketFilter {
 			Log4j2.log.debug(Log4j2.MarkerLog.Security.getMarker(),
 					"Apply Ws security filter"+this.getClass().getName());
 		}
+		if(this.pathToSkip.stream().anyMatch(s->s.matches(callEndPoint))) return;
+		
 		T ob=null;
 		for(Object object:param) {
 			if(this.objectToVerify.isInstance(object)) {
@@ -69,7 +72,6 @@ public abstract class WebSocketFilter<T>  implements applyWebSocketFilter {
 			}
 		}
 		if(ob==null)throw  new IllegalArgumentException();
-		if(this.pathToSkip.stream().anyMatch(s->s.matches(callEndPoint))) return;
 		if(this.applyEveryTime) {
 			this.runFilter(callEndPoint, ob);
 			return;
@@ -95,8 +97,20 @@ public abstract class WebSocketFilter<T>  implements applyWebSocketFilter {
 		@Override
 		public void applyFilter(String callEndPoint,Object [] para) {
 			Iterator<WebSocketFilter> fil=this.filters.iterator();
-			while(fil.hasNext()) {
-				fil.next().applyFilter(callEndPoint,para);
+			
+			try {
+				while (fil.hasNext()) {
+
+					fil.next().applyFilter(callEndPoint, para);
+				} 
+			} catch (AccessDeniedException e) {
+				if(Log4j2.log.isDebugEnabled()) {
+					Log4j2.log.debug(Log4j2.MarkerLog.Security.getMarker(),
+							String.format("Security webSocket filter denied access, filter name %s", 
+									this.getClass().getName()));
+					
+				}
+				throw e;
 			}
 		}
 		

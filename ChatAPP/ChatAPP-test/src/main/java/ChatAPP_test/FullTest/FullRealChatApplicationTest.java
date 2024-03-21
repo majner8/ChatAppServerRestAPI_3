@@ -19,7 +19,6 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerManager;
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
 import ChatAPP_test.WebSocket.MakeConnectionTOWebSocketTest;
 import chatAPP_CommontPart.Properties.WebSocketEndPointPath;

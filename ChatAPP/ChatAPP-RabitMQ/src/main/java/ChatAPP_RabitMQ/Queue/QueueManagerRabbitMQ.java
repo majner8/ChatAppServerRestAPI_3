@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.AOP.BeanInitAnnotation.First;
 import chatAPP_CommontPart.ApplicationListener.WebSocketSessionListener;
+import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 /**Class manage declare and bind Queue for connected userDevice */
@@ -25,7 +26,11 @@ public class QueueManagerRabbitMQ implements WebSocketSessionListener {
 	private AmqpAdmin amqpAdmin;
 	@Override
 	public void UserConnect() {
-		// TODO Auto-generated method stub
+		if(Log4j2.log.isDebugEnabled()) {
+			Log4j2.log.debug(Log4j2.MarkerLog.RabitMQ.getMarker(),String.format("Chech/declare userDevice Queue. Queue name: %s ",
+					this.webSocketSession.getConnectionID()));
+		}
+		
 		String queueName=this.webSocketSession.getConnectionID();
 		if(this.amqpAdmin.getQueueInfo(queueName)!=null) {
 			// queue already exist
