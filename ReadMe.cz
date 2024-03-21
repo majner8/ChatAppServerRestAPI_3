@@ -1,0 +1,27 @@
+Server pro chatovací aplikaci umožňující online/offline komunikaci, s možností pro uživatele být připojený z více zařízení současně.
+
+Projekt je vyvíjen v ekosystému Maven, ve frameworku Spring Boot. Pro lepší přehlednost, udržitelnost a jednodušší testování je projekt organizován jako multi-modulový Maven projekt, s využitím principu interface-based programming.
+
+## TechStack
+### RabbitMQ Server
+Technologie RabbitMQ byla k tomuto projektu zvolena kvůli jejímu modelu založeném na výměně zpráv pomocí exchanges a front (queues). Z důvodu předpokládaného nestabilního spojení mezi serverem a klientem je v případě výpadku spojení využití RabbitMQ klíčové pro obnovení toku zpráv, bez nutnosti synchronizace s databází na straně serveru.
+
+### Spring WebSocket
+Technologie WebSocket, na rozdíl od klasických HTTP dotazů, umožňuje oboustrannou komunikaci mezi klientem a serverem. Tento aspekt je v případě chatovací aplikace klíčový, jelikož dochází ke snížení latence a nedochází k nadbytečnému zatížení serveru.
+
+### Spring Security
+Je preferovanou volbou v ekosystému Spring pro zajištění zabezpečení serveru. V projektu je jeho využití klíčové díky nasazení OncePerRequestFilter, který umožňuje filtrovat a autorizovat jednotlivé HTTP dotazy.
+
+### Spring JPA
+Spring JPA je preferovanou volbou v ekosystému Spring pro správu databáze. Technologie poskytuje abstrakci při práci s databází s minimalizováním použití SQL jazyka. Díky technologii je možné jednotlivé tabulky reprezentovat jednotlivými entity třídami. Abstraktní práci s databází umožňuje JpaRepository.
+
+### Aspektově Orientované Programování (AOP)
+Technologie AOP je v projektu klíčová při zpracování jednotlivých WebSocket zpráv. V projektu je AOP implementováno pro spuštění security filtrů před zahájením zpracování přijatých zpráv. Technologie zároveň umožňuje snadnou škálovatelnost v případě zvýšených bezpečnostních požadavků.
+
+## Další technologie:
+- MySQL 8
+- JWT Authorization
+- Logování: org.apache.logging.log4j
+
+## Stav projektu:
+Projekt je ve fázi vývoje. Aktuálně probíhá testování jednotlivých tříd v modulu ChatApp-test, zaměřující se na zajištění kvality a spolehlivosti aplikace.
