@@ -1,0 +1,27 @@
+Server for a chat application enabling online/offline communication, with the possibility for users to be connected from multiple devices simultaneously.
+
+The project is developed within the Maven ecosystem, using the Spring Boot framework. For better clarity, maintainability, and simpler testing, the project is organized as a multi-module Maven project, utilizing the principle of interface-based programming.
+
+## TechStack
+### RabbitMQ Server
+The RabbitMQ technology was chosen for this project due to its model based on message exchanges using exchanges and queues. Due to the anticipated unstable connection between the server and the client, the use of RabbitMQ is key for restoring the flow of messages in the event of a connection failure, without the need for synchronization with the database on the server side.
+
+### Spring WebSocket
+Unlike traditional HTTP requests, WebSocket technology allows bidirectional communication between the client and the server. This aspect is crucial for a chat application, as it reduces latency and does not cause excessive server load.
+
+### Spring Security
+It is the preferred choice in the Spring ecosystem for securing the server. In the project, its use is key thanks to the deployment of OncePerRequestFilter, which allows filtering and authorizing individual HTTP requests.
+
+### Spring JPA
+Spring JPA is the preferred choice in the Spring ecosystem for database management. The technology provides an abstraction for working with the database, minimizing the use of SQL language. Thanks to the technology, individual tables can be represented by individual entity classes. JpaRepository enables abstract work with the database.
+
+### Aspect-Oriented Programming (AOP)
+AOP technology is key in the project for processing individual WebSocket messages. In the project, AOP is implemented to run security filters before processing received messages. The technology also allows for easy scalability in case of increasing security demands.
+
+## Additional Technologies:
+- MySQL 8
+- JWT Authorization
+- Logging: org.apache.logging.log4j
+
+## Project Status:
+The project is in the development phase. Currently, individual classes in the ChatApp-test module are being tested, focusing on ensuring the quality and reliability of the application.
