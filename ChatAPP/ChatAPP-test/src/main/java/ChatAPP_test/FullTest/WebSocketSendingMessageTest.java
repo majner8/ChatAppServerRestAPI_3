@@ -86,7 +86,7 @@ public class WebSocketSendingMessageTest {
 		this.WsSession=this.ws.makeConnectionToServer(this.port,this.webTestClient,this.handShakePath);
 		
 		this.WsSession.send("/app"+WebSocketEndPointPath.Config_StartConsumingPath,null);
-
+		Thread.sleep(5000);
 		assertTrue(true);
 	}
 	@Test

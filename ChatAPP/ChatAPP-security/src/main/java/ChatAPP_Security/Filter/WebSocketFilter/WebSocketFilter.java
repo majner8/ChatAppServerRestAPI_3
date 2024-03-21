@@ -62,6 +62,18 @@ public abstract class WebSocketFilter<T>  implements applyWebSocketFilter {
 			Log4j2.log.debug(Log4j2.MarkerLog.Security.getMarker(),
 					"Apply Ws security filter"+this.getClass().getName());
 		}
+		
+		if(this.pathToSkip.stream().anyMatch(s->s.matches(callEndPoint))) return;
+		if(this.applyEveryTime) {
+			this.doFilter(callEndPoint, param);
+			return;
+		}	
+		
+		if(this.pathToApply.stream().anyMatch(s->s.matches(callEndPoint))) this.doFilter(callEndPoint, param);;
+		return;
+	}
+	private void doFilter(String callEndPoint,Object [] param) {
+		
 		T ob=null;
 		for(Object object:param) {
 			if(this.objectToVerify.isInstance(object)) {
@@ -70,16 +82,9 @@ public abstract class WebSocketFilter<T>  implements applyWebSocketFilter {
 			}
 		}
 		if(ob==null)throw  new IllegalArgumentException();
-		if(this.pathToSkip.stream().anyMatch(s->s.matches(callEndPoint))) return;
-		if(this.applyEveryTime) {
-			this.runFilter(callEndPoint, ob);
-			return;
-		}	
-		
-		if(this.pathToApply.stream().anyMatch(s->s.matches(callEndPoint))) this.runFilter(callEndPoint,ob);
-		return;
-	}
 
+		this.runFilter(callEndPoint, ob);
+	}
 	public abstract void runFilter(String callEndPoint,T parametrObject);
 	
 	@Component

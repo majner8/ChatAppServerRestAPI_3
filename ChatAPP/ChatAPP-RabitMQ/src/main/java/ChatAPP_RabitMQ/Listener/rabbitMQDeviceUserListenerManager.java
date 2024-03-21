@@ -46,8 +46,9 @@ public class rabbitMQDeviceUserListenerManager implements WebSocketSessionListen
 	}
 	@Override
 	public void UserConnect() {
-		this.StartConsuming();
 		Log4j2.log.debug(Log4j2.MarkerLog.RabitMQ.getMarker(),"I am starting consuming Message! deviceUserID: "+this.webSocketSession.getConnectionID());
+
+		this.StartConsuming();
 		
 	}
 
