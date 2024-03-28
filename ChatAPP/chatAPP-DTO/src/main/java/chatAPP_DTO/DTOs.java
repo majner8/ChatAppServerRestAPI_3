@@ -1,6 +1,6 @@
 package chatAPP_DTO;
 
-public interface DTO {
+public interface DTOs{
 
 	public String getMessageID();
 }

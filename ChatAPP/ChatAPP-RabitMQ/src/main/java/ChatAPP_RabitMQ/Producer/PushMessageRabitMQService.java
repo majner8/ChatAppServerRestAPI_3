@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import ChatAPP_Chat.ChatManagement.ChatManagementInterface;
 import ChatAPP_RabitMQ.RabitMQProperties;
 import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
-import chatAPP_DTO.DTO;
+import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue;
 
 @Component
 public class PushMessageRabitMQService implements RabitMQMessageProducerInterface {
@@ -27,17 +27,16 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 
 	@Autowired
 	private RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue rabitMQPropertiesThreadLocal;
-
+	@Autowired
+	private WebSocketThreadLocalSessionValue webSocketProperties;
 	
-	private void PushMessageToRabitMQ(String routingKey,DTO message,MessagePostProcessor messagePostProcessor ) {
+	private void PushMessageToRabitMQ(String routingKey,Object message,MessagePostProcessor messagePostProcessor ) {
         this.rabbitTemplate.convertAndSend(this.properties.getTopicExchangeName(), routingKey, message, messagePostProcessor);
 	}
 	
-	private MessagePostProcessor getMessagePostProcessor(DTO message) {
+	private MessagePostProcessor getMessagePostProcessor(Object message) {
 		 return RBMQMessage -> {
 			   MessageProperties messageProperties =new MessageProperties();
-			   messageProperties.setMessageId(message.getMessageID());
-			  // messageProperties.setType(mesType.name());
 			   messageProperties.setPriority(this.rabitMQPropertiesThreadLocal.getRabitMQPriority()); 
 			   messageProperties.setHeader(this.properties.getHaveToBeMessageRequiredHeaderName(), this.rabitMQPropertiesThreadLocal.isHaveToBeMessageReDeliver());
 			   messageProperties.setHeader(this.properties.getMessagePropertiesWebSocketEndPointHeaderName(), this.rabitMQPropertiesThreadLocal.getWebSocketEndPointPath());
@@ -48,19 +47,19 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 	
 
 	@Override
-	public void PushMessageToRabitMQ(DTO message, long UserRecipientId) {
+	public void PushMessageToRabitMQ(Object message, long UserRecipientId) {
 		this.PushMessageToRabitMQ(String.valueOf(UserRecipientId), message, this.getMessagePostProcessor(message)); 
 	}
 	@Override
-	public void PushMessageToRabitMQ(DTO message, String queueName) {
+	public void PushMessageToRabitMQ(Object message, String queueName) {
 		this.PushMessageToRabitMQ(queueName, message, this.getMessagePostProcessor(message));
 
 	}
 
 	@Override
-	public void pushMessageToRabitMQ(String chatID, DTO... message) {
+	public void pushMessageToRabitMQ(String chatID, Object... message) {
 		Set<Long>users=this.chatManagement.getUserIDofMembers(chatID, true);
-		for(DTO m:message) {
+		for(Object m:message) {
 			this.PushMessageToRabitMQ(m, 
 					users);		
 			}

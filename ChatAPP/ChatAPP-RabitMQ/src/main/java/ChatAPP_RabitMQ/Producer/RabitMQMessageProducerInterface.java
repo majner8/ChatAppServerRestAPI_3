@@ -3,7 +3,6 @@ package ChatAPP_RabitMQ.Producer;
 import java.util.List;
 import java.util.Set;
 
-import chatAPP_DTO.DTO;
 
 
 /**Interface set couple of metod, which manage pushing message to rabitMQ.
@@ -12,15 +11,15 @@ import chatAPP_DTO.DTO;
 public interface RabitMQMessageProducerInterface {
 
 
-	public void PushMessageToRabitMQ(DTO message,long UserRecipientId);
-	public default void PushMessageToRabitMQ(DTO message,Set<Long> UserRecipientIds) {
+	public void PushMessageToRabitMQ(Object message,long UserRecipientId);
+	public default void PushMessageToRabitMQ(Object message,Set<Long> UserRecipientIds) {
 		UserRecipientIds.forEach((x)->{
 			this.PushMessageToRabitMQ(message, x);
 		});
 	}
 	
-	public void PushMessageToRabitMQ(DTO message, String queueName);
-	public default void PushMessageToRabitMQ(List<DTO> messages,String queueName) {
+	public void PushMessageToRabitMQ(Object message, String queueName);
+	public default void PushMessageToRabitMQ(List<Object> messages,String queueName) {
 		synchronized(messages) {
 			messages.forEach((X)->{
 				this.PushMessageToRabitMQ(X, queueName);
@@ -28,5 +27,5 @@ public interface RabitMQMessageProducerInterface {
 		}
 	}
 	
-	public void pushMessageToRabitMQ(String chatID,DTO... message);
+	public void pushMessageToRabitMQ(String chatID,Object... message);
 	}

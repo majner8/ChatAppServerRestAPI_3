@@ -16,7 +16,6 @@ import ChatAPP_RabitMQ.Queue.RabbitMQQueueManagerInterface;
 import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
-import chatAPP_DTO.DTO;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.Chat.Messages.MessageEntity;
 import chatAPP_database.Chat.Messages.MessageRepositoryEntity;
@@ -60,7 +59,7 @@ public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceI
 					String.valueOf(offSetEnd)));
 		}
 		List<MessageEntity> mes=this.messageRepo.getQuickUserSynchronizationMessage(UserID, offSetStart, offSetEnd);
-		List<DTO> dto=mes.stream().map((mesEnt)->{
+		List<Object> dto=mes.stream().map((mesEnt)->{
 			if(Log4j2.log.isTraceEnabled()) {
 					Log4j2.log.trace(Log4j2.MarkerLog.WebSocket.getMarker(),
 							String.format("Loading Quick SynchronizationMessage"
