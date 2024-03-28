@@ -11,9 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDetail;
-import chatAPP_DTO.User.UserDTO.UserAuthPasswordDTO;
-import chatAPP_DTO.User.UserDTO.UserComunicationDTO;
-import chatAPP_DTO.User.UserDTO.UserProfileRegistrationDTO;
+import chatAPP_DTO.User.UserAuthPasswordDTO;
+import chatAPP_DTO.User.UserComunicationDTO;
+import chatAPP_DTO.User.UserProfileRegistrationDTO;
 import chatAPP_database.User.HttpRequestUserEntity;
 import chatAPP_database.User.UserAuthEntity;
 import chatAPP_database.User.UserAuthEntityRepository;

@@ -8,14 +8,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import ChatAPP_RabitMQ.RabitMQProperties;
-import chatAPP_CommontPart.AOP.BeanInitAnnotation.Last;
 import chatAPP_CommontPart.ApplicationListener.WebSocketSessionListener;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 /**Class is responsible for starting consuming from queue */
 @Component
-@Last
 public class rabbitMQDeviceUserListenerManager implements WebSocketSessionListener{
 	@Autowired
     private ConnectionFactory connectionFactory;

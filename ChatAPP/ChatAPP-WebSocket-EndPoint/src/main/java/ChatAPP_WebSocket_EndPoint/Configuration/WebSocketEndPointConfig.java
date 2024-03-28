@@ -18,7 +18,6 @@ public class WebSocketEndPointConfig implements WebSocketEndPointConfigInterface
 
 	@Autowired
 	private RabitMQConsumingEndPointService service;
-	//async have to be used, because metod do not use rabitMQ annotation
 
 	@MessageMapping(WebSocketEndPointPath.Config_StartConsumingPath)
 	@Override

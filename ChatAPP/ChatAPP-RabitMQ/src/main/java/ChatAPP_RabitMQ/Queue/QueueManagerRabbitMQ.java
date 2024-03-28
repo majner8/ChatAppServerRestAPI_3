@@ -6,15 +6,15 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import chatAPP_CommontPart.AOP.BeanInitAnnotation.First;
 import chatAPP_CommontPart.ApplicationListener.WebSocketSessionListener;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 /**Class manage declare and bind Queue for connected userDevice */
-@First
+@Order(1)
 @Component
 public class QueueManagerRabbitMQ implements WebSocketSessionListener {
 	@Autowired

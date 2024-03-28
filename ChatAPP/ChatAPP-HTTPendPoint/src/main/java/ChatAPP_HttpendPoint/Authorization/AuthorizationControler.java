@@ -18,8 +18,8 @@ import ChatAPP_Security.Authorization.DeviceID.AuthorizationService;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_DTO.Authorization.TokenDTO;
-import chatAPP_DTO.User.UserDTO.UserAuthorizationDTO;
-import chatAPP_DTO.User.UserDTO.UserProfileRegistrationDTO;
+import chatAPP_DTO.User.UserAuthorizationDTO;
+import chatAPP_DTO.User.UserProfileRegistrationDTO;
 import chatAPP_database.User.HttpRequestUserEntity;
 
 @RestController
@@ -33,7 +33,8 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	private HttpRequestUserEntity userEntityScope;
 	
 	@Override
-	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,@Valid UserAuthorizationDTO userData) {
+	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,
+			@Valid UserAuthorizationDTO userData) {
 		// TODO Auto-generated method stub
 	
 		if(this.autService.doesUserExist(userData.getProfile(), false)) {
@@ -62,7 +63,8 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	}
 
 	@Override
-	public ResponseEntity<TokenDTO> login(@RequestAttribute String deviceID,@Valid UserAuthorizationDTO userData) {
+	public ResponseEntity<TokenDTO> login(@RequestAttribute String deviceID,
+			@Valid UserAuthorizationDTO userData) {
 		if(!this.autService.doesUserExist(userData.getProfile(), true)) {
 			//email/phone has not been registred
 			Log4j2.log.info(Log4j2.MarkerLog.Authorization.getMarker(),"Login was not sucessfull, email/phone were incorecct, user was not found");
@@ -82,7 +84,8 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	}
 
 	@Override
-	public ResponseEntity<TokenDTO> finishRegistration(@RequestAttribute String deviceID,@Valid UserProfileRegistrationDTO user) {
+	public ResponseEntity<TokenDTO> finishRegistration(@RequestAttribute String deviceID,
+			@Valid UserProfileRegistrationDTO user) {
 		
 		if(Log4j2.log.isTraceEnabled()) {
 			Log4j2.log.trace(Log4j2.MarkerLog.Authorization.getMarker(),"I am processing finish registration EndPoint");

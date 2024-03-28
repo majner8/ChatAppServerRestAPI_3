@@ -46,7 +46,6 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import ChatAPP_RabitMQ.Consumer.RabbitMQConsumerManager;
 import ChatAPP_Security.RequestPermision.MessageRequestPermision;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
@@ -72,8 +71,8 @@ public class WebSocketEndPointTest {
     private jwtTokenTestAuthorizationToken autToken;
     @SpyBean
     private ProcessChatMessageService process;
-    @MockBean
-    private RabbitMQConsumerManager consumerManager;
+   // @MockBean
+ //   private RabbitMQConsumerManager consumerManager;
   
     private static MessageDTO fakeMessage;
 	    @BeforeEach
@@ -119,8 +118,8 @@ public class WebSocketEndPointTest {
 			Log4j2.log.info("Retrieve Message, from SendMessage");
     		return null;
     	}).when(this.process).SendMessage( Mockito.any());
-    	Mockito.doNothing().when(this.consumerManager).startConsume(Mockito.anyString(), Mockito.any());
-    	Mockito.doNothing().when(this.consumerManager).stopConsume(Mockito.anyString(), Mockito.any());
+    //	Mockito.doNothing().when(this.consumerManager).startConsume(Mockito.anyString(), Mockito.any());
+   // 	Mockito.doNothing().when(this.consumerManager).stopConsume(Mockito.anyString(), Mockito.any());
     }
     private static String handshakePath;
    

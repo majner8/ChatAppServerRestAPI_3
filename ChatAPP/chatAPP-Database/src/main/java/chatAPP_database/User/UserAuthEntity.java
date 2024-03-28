@@ -6,7 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import chatAPP_DTO.User.UserDTO.UserAuthPasswordDTO;
+import chatAPP_DTO.User.UserAuthPasswordDTO;
+
+
 
 
 @Entity(name=UserAuthEntity.userAuthTableName)

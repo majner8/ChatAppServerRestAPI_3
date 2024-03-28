@@ -1,6 +1,7 @@
 package chatAPP_database.User;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,7 +49,7 @@ public class UserEntity {
 	@Column(name=UserEntity.nickColumnName)
 	private String Nick;
 	@Column(name=UserEntity.bornDateColumnName)
-	private LocalDateTime bornDate;
+	private LocalDate bornDate;
 	@javax.persistence.Version
 	private long Version;
 	
@@ -99,7 +100,7 @@ public class UserEntity {
 		
 		
 	}
-	public LocalDateTime getBornDate() {
+	public LocalDate getBornDate() {
 		return bornDate;
 	}
 	
@@ -112,7 +113,7 @@ public class UserEntity {
 		Version = version;
 	}
 
-	public void setBornDate(LocalDateTime bornDate) {
+	public void setBornDate(LocalDate bornDate) {
 		this.bornDate = bornDate;
 	}
 

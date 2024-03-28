@@ -33,7 +33,6 @@ import com.rabbitmq.client.AMQP.Channel;
 
 import ChatAPP_RabitMQ.Queue.RabbitMQQueueManagerInterface;
 import ChatAPP_RabitMQ.RabitMQProperties;
-import ChatAPP_RabitMQ.Listener.SimpleMessageListenerContainerManager;
 import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
 import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.RabitMQQueue;
 import chatAPP_CommontPart.AOP.RabitMQAnnotationAOP;
@@ -59,9 +58,7 @@ public class ConsumingMessageRabbitMQTest {
 
 	@Autowired
 	private RabitMQMessageProducerInterface push;
-	@Autowired
-	private SimpleMessageListenerContainerManager ListenerContainerManager;
-	
+
 	@MockBean
 	private RabitMQThreadLocalSessionValue rabitMQPropertiesThreadLocal;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -120,9 +117,9 @@ public class ConsumingMessageRabbitMQTest {
         }).when(this.listener).onMessage(any(org.springframework.amqp.core.Message.class),any(com.rabbitmq.client.Channel.class));
         
 		//Start Consume
-		SimpleMessageListenerContainer container = 
-		this.ListenerContainerManager.createSimpleMessageListenerContainer(this.ses.getConnectionID());
-		container.start();
+//		SimpleMessageListenerContainer container = 
+//		this.ListenerContainerManager.createSimpleMessageListenerContainer(this.ses.getConnectionID());
+//	container.start();
         boolean completed = latch.await(5, TimeUnit.SECONDS);
 
         if(completed==false) {

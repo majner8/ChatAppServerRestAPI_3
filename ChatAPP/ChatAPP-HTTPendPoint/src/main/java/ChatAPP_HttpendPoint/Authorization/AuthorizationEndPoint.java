@@ -14,20 +14,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ChatAPP_Security.Authorization.UnAuthorizatePath;
 import ChatAPP_Security.Filter.HttpRequestFilter.DefineFilterSkipPath;
 import chatAPP_DTO.Authorization.TokenDTO;
-import chatAPP_DTO.User.UserDTO.UserAuthorizationDTO;
-import chatAPP_DTO.User.UserDTO.UserProfileRegistrationDTO;
+import chatAPP_DTO.User.UserAuthorizationDTO;
+import chatAPP_DTO.User.UserProfileRegistrationDTO;
 
 public interface AuthorizationEndPoint {
 
 
 	@PostMapping(value="${httpEndPointPath.Authorization.register}")
-	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,@RequestBody @Valid UserAuthorizationDTO 
+	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,
+			@RequestBody @Valid UserAuthorizationDTO 
 			userData);
 	@PostMapping(value="${httpEndPointPath.Authorization.login}")
 	public ResponseEntity<TokenDTO> login(@RequestAttribute String deviceID,@RequestBody @Valid UserAuthorizationDTO 
 			userData);
 	@PostMapping(value="${httpEndPointPath.Authorization.finishRegistration}")
-	public ResponseEntity<TokenDTO>finishRegistration(@RequestAttribute String deviceID,@RequestBody @Valid UserProfileRegistrationDTO user);
+	public ResponseEntity<TokenDTO>finishRegistration(@RequestAttribute String deviceID,
+			@RequestBody @Valid UserProfileRegistrationDTO user);
 	
 	@Component
 	public static final class AuthorizationPath implements UnAuthorizatePath,DefineFilterSkipPath.pathForAuthorizationFilterFilter{
