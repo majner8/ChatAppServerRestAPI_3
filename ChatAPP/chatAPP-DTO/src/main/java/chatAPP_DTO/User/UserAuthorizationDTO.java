@@ -3,18 +3,19 @@ package chatAPP_DTO.User;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+
 public class UserAuthorizationDTO{
 	@NotNull
 	@Valid
-	private UserAuthPasswordDTO password;
+	private UserAuthPasswordDTOInput password;
 	@Valid
 	@NotNull
 	private UserComunicationDTO profile;
 	
-	public UserAuthPasswordDTO getPassword() {
+	public UserAuthPasswordDTOInput getPassword() {
 		return password;
 	}
-	public UserAuthorizationDTO setPassword(UserAuthPasswordDTO password) {
+	public UserAuthorizationDTO setPassword(UserAuthPasswordDTOInput password) {
 		this.password = password;
 		return this;
 	}

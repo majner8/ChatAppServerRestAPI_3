@@ -6,7 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import chatAPP_DTO.User.UserAuthPasswordDTO;
+import chatAPP_DTO.User.UserAuthPasswordDTOInput;
+
 
 
 
@@ -26,13 +27,18 @@ public class UserAuthEntity {
 	@Column(name=UserAuthEntity.lastChangePasswordEntityColumnName)
 	private LocalDateTime lastChangePassword;
 	
-	public UserAuthEntity(UserAuthPasswordDTO user,long userID) {
+	public UserAuthEntity(UserAuthPasswordDTOInput user,long userID) {
+		this.userId=userID;
+		this.password=user.getPassword();
+		this.lastChangePassword=LocalDateTime.now();
+		
+	}
+	public UserAuthEntity(UserAuthPasswordDTOInput.UserAuthPasswordDTOOutPut user,long userID) {
 		this.userId=userID;
 		this.password=user.getPassword();
 		this.lastChangePassword=user.getLastPasswordChange();
 		
 	}
-	
 	public UserAuthEntity() {
 		
 	}

@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDetail;
-import chatAPP_DTO.User.UserAuthPasswordDTO;
+import chatAPP_DTO.User.UserAuthPasswordDTOInput;
 import chatAPP_DTO.User.UserComunicationDTO;
 import chatAPP_DTO.User.UserProfileRegistrationDTO;
 import chatAPP_database.User.HttpRequestUserEntity;
@@ -47,7 +47,7 @@ public class AuthorizationService {
 	
 	}
 	@Transactional
-	public void register(UserComunicationDTO user,UserAuthPasswordDTO password) {
+	public void register(UserComunicationDTO user,UserAuthPasswordDTOInput password) {
 		
 		UserEntity userEnt=new UserEntity();
 		userEnt.setEmail(user.getEmail());
@@ -63,7 +63,7 @@ public class AuthorizationService {
 	}
 	
 	/**Metod compare sent password and saved password in database */
-	public boolean login(UserAuthPasswordDTO password) {
+	public boolean login(UserAuthPasswordDTOInput password) {
 		long userID=this.RequestUserEntity.getUserEntity().getUserId();
 		Optional <UserAuthEntity> user=this.passwordRepo.findById(userID);
 			if(user.isEmpty()) {
