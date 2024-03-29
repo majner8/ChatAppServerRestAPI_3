@@ -1,4 +1,4 @@
-package chatAPP_CommontPart.AOP.Validator;
+package chatAPP_DTO.Validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,6 +11,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
+import chatAPP_DTO.User.UserComunicationDTO;
+
+
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = MultipleNullChechValidatorUserComunicationDTO.MultipleNullChechValidatorClass.class)
@@ -20,15 +23,15 @@ public @interface MultipleNullChechValidatorUserComunicationDTO {
     Class<?>[] groups() default {};
     
     Class<? extends Payload>[] payload() default {};
-    String[]  multipleField();
     
-    public static class MultipleNullChechValidatorClass implements ConstraintValidator<MultipleNullChechValidatorUserComunicationDTO, Object>{
+    public static class MultipleNullChechValidatorClass implements ConstraintValidator<MultipleNullChechValidatorUserComunicationDTO, UserComunicationDTO>{
 
 		@Override
-		public boolean isValid(Object value, ConstraintValidatorContext context) {
+		public boolean isValid(UserComunicationDTO value, ConstraintValidatorContext context) {
 			// TODO Auto-generated method stub
 			return false;
 		}
+		
     	
     }
 }

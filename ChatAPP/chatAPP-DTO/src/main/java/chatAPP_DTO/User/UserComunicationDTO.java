@@ -9,12 +9,9 @@ import javax.validation.constraints.Size;
 
 public class UserComunicationDTO{
 	@Email
-	@NotNull
 	private String email;
-	@NotNull
 	@Pattern(regexp = "^[0-9]{1,3}$")
 	private String phonePreflix;
-	@NotNull
 	@Pattern(regexp = "^[0-9]{1,12}$")
 	private String phone;
 	//have to add validation, that phone and phonePreflix cannot be null,
