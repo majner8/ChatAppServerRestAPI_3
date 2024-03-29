@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.validation.ConstraintViolation;
@@ -125,6 +126,22 @@ public class UserDataIntegrityTest {
 	}
 	
 	private void makeValidation(Object toValidate,Object... expectValue) {
-		this.validator
+		AtomicBoolean xx=new AtomicBoolean();
+		Set<ConstraintViolation<Object>> val=this.validator.validate(toValidate);	
+		xx.set(true);
+        assertEquals(expectValue.length,val.size());
+
+		val.forEach((x)->{
+			for(Object o:expectValue) {
+				if(x.getInvalidValue()==null) {
+					if(expectValue==null) xx.set(true);
+				}
+				else {
+				if(x.getInvalidValue().equals(o)) xx.set(true);
+				}
+			}
+			assertEquals(true,xx.get());
+		});
+		
 	}
 }
