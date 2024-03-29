@@ -70,6 +70,7 @@ public class FullRealChatApplicationTest {
 	private void initMock() {
 	}
 	private static volatile StompSession WsSession;
+	
 	@Test
 	@Order(1)
 	public void TryCreateChat() throws InterruptedException {

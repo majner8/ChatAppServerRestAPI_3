@@ -20,10 +20,6 @@ import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 import ChatAPP_Security.Authorization.DeviceID.DeviceIDGenerator;
 import ChatAPP_Security.Properties.SecurityProperties;
 import chatAPP_DTO.Authorization.TokenDTO;
-import chatAPP_DTO.User.UserDTO.UserAuthPasswordDTO;
-import chatAPP_DTO.User.UserDTO.UserAuthorizationDTO;
-import chatAPP_DTO.User.UserDTO.UserComunicationDTO;
-import chatAPP_DTO.User.UserDTO.UserProfileDTO;
 
 @Component
 @Profile("test")

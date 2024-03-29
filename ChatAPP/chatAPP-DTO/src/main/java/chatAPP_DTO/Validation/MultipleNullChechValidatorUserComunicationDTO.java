@@ -4,14 +4,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Field;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import chatAPP_DTO.User.UserComunicationDTO;
+
+
+
 
 
 @Target(ElementType.TYPE)
@@ -24,12 +25,13 @@ public @interface MultipleNullChechValidatorUserComunicationDTO {
     
     Class<? extends Payload>[] payload() default {};
     
-    public static class MultipleNullChechValidatorClass implements ConstraintValidator<MultipleNullChechValidatorUserComunicationDTO, UserComunicationDTO>{
+    public static  class MultipleNullChechValidatorClass implements ConstraintValidator<MultipleNullChechValidatorUserComunicationDTO, UserComunicationDTO>{
 
 		@Override
 		public boolean isValid(UserComunicationDTO value, ConstraintValidatorContext context) {
-			// TODO Auto-generated method stub
-			return false;
+			if(value.getEmail()==null&&(value.getPhone()==null||value.getPhonePreflix()==null))return false;
+			if(value.getPhone()==null||value.getPhonePreflix()==null) return false;
+			return true;
 		}
 		
     	
