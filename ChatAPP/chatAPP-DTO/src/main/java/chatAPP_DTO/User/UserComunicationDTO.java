@@ -3,14 +3,15 @@ package chatAPP_DTO.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserComunicationDTO{
 	@Email
 	@NotNull
 	private String email;
-	@Max(3)
+	@Size(max=3)
 	private String phonePreflix;
-	@Max(12)
+	@Size(max=12)
 	private String phone;
 
 	public String getEmail() {

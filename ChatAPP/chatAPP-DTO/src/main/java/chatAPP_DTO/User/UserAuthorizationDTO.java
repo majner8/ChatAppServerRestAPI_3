@@ -10,6 +10,7 @@ public class UserAuthorizationDTO{
 	@Valid
 	@NotNull
 	private UserComunicationDTO profile;
+	
 	public UserAuthPasswordDTO getPassword() {
 		return password;
 	}

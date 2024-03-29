@@ -3,18 +3,21 @@ package chatAPP_DTO.User;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserProfileDTO{
 	@NotNull
 	@NotEmpty
+	@Pattern(regexp = "(?!.*[0-9])")
 	private String SerName;
 	@NotNull
 	@NotEmpty
+	@Pattern(regexp = "(?!.*[0-9])")
 	private String lastName;
-	@Size(max=20)
 	@NotNull	
 	@NotEmpty
+	@Pattern(regexp = "(?!.*[0-9]).{3,15}")
 	private String nickName;
 	public String getSerName() {
 		return SerName;
