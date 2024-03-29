@@ -2,14 +2,16 @@ package chatAPP_DTO.User;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 
 public class UserAuthPasswordDTO{
-	@Pattern(regexp = "^(?=.*[0-9])(?=.*\\\\p{Lu})(?=.*\\\\p{Ll}).{3,15}$")
 	@NotNull
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*\\p{Lu})(?=.*\\p{Ll}).{3,15}$")
 	private String password;
+	
 	@PastOrPresent
 	@NotNull
 	private LocalDateTime lastPasswordChange;

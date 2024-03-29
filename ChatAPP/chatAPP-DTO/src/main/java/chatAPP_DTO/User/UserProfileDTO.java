@@ -7,17 +7,15 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserProfileDTO{
-	@NotNull
+	
 	@NotEmpty
-	@Pattern(regexp = "(?!.*[0-9])")
+	@Pattern(regexp = "^[^0-9]*$")
 	private String SerName;
-	@NotNull
 	@NotEmpty
-	@Pattern(regexp = "(?!.*[0-9])")
+	@Pattern(regexp = "^[^0-9]*$")
 	private String lastName;
-	@NotNull	
 	@NotEmpty
-	@Pattern(regexp = "(?!.*[0-9]).{3,15}")
+	@Pattern(regexp = "^[^0-9]{0,20}$")
 	private String nickName;
 	public String getSerName() {
 		return SerName;
