@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import chatAPP_DTO.DTO;
 
 
-public  class ChatInformationDTO implements DTO{
+public  class ChatInformationDTO {
 
 	
 	private long createdByUserID;
@@ -75,10 +74,5 @@ public  class ChatInformationDTO implements DTO{
 
 
 
-	@Override
-	public String getMessageID() {
-		// TODO Auto-generated method stub
-		return this.getChatID();
-	}
 
 }

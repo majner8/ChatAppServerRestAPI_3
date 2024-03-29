@@ -2,11 +2,10 @@ package chatAPP_DTO.Message;
 
 import java.time.LocalDateTime;
 
-import chatAPP_DTO.DTO;
 
 
 
-public class MessageDTO implements DTO {
+public class MessageDTO {
 
 	private long order;
 	private String chatID;
