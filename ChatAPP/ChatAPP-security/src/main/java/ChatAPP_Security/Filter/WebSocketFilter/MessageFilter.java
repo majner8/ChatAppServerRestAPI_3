@@ -9,10 +9,10 @@ import chatAPP_CommontPart.Security.SecurityParametrsFilter.MessageOwnerFilter;
 public class MessageFilter extends WebSocketFilter<MessageOwnerFilter> {
 
 	protected MessageFilter() {
-		super(MessageOwnerFilter.class, 
+		super(MessageOwnerFilter.class,
 				new String[] {WebSocketEndPointPath.MessagePreflix+".*"},
 				null);
-		
+
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class MessageFilter extends WebSocketFilter<MessageOwnerFilter> {
 		if(super.wsSession.getSessionOwnerUserID()!=parametrObject.getMessageOwner()) {
 			Log4j2.log.warn(Log4j2.MarkerLog.Security.getMarker(),
 					String.format("VerifyMessageOwnership was not sucesfull, ownerID is not same"
-							+"%s MessageIDOwner: %s %s sessionID: %s"					
+							+"%s MessageIDOwner: %s %s sessionID: %s"
 							, System.lineSeparator(),parametrObject.getMessageOwner(),System.lineSeparator(),super.wsSession.getSessionOwnerUserID()));
 			throw new AccessDeniedException("AccessDenied");
 		}

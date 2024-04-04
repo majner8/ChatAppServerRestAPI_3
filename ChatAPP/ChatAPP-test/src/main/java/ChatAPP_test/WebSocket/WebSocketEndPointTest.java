@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -16,17 +15,16 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
-import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
@@ -36,7 +34,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.WebSocketHttpHeaders;
-import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.socket.sockjs.client.SockJsClient;
@@ -46,7 +43,6 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import ChatAPP_Security.RequestPermision.MessageRequestPermision;
 import ChatAPP_WebSocket.Service.Chat.ProcessChatMessageService;
 import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
 import chatAPP_CommontPart.Log4j2.Log4j2;
@@ -73,21 +69,21 @@ public class WebSocketEndPointTest {
     private ProcessChatMessageService process;
    // @MockBean
  //   private RabbitMQConsumerManager consumerManager;
-  
+
     private static MessageDTO fakeMessage;
 	    @BeforeEach
     public void setup() {
 
-			this.fakeMessage=new MessageDTO();
-			this.fakeMessage.setChatID("");
-			this.fakeMessage.setMessage("");
-			this.fakeMessage.setMessageID("");
-			this.fakeMessage.setOrder(0);
-			this.fakeMessage.setReceivedTime(LocalDateTime.now());
-			this.fakeMessage.setReferencMessageID("");
-			this.fakeMessage.setSenderID(1);
-			this.fakeMessage.setVersion(0);
-			this.fakeMessage.setWasMessageRemoved(true);
+			WebSocketEndPointTest.fakeMessage=new MessageDTO();
+			WebSocketEndPointTest.fakeMessage.setChatID("");
+			WebSocketEndPointTest.fakeMessage.setMessage("");
+			WebSocketEndPointTest.fakeMessage.setMessageID("");
+			WebSocketEndPointTest.fakeMessage.setOrder(0);
+			WebSocketEndPointTest.fakeMessage.setReceivedTime(LocalDateTime.now());
+			WebSocketEndPointTest.fakeMessage.setReferencMessageID("");
+			WebSocketEndPointTest.fakeMessage.setSenderID(1);
+			//WebSocketEndPointTest.fakeMessage.setVersion(0);
+			WebSocketEndPointTest.fakeMessage.setWasMessageRemoved(true);
 
     	// Create a list of transports, including SockJS fallback options
     	List<Transport> transports = new ArrayList<>();
@@ -97,19 +93,19 @@ public class WebSocketEndPointTest {
     	SockJsClient sockJsClient = new SockJsClient(transports);
 
     	ObjectMapper objectMapper = new ObjectMapper();
-    	objectMapper.registerModule(new JavaTimeModule()); // Register module for Java 8 Date/Time support    
+    	objectMapper.registerModule(new JavaTimeModule()); // Register module for Java 8 Date/Time support
     	objectMapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     	MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
     	messageConverter.setObjectMapper(objectMapper);
-        
-        
+
+
         this.stompClient = new WebSocketStompClient(sockJsClient);
         this.stompClient.setMessageConverter(messageConverter);
         this.stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
-        this.handshakePath="ws://localhost:"+this.port+"//"+webSocketStoamppreflix;
+        WebSocketEndPointTest.handshakePath="ws://localhost:"+this.port+"//"+webSocketStoamppreflix;
         this.initMock();
     }
-    
+
     private void initMock() {
     	Mockito.doAnswer((x)->{
     		for(int i=0;i<10;i++) {
@@ -117,12 +113,12 @@ public class WebSocketEndPointTest {
     		}
 			Log4j2.log.info("Retrieve Message, from SendMessage");
     		return null;
-    	}).when(this.process).SendMessage( Mockito.any());
+    	}).when(this.process).SendMessage( ArgumentMatchers.any());
     //	Mockito.doNothing().when(this.consumerManager).startConsume(Mockito.anyString(), Mockito.any());
    // 	Mockito.doNothing().when(this.consumerManager).stopConsume(Mockito.anyString(), Mockito.any());
     }
     private static String handshakePath;
-   
+
     @Test
     @Order(1)
     public void MakeConnectionWithoutAuthrozation() throws InterruptedException  {
@@ -132,45 +128,45 @@ public class WebSocketEndPointTest {
     			 assertTrue((exception instanceof  javax.websocket.DeploymentException));
     		 }
          }
-    	 ;         
+    	 ;
       //   WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
-         
+
       //   this.autToken.getAuthorizationHeaders().forEach(authorizationHeader::add);
-       
+
          ListenableFuture< StompSession> ses=
         		 this.stompClient.connect(handshakePath, null, sessionHandler,new Object [0]);
         	try {
 				ses.get(10, TimeUnit.SECONDS);
-			} 
-        	
+			}
+
         	catch (ExecutionException e) {
-  
+
 			} catch (TimeoutException e) {
 				// TODO Auto-generated catch block
         		fail("Cannot connect with server, in set time");
-			}	 
-    	 
+			}
+
     }
-    
+
     @Test
     @Order(2)
     public void MakeConnectionWithAuthorization() throws InterruptedException  {
     	this.makeConnectionToServer();
-    	 
+
     }
 
-    
+
     @Test
     @Order(3)
     public void TryToSendMessage() throws InterruptedException {
 
     	StompSession ses=this.makeConnectionToServer();
-    	ses.send("/app"+WebSocketEndPointPath.Chat_SendMessagePath, this.fakeMessage);
+    	ses.send("/app"+WebSocketEndPointPath.Chat_SendMessagePath, WebSocketEndPointTest.fakeMessage);
     }
     public StompSession makeConnectionToServer() throws InterruptedException {
     	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-    	   
-         };         
+
+         };
          WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
          this.autToken.getAuthorizationHeaders(webTestClient).forEach(
         		 (K,V)->{
@@ -186,15 +182,15 @@ public class WebSocketEndPointTest {
         		StompSession x=ses.get(10, TimeUnit.SECONDS);
 				assertTrue(true);
 				return x;
-			} 
-        	
+			}
+
         	catch (ExecutionException e) {
         		fail(e);
-        		
+
 			} catch (TimeoutException e) {
 				// TODO Auto-generated catch block
         		fail("Cannot connect with server, in set time");
-			}	 
+			}
         	return null;
     }
 }

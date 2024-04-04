@@ -66,8 +66,8 @@ public class UserChatOverViewDTO {
 		this.order = order;
 		return this;
 	}
-	
-	
-	
-	
+
+
+
+
 }

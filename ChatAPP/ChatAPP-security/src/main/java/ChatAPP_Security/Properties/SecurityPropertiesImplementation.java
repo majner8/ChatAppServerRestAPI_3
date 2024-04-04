@@ -1,7 +1,6 @@
 package ChatAPP_Security.Properties;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -16,7 +15,7 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 
 @Component
 public class SecurityPropertiesImplementation implements SecurityProperties {
-	
+
 
 	public SecurityPropertiesImplementation() {
 	}
@@ -56,7 +55,7 @@ public class SecurityPropertiesImplementation implements SecurityProperties {
 	private Algorithm userAlgo;
 	//have to be done in PostConc
 	private Algorithm deviceAlgo;
-	
+
 	private final String securityRequestAttributeDeviceid="deviceID";
 	private final String userIsActiveAuthorityName="user_enable";
 	private final String userIsUnActiveAuthorityName="user_disable";
@@ -78,7 +77,7 @@ public class SecurityPropertiesImplementation implements SecurityProperties {
 					, this.securityTokenDurationUserAuthorization.toString()));
 
 		}
-		
+
 		Log4j2.log.info(Log4j2.MarkerLog.Security.getMarker(),"SecurityProperties was loaded properly");
 
 	}
@@ -100,13 +99,13 @@ public class SecurityPropertiesImplementation implements SecurityProperties {
 		// TODO Auto-generated method stub
 		return this.securityTokenPreflixDeviceid;
 	}
-	
+
 	@Override
 	public String getTokenAuthorizationUserPreflix() {
 		// TODO Auto-generated method stub
 		return this.securityTokenPreflixUser;
 	}
-	
+
 	@Override
 	public String getTokenDeviceIdHeaderName() {
 		// TODO Auto-generated method stub
@@ -117,7 +116,7 @@ public class SecurityPropertiesImplementation implements SecurityProperties {
 		// TODO Auto-generated method stub
 		return this.securityRequestHeaderNameTokenUser;
 	}
-	
+
 	@Override
 	public Date getJwtTokenDeviceIdDuration() {
 		// TODO Auto-generated method stub
@@ -165,5 +164,5 @@ public class SecurityPropertiesImplementation implements SecurityProperties {
 		return this.securityClaimNameIsuseractive;
 	}
 
-	
+
 }

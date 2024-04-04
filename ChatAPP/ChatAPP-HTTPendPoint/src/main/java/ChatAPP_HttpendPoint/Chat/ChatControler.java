@@ -14,10 +14,9 @@ import ChatAPP_Security.RequestPermision.MessageRequestPermision;
 import chatAPP_DTO.Chat.ChatInformationDTO;
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.Chat.chatEntityRepository;
-import chatAPP_database.Chat.Messages.MessageEntity;
 import chatAPP_database.Chat.Messages.MessageRepositoryEntity;
 public class ChatControler implements htppChatEndPoint {
-	
+
 	@Autowired
 	private MessageRepositoryEntity messageRepo;
 	@Autowired
@@ -26,7 +25,8 @@ public class ChatControler implements htppChatEndPoint {
 	private MessageRequestPermision messagePermision;
 	@Autowired
 	private SecurityContextDataInterface securityContextSession;
-	
+
+	@Override
 	public ResponseEntity<List<MessageDTO>> loadChatHistory(
 			 String chatID,
 			 long offSetStart,
@@ -38,24 +38,26 @@ public class ChatControler implements htppChatEndPoint {
 						this.messageRepo.convertEntityToDTO(En);
 						}).collect(Collectors.toList());
 		return ResponseEntity.ok(res);
-		
+
 	}
-	
+
+	@Override
 	public ResponseEntity<ChatInformationDTO> getChatInformation(
 			 String chatID) {
 		this.messagePermision.verifyUserAccestPermisionToChat(this.securityContextSession.getOwnerUserId(), chatID);
 		ChatInformationDTO dto= this.chatRepo.findByPrimaryKey(chatID).convertEntityToDTO();
 		return ResponseEntity.ok(dto);
 	}
+	@Override
 	public ResponseEntity<MessageDTO> getMessage(
 			 String chatID,
 			 long MessageOrder)
 	{
 		Optional<MessageDTO> mes=
-			
+
 				this.messageRepo.findByChatIDAndOrder(chatID, MessageOrder)
 				.map((E)->{
-					return this.messageRepo.convertEntityToDTO(E); 
+					return this.messageRepo.convertEntityToDTO(E);
 				});
 		if(mes.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -71,8 +73,8 @@ public class ChatControler implements htppChatEndPoint {
 					return	this.messageRepo.convertEntityToDTO(MessageEntity);
 				}
 				)).collect(Collectors.toList());
-		
-		return ResponseEntity.ok(message);		
+
+		return ResponseEntity.ok(message);
 	}
 }
 

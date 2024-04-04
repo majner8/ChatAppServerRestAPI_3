@@ -11,10 +11,10 @@ public class ConfirmSentMessageService {
 	private MessageAcknowledger rabitMQ;
 	@Autowired
 	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue session;
-	
+
 	public void ConfirmMessage(SimpMessageHeaderAccessor session,String messageID) {
-	
+
 		this.rabitMQ.AckMessage(this.session.getConnectionID(), messageID);
-		
+
 	}
 }

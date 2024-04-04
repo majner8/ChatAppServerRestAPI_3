@@ -9,7 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,35 +30,35 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 	private jwtToken.jwtTokenGenerator jwtTokenGenerator;
 	@Autowired
 	private HttpRequestUserEntity userEntityScope;
-	
+
 	@Override
 	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,
 			@Valid UserAuthorizationDTO userData) {
 		// TODO Auto-generated method stub
-	
+
 		if(this.autService.doesUserExist(userData.getProfile(), false)) {
 			//email/phone has been registred
 			Log4j2.log.info(Log4j2.MarkerLog.Authorization.getMarker(),"Email or Phone has been registred yet");
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-			
+
 		}
-	
+
 		try {
 			this.autService.register(userData.getProfile(),userData.getPassword());
 		}
 		catch(DataIntegrityViolationException e) {
 			//email or password was created after  chech, but before this request was process
 			Log4j2.log.warn(Log4j2.MarkerLog.Authorization.getMarker(),"Email or Phone has been registred yet");
-			
+
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 		Log4j2.log.info(Log4j2.MarkerLog.Authorization.getMarker(),"User was registred");
 		TokenDTO token=this.jwtTokenGenerator.generateAuthorizationToken(deviceID, this.userEntityScope.getUserEntity());
-		
+
 		return ResponseEntity.ok(token);
-	
-	
-	
+
+
+
 	}
 
 	@Override
@@ -80,13 +79,13 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 				"Login was sucesfull");
 		return ResponseEntity.ok(token);
 
-	
+
 	}
 
 	@Override
 	public ResponseEntity<TokenDTO> finishRegistration(@RequestAttribute String deviceID,
 			@Valid UserProfileRegistrationDTO user) {
-		
+
 		if(Log4j2.log.isTraceEnabled()) {
 			Log4j2.log.trace(Log4j2.MarkerLog.Authorization.getMarker(),"I am processing finish registration EndPoint");
 		}
@@ -115,16 +114,16 @@ public class AuthorizationControler implements AuthorizationEndPoint {
 
 		TokenDTO token=
 				this.jwtTokenGenerator.generateAuthorizationToken(deviceID, this.userEntityScope.getUserEntity());
-		return ResponseEntity				
+		return ResponseEntity
 				.status(status)
 				.body(token)
-				
+
 				;
-		
+
 		}
 
 	}
-	
-	
+
+
 
 

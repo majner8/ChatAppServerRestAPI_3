@@ -26,21 +26,21 @@ public class UserAuthEntity {
 	private String password;
 	@Column(name=UserAuthEntity.lastChangePasswordEntityColumnName)
 	private LocalDateTime lastChangePassword;
-	
+
 	public UserAuthEntity(UserAuthPasswordDTOInput user,long userID) {
 		this.userId=userID;
 		this.password=user.getPassword();
 		this.lastChangePassword=LocalDateTime.now();
-		
+
 	}
 	public UserAuthEntity(UserAuthPasswordDTOInput.UserAuthPasswordDTOOutPut user,long userID) {
 		this.userId=userID;
 		this.password=user.getPassword();
 		this.lastChangePassword=user.getLastPasswordChange();
-		
+
 	}
 	public UserAuthEntity() {
-		
+
 	}
 	public long getUserId() {
 		return userId;
@@ -60,6 +60,6 @@ public class UserAuthEntity {
 	public void setLastChangePassword(LocalDateTime lastChangePassword) {
 		this.lastChangePassword = lastChangePassword;
 	}
-	
-	
+
+
 }

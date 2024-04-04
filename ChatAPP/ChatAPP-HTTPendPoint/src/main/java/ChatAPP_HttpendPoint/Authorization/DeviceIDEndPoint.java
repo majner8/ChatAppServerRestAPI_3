@@ -19,14 +19,14 @@ public interface DeviceIDEndPoint {
 	/**Metod reuturn device ID token, have to be send with every request */
 	@GetMapping(value="${httpEndPointPath.Authorization.deviceID}")
 	public ResponseEntity<String> getDeviceIDToken(HttpServletRequest request);
-	
+
 	@Component
 	public static final class AuthorizationPath implements UnAuthorizatePath,DefineFilterSkipPath.pathForDeviceIdFilter,
 	DefineFilterSkipPath.pathForAuthorizationFilterFilter{
 
 		private String[] deviceID;
 		private List<String>path;
-		
+
 
 		public AuthorizationPath(
 				@Value("${httpEndPointPath.Authorization.deviceID}")
@@ -58,6 +58,6 @@ public interface DeviceIDEndPoint {
 			// TODO Auto-generated method stub
 			return this.path;
 		}
-		
+
 	}
 }

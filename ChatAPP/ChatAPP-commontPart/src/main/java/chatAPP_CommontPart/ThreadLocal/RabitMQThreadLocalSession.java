@@ -8,18 +8,18 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 public interface RabitMQThreadLocalSession {
 
 	public static ThreadLocal<RabitMQConsumingMessageProperties> rabitMQprop=
-			new ThreadLocal<RabitMQConsumingMessageProperties>();
-	
+			new ThreadLocal<>();
+
 	public default void setRabitMQConsumingMessageProperties(RabitMQConsumingMessageProperties value) {
 		Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(),"Setting RabbitMQTreadLocalSession");
-		this.rabitMQprop.set(value);
+		RabitMQThreadLocalSession.rabitMQprop.set(value);
 	}
 	public default void clear() {
 		Log4j2.log.trace(Log4j2.MarkerLog.Aspect.getMarker(),"Removing RabbitMQTreadLocalSession");
 
-		this.rabitMQprop.remove();
+		RabitMQThreadLocalSession.rabitMQprop.remove();
 	}
-	
+
 	public static interface RabitMQThreadLocalSessionValue{
 		public default int getRabitMQPriority() {
 			return 0;
@@ -37,19 +37,19 @@ public interface RabitMQThreadLocalSession {
 	}
 	@Component
 	public static class classJustForImplementationRabitMQThreadLocalSession implements RabitMQThreadLocalSession{}
-	
+
 	@Component
 	public static class classJustForImplementationRabitMQThreadLocalSessionValue implements RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue{
-		
+
 	}
-	
+
 	public static class RabitMQConsumingMessageProperties {
 
 	private String path;
 	private int rabitMQPriority;
 	private Class<?>dtoClass;
 	private boolean haveToBeMessageRequired;
-	
+
 	public RabitMQConsumingMessageProperties(String path, int rabitMQPriority, Class<?> dtoClass,
 			boolean haveToBeMessageRequired) {
 		this.path = path;
@@ -59,7 +59,7 @@ public interface RabitMQThreadLocalSession {
 	}
 	public static RabitMQConsumingMessageProperties create(RabitMQAnnotationAOP aop) {
 		return new RabitMQConsumingMessageProperties(aop.getPath(),aop.rabitMQPriory(),aop.dtoClass(),aop.haveToBeMessageRequired());
-		
+
 	}
 	public String getPath() {
 		return path;
@@ -73,7 +73,7 @@ public interface RabitMQThreadLocalSession {
 	public boolean isHaveToBeMessageRequired() {
 		return haveToBeMessageRequired;
 	}
-	
+
 }
 
 }

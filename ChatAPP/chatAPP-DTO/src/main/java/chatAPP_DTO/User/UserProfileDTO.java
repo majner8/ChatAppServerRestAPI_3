@@ -1,13 +1,10 @@
 package chatAPP_DTO.User;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 public class UserProfileDTO{
-	
+
 	@NotEmpty
 	@Pattern(regexp = "^[^0-9]*$")
 	private String SerName;
@@ -40,7 +37,7 @@ public class UserProfileDTO{
 		return this;
 
 	}
-	
-	
-	
+
+
+
 }

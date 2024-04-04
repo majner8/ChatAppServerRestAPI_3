@@ -1,6 +1,5 @@
 package ChatAPP_RabitMQ.Producer;
 
-import java.util.Arrays;
 import java.util.Set;
 
 import org.springframework.amqp.core.MessagePostProcessor;
@@ -29,26 +28,26 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 	private RabitMQThreadLocalSession.RabitMQThreadLocalSessionValue rabitMQPropertiesThreadLocal;
 	@Autowired
 	private WebSocketThreadLocalSessionValue webSocketProperties;
-	
+
 	private void PushMessageToRabitMQ(String routingKey,Object message,MessagePostProcessor messagePostProcessor ) {
         this.rabbitTemplate.convertAndSend(this.properties.getTopicExchangeName(), routingKey, message, messagePostProcessor);
 	}
-	
+
 	private MessagePostProcessor getMessagePostProcessor(Object message) {
 		 return RBMQMessage -> {
 			   MessageProperties messageProperties =new MessageProperties();
-			   messageProperties.setPriority(this.rabitMQPropertiesThreadLocal.getRabitMQPriority()); 
+			   messageProperties.setPriority(this.rabitMQPropertiesThreadLocal.getRabitMQPriority());
 			   messageProperties.setHeader(this.properties.getHaveToBeMessageRequiredHeaderName(), this.rabitMQPropertiesThreadLocal.isHaveToBeMessageReDeliver());
 			   messageProperties.setHeader(this.properties.getMessagePropertiesWebSocketEndPointHeaderName(), this.rabitMQPropertiesThreadLocal.getWebSocketEndPointPath());
 			   messageProperties.setReceivedExchange(this.properties.getTopicExchangeName());
 			   return RBMQMessage;
 	        };
 	}
-	
+
 
 	@Override
 	public void PushMessageToRabitMQ(Object message, long UserRecipientId) {
-		this.PushMessageToRabitMQ(String.valueOf(UserRecipientId), message, this.getMessagePostProcessor(message)); 
+		this.PushMessageToRabitMQ(String.valueOf(UserRecipientId), message, this.getMessagePostProcessor(message));
 	}
 	@Override
 	public void PushMessageToRabitMQ(Object message, String queueName) {
@@ -60,9 +59,9 @@ public class PushMessageRabitMQService implements RabitMQMessageProducerInterfac
 	public void pushMessageToRabitMQ(String chatID, Object... message) {
 		Set<Long>users=this.chatManagement.getUserIDofMembers(chatID, true);
 		for(Object m:message) {
-			this.PushMessageToRabitMQ(m, 
-					users);		
+			this.PushMessageToRabitMQ(m,
+					users);
 			}
-	
+
 	}
 }

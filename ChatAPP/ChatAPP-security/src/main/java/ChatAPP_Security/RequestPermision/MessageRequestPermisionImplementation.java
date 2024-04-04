@@ -24,9 +24,9 @@ public class MessageRequestPermisionImplementation implements MessageRequestPerm
 	private ChatManagementInterface chatInt;
 	@Autowired
 	private UserChatsRepository chatRepo;
-	
 
-	
+
+
 
 	@Override
 	public void verifyGetQuickUserOverViewPermision(long SenderID, int offSetStart, int offSetEnd) {
@@ -44,16 +44,16 @@ public class MessageRequestPermisionImplementation implements MessageRequestPerm
 	@Override
 	public void verifyUserAccestPermisionToChat(long senderBodyId, String chatID) {
 		this.verifyMessageOwnership(senderBodyId);
-		
+
 		Set<Long> memberID=this.chatInt.getUserIDofMembers(chatID, false);
 		boolean sucesfull=false;
-		
+
 		if(memberID==null) {
 			//permision have to be verify from database
 			//chat was not loaded for security performance reason
 			sucesfull=this.chatRepo
 					.existsByPrimaryKeyUserIDAndPrimaryKeyChatID(senderBodyId, chatID);
-					
+
 		}
 		else {
 			sucesfull=memberID.contains(senderBodyId);
@@ -61,10 +61,10 @@ public class MessageRequestPermisionImplementation implements MessageRequestPerm
 		if(!sucesfull) {
 			Log4j2.log.info(Log4j2.MarkerLog.Security.getMarker(),
 					String.format("Acess denied, user does not have permission to write into chat"
-							+"%s chatID : %s %s userID : %s"					
+							+"%s chatID : %s %s userID : %s"
 							, System.lineSeparator(),senderBodyId,System.lineSeparator(),senderBodyId));
 			throw new AccessDeniedException("AccessDenied");
-		}		
+		}
 	}
 
 	@Override
@@ -72,12 +72,12 @@ public class MessageRequestPermisionImplementation implements MessageRequestPerm
 		if(this.webSocketSession.getSessionOwnerUserID()!=bodyMessageOwnerID) {
 			Log4j2.log.info(Log4j2.MarkerLog.Security.getMarker(),
 					String.format("VerifyMessageOwnership was not sucesfull, ownerID is not same"
-							+"%s MessageIDOwner: %s %s sessionID: %s"					
+							+"%s MessageIDOwner: %s %s sessionID: %s"
 							, System.lineSeparator(),bodyMessageOwnerID,System.lineSeparator(),this.webSocketSession.getSessionOwnerUserID()));
 			throw new AccessDeniedException("AccessDenied");
 		}
-		
-		
+
+
 	}
 
 }

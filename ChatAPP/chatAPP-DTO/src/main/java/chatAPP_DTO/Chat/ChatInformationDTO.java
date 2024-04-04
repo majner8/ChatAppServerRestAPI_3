@@ -8,21 +8,21 @@ import java.util.List;
 
 public  class ChatInformationDTO {
 
-	
+
 	private long createdByUserID;
 	private String defaultChatName;
 	private String ChatID;
-	
+
 	private List<UserChatInformationDTO> user=Collections.synchronizedList(new ArrayList<UserChatInformationDTO>());
 
-	
-	
+
+
 	public static ChatInformationDTO createEmptyDTO() {
 		return new ChatInformationDTO();
 	}
-	
-	
-	
+
+
+
 	public long getCreatedByUserID() {
 		return createdByUserID;
 	}

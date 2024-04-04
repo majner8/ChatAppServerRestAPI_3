@@ -12,18 +12,18 @@ public interface WebSocketSessionListener {
 
 	public void UserConnect();
 	public void UserDisconnect();
-	
+
 
 	@Component
 	@Primary
 	public static class WebSocketSessionListenerManager  extends AbstractMultiInstanceBeanValidator<WebSocketSessionListener> implements WebSocketSessionListener{
 
 		private List<WebSocketSessionListener> list;
-		
-		
+
+
 		@Autowired
 		public WebSocketSessionListenerManager(List<WebSocketSessionListener> list) {
-			super(list,WebSocketSessionListenerManager.class); 
+			super(list,WebSocketSessionListenerManager.class);
 			this.list =list;
 		}
 
@@ -40,10 +40,10 @@ public interface WebSocketSessionListener {
 		public void UserDisconnect() {
 			this.list.forEach((x)->{
 				x.UserDisconnect();
-			});			
+			});
 		}
 
-		
+
 	}
 
 }

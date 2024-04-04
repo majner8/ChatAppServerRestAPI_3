@@ -9,11 +9,11 @@ public class UserChatInformationDTO{
 	private long userID;
 	private String chatName;
 	private String lastSeenMessageID;
-	
+
 	public static UserChatInformationDTO createEmptyObject() {
 		return new UserChatInformationDTO();
 	}
-	
+
 	public String getUserNickName() {
 		return userNickName;
 	}
@@ -57,6 +57,6 @@ public class UserChatInformationDTO{
 		return this;
 	}
 
-	
+
 }
 

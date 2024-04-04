@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
-
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
-import ChatAPP_Security.Filter.HttpRequestFilter.DefineFilterSkipPath.pathForDeviceIdFilter;
 import ChatAPP_Security.Properties.SecurityProperties;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 
@@ -26,7 +23,7 @@ public class jwtDeviceIdFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private SecurityProperties securityProperties;
-	@Autowired 
+	@Autowired
 	private jwtToken.jwtTokenValidator jwtValidator;
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -42,8 +39,8 @@ public class jwtDeviceIdFilter extends OncePerRequestFilter {
 				i++;
 			}
 		}
-		
-		
+
+
 		if(this.skip.getPathForDeviceIDFilter().contains(request.getRequestURI())) {
 			if(request.getHeader(this.securityProperties.getTokenDeviceIdHeaderName())!=null) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -52,13 +49,13 @@ public class jwtDeviceIdFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		
+
 		String id=this.jwtValidator.jwtTokenDeviceIDTokenValidator(request);
 		request.setAttribute(this.securityProperties.getDeviceIDRequestAttributeName(), id);
 		filterChain.doFilter(request, response);
 
 	}
-	
-	
+
+
 
 }

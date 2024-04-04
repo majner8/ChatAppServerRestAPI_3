@@ -4,7 +4,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
 public interface WebSocketEndPointConfigInterface {
 
-	
+
 	public void StartConsumingMessage(SimpMessageHeaderAccessor session,int offSetStart,int offSetEnd);
 	public void StopConsumingMessage();
 }

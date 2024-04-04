@@ -5,14 +5,17 @@ public final class Triple<V1,V2,V3> {
 	private V1 first;
 	private V2 second;
 	private V3 third;
-	
-	
+
+
     public Triple(V1 first, V2 second, V3 third) {
 		this.first = first;
 		this.second = second;
 		this.third = third;
 	}
 
+    public Triple() {
+		
+	}
 
 
 	public V1 getFirst() {
@@ -46,7 +49,7 @@ public final class Triple<V1,V2,V3> {
 
 
 	public static <V1, V2, V3> Triple<V1, V2, V3> of(V1 first, V2 second, V3 third) {
-		return new Triple<V1,V2,V3>(first,second,third);
+		return new Triple<>(first,second,third);
     }
-    
+
 }

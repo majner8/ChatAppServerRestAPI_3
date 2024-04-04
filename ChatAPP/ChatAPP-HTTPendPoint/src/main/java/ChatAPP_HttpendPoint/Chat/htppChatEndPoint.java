@@ -16,7 +16,7 @@ public interface htppChatEndPoint {
 			@PathVariable String chatID,
 			@PathVariable long offSetStart,
 /*have to be some limit security*/		@PathVariable long offSetEnd);
-	
+
 	@GetMapping("/{offSetStart}/{offSetEnd}")
 	public ResponseEntity<List<MessageDTO>> loadUserChatOverview(
 			@PathVariable int offSetStart,
@@ -25,7 +25,7 @@ public interface htppChatEndPoint {
 	@GetMapping("/chatID")
 	public ResponseEntity<ChatInformationDTO> getChatInformation(
 			@PathVariable String chatID);
-	
+
 	@GetMapping("/{chatID}/{MessageOrder}")
 	public ResponseEntity<MessageDTO> getMessage(
 			@PathVariable String chatID,

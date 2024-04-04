@@ -11,7 +11,7 @@ public class ChatPropertiesImplementation implements ChatProperties {
 	@Value("${application.chat.MaximumChatTimeout}")
     private Duration chatTimeout;
 
-	
+
 	@Override
 	public long getMaximumAvaiableTimeoutOfActiveChat() {
 		// TODO Auto-generated method stub

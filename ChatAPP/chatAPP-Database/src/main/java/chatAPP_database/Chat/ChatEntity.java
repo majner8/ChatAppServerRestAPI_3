@@ -9,12 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import chatAPP_DTO.Chat.ChatInformationDTO;
-import chatAPP_DTO.Message.UserChatOverViewDTO;
 
 @Entity(name=ChatEntity.chatEntityTableName)
 public class ChatEntity {
 	public static final String chatEntityTableName="chats";
-		
+
 	public static final String defaultChatNameColumnName="default_chat_name";
 	public static final String chatIDColumnName="chat_id";
 	public static final String createdByUserIDColumnName="created_by_user_id";
@@ -27,10 +26,10 @@ public class ChatEntity {
 	private String ChatID;
 	@Column(name=ChatEntity.createdByUserIDColumnName)
 	private long createdByUserID;
-	
+
 	@OneToMany(mappedBy="chat")
 	private Set<UserChats> chat;
-	
+
 	public ChatInformationDTO convertEntityToDTO() {
 		ChatInformationDTO x=new ChatInformationDTO();
 		x.setChatID(this.ChatID);
@@ -59,13 +58,13 @@ public class ChatEntity {
 	public void setCreatedByUserID(long createdByUserID) {
 		this.createdByUserID = createdByUserID;
 	}
-	
+
 	public Set<UserChats> getChat() {
 		return chat;
 	}
 	public void setChat(Set<UserChats> chat) {
 		this.chat = chat;
 	}
-	
-	
+
+
 }

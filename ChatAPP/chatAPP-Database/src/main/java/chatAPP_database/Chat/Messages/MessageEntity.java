@@ -6,8 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import chatAPP_DTO.Message.MessageDTO;
-
 
 
 @Entity(name=MessageEntity.messageEntityTableName)
@@ -20,11 +18,11 @@ public class MessageEntity {
 	public static final String receivedTimeColumnName="time_stamp";
 	public static final String wasMessageRemovedColumnName="was_message_removed";
 	public static final String orderColumnName="order_of_message";
-	
+
 	public static final String ColumnNamereferenctMessageID="referenct_to_message_id";
 	public static final String ColumnNameextendsAction="exteds_action";
-	public static final String JPQLorderName="order"; 
-	
+	public static final String JPQLorderName="order";
+
 	@Column(name=orderColumnName)
 	private long order;
 	@Column(name=MessageEntity.chatIDColumnName)
@@ -45,22 +43,22 @@ public class MessageEntity {
     private String referenctMessageID;
 	@Column(name=MessageEntity.ColumnNameextendsAction)
     private MessageTypeOfAction TypeOfMessage;
-	
+
 	@javax.persistence.Version
 	private long Version;
-	
+
 	/**Enum represent TypeOfMessage
 	 * */
 	//normal message, reply...
 	public static enum MessageTypeOfAction{
-		
+
 	}
 
-	
-	
 
 
-	
+
+
+
 
 
 
@@ -201,8 +199,8 @@ public class MessageEntity {
 	public void setVersion(long version) {
 		Version = version;
 	}
-	
-   
+
+
 
 	public static interface MessageEntityProjection{
 		public long getOrder();
@@ -212,5 +210,5 @@ public class MessageEntity {
 		public String getMessage();
 		public LocalDateTime getReceivedTime();
 	}
-	
+
 }

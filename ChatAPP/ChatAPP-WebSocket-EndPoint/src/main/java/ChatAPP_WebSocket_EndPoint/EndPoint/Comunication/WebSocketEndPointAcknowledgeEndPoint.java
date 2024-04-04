@@ -3,7 +3,6 @@ package ChatAPP_WebSocket_EndPoint.EndPoint.Comunication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.scheduling.annotation.Async;
 
 import ChatAPP_WebSocket.Service.Chat.ConfirmSentMessageService;
 import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
@@ -17,7 +16,7 @@ public class WebSocketEndPointAcknowledgeEndPoint implements WebSocketEndPointAc
 		this.service.ConfirmMessage(session,messageIDToAck);
 	}
 
-	
 
-	
+
+
 }

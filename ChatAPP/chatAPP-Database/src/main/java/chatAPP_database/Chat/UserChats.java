@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -20,7 +19,7 @@ import chatAPP_DTO.Chat.UserChatInformationDTO;
 @Entity(name=UserChats.userChatsTableName)
 public class UserChats {
 	public static final String userChatsTableName="users_chat";
-	
+
 	public static final String userIDcolumnName="user_id";
 	public static final String chatIDcolumnName="chat_id";
 	public static final String userNickNamecolumnName="user_nick_name_in_chat";
@@ -29,7 +28,7 @@ public class UserChats {
 	public static final String memberUntilcolumnName="member_until";
 	public static final String lastSeenMessageIDcolumnName="last_seen_message_id";
 	public static final String joinChatColumnName="appropriate_chat";
-	
+
 	@Column(name=UserChats.userNickNamecolumnName)
 	//name of User
 	private String userNickName;
@@ -44,13 +43,13 @@ public class UserChats {
 	private String lastSeenMessageID;
     @EmbeddedId
 	private CompositePrimaryKey primaryKey;
-	
+
 	@ManyToOne
 	//@Column(name=UserChats.joinChatColumnName)
 	@MapsId("chatID")
 	@JoinColumn(name=UserChats.chatIDcolumnName,referencedColumnName=ChatEntity.chatIDColumnName)
 	private ChatEntity chat;
-	
+
 	public UserChatInformationDTO convertEntityToDTO() {
 		UserChatInformationDTO x=new UserChatInformationDTO();
 		x.setChatName(chatName);
@@ -67,15 +66,15 @@ public class UserChats {
 		@Column(name=UserChats.userIDcolumnName)
 		private long userID;
 		@Column(name=UserChats.chatIDcolumnName)
-		private String chatID;	
-		
+		private String chatID;
+
 		public static CompositePrimaryKey createCompositeKey(String chatID,long userID) {
 			return new CompositePrimaryKey()
 	    			.setChatID(chatID)
 	    			.setUserID(userID)
 	    			;
 		}
-		
+
 		public long getUserID() {
 			return userID;
 		}
@@ -151,6 +150,6 @@ public class UserChats {
 		this.userNickName = userNickName;
 		return this;
 	}
-	
-	
+
+
 }

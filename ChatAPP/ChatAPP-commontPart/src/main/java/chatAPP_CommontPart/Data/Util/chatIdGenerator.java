@@ -23,5 +23,5 @@ public interface chatIdGenerator {
 	}
 	@Component
 	public static class classJustForBean implements chatIdGenerator{}
-	
+
 }

@@ -2,7 +2,6 @@ package ChatAPP_Chat.Service;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,7 +31,7 @@ public class ChatMessageService implements ChatManagementInterface{
 		this.chat.put(chatID, chat);
 		return chat;
 	}
-	
+
 	@Scheduled()
 	public void GarbageCollectorChech() {
 		synchronized(this.chat) {
@@ -40,7 +39,7 @@ public class ChatMessageService implements ChatManagementInterface{
 				this.MakeGarbageChech(K, V);
 			});
 		}
-		
+
 	}
 	@Async
 	private void MakeGarbageChech(String key,Active_chat_int value) {
@@ -48,7 +47,7 @@ public class ChatMessageService implements ChatManagementInterface{
 			//chat have to be removed
 			this.chat.remove(key, value);
 		}
-		
+
 	}
 
 	@Override

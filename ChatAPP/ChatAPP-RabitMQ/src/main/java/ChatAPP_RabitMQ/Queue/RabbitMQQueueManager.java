@@ -6,10 +6,8 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import chatAPP_CommontPart.ThreadLocal.RabitMQThreadLocalSession;
 import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 
 @Component
@@ -31,7 +29,7 @@ public class RabbitMQQueueManager implements RabbitMQQueueManagerInterface {
 		this.BindQueue(this.simpMessage.getSessionOwnerUserID(),q);
 		return new RabitMQQueue(queueName,true);
 	}
-	
+
 	private void BindQueue(long userID,Queue userDdeviceQueue) {
 		  // Declare and bind the queue
 	    Binding binding = BindingBuilder.bind(userDdeviceQueue).to(this.topicExchange).with(String.valueOf(userID));
@@ -42,12 +40,12 @@ public class RabbitMQQueueManager implements RabbitMQQueueManagerInterface {
 		this.amqpAdmin.declareQueue(que);
 		return que;
 	}
-	
+
 	/**class, contain rabitMQ Queue name, and boolean value, if Queue was created, in this request */
 	public final static class RabitMQQueue {
 		private final String queueName;
 		private final boolean wasQueueCreated;
-		
+
 		public RabitMQQueue(String queueName, boolean wasQueueCreated) {
 			this.queueName = queueName;
 			this.wasQueueCreated = wasQueueCreated;
@@ -58,6 +56,6 @@ public class RabbitMQQueueManager implements RabbitMQQueueManagerInterface {
 		public boolean isWasQueueCreated() {
 			return wasQueueCreated;
 		}
-		
+
 	}
 }

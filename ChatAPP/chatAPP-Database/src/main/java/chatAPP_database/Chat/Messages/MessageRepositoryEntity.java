@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import chatAPP_DTO.Message.MessageDTO;
 import chatAPP_database.CustomJpaRepository;
-import chatAPP_database.Chat.Messages.MessageEntity.MessageEntityProjection;
 import chatAPP_database.Chat.Messages.MessageEntity.MessageTypeOfAction;
 
 
@@ -18,20 +17,20 @@ import chatAPP_database.Chat.Messages.MessageEntity.MessageTypeOfAction;
 public interface MessageRepositoryEntity extends CustomJpaRepository<MessageEntity,String> {
 
     List<MessageEntity> findByChatID(String chatId, Pageable pageable);
-    
+
     default List<MessageEntity> findByChatID(String chatID,
 			 long offSetStart,
 			 long offSetEnd){
     	long size=offSetEnd-offSetStart;
     	double startPage=Math.floor(offSetStart/offSetEnd);
     	int difference=(int)(offSetStart%size);
-    	
+
     	Pageable page=PageRequest.of((int)startPage,(int)(size+difference),Sort.by(MessageEntity.JPQLorderName));
     	return this.findByChatID(chatID, page);
     }
-    
+
 	public Optional<MessageEntity> findByChatIDAndOrder(String chatID,long order);
-	
+
 	@Query(value=
 			" with userAccest as ( select chat_id from user_chats  "
 			+ " where user_id= :userID and member_until is null)"
@@ -42,14 +41,14 @@ public interface MessageRepositoryEntity extends CustomJpaRepository<MessageEnti
 			+ " GROUP BY chat_id "
 			+ ""
 			+ ")"
-			
+
 			+ " select * from messages m"
 			+ " where order_of_message and chat_id in(select * from newest_message)"
 			+ " order by(select order_of_message from messages)DESC"
 			+ " limit :offsetstart,:offsetend;" ,nativeQuery = true
-			)	
+			)
 	public List<MessageEntity> getQuickUserSynchronizationMessage(long userID,int offsetstart,int offsetend);
-	
+
 	 public default MessageDTO convertEntityToDTO(MessageEntity entity) {
 		MessageDTO mes=new MessageDTO();
 		mes.setChatID(entity.getChatID());
@@ -64,7 +63,7 @@ public interface MessageRepositoryEntity extends CustomJpaRepository<MessageEnti
 		mes.setVersion(entity.getVersion());
 		return mes;
 	}
-	    
+
 		public default MessageEntity convertDTOToEntity(MessageDTO messageDTO) {
 			MessageEntity entity=new MessageEntity();
 			entity.setOrder(messageDTO.getOrder());
@@ -78,5 +77,5 @@ public interface MessageRepositoryEntity extends CustomJpaRepository<MessageEnti
 			entity.setTypeOfMessage((MessageTypeOfAction)messageDTO.getTypeOfAction());
 			return entity;
 		}
-	 
+
 }

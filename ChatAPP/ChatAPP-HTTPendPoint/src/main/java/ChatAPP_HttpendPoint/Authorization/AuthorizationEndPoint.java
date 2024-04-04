@@ -22,25 +22,25 @@ public interface AuthorizationEndPoint {
 
 	@PostMapping(value="${httpEndPointPath.Authorization.register}")
 	public ResponseEntity<TokenDTO> register(@RequestAttribute String deviceID,
-			@RequestBody @Valid UserAuthorizationDTO 
+			@RequestBody @Valid UserAuthorizationDTO
 			userData);
 	@PostMapping(value="${httpEndPointPath.Authorization.login}")
-	public ResponseEntity<TokenDTO> login(@RequestAttribute String deviceID,@RequestBody @Valid UserAuthorizationDTO 
+	public ResponseEntity<TokenDTO> login(@RequestAttribute String deviceID,@RequestBody @Valid UserAuthorizationDTO
 			userData);
 	@PostMapping(value="${httpEndPointPath.Authorization.finishRegistration}")
 	public ResponseEntity<TokenDTO>finishRegistration(@RequestAttribute String deviceID,
 			@RequestBody @Valid UserProfileRegistrationDTO user);
-	
+
 	@Component
 	public static final class AuthorizationPath implements UnAuthorizatePath,DefineFilterSkipPath.pathForAuthorizationFilterFilter{
 
 
 		private List<String> path;
 		private String[] UnPath;
-		
+
 		public AuthorizationPath(
 				@Value("${httpEndPointPath.Authorization.register}")
-				String register, 
+				String register,
 				@Value("${httpEndPointPath.Authorization.login}")
 				String login) {
 			this.UnPath=new String[] {login,register};
@@ -53,16 +53,16 @@ public interface AuthorizationEndPoint {
 			return this.UnPath;
 		}
 
-		
+
 
 		@Override
 		public List<String> getPathAuthorizationFilterFilter() {
 			// TODO Auto-generated method stub
 			return this.path;
 		}
-		
+
 	}
 
-	
+
 
 }

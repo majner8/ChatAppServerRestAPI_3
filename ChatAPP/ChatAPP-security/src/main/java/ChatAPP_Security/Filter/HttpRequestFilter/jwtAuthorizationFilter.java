@@ -16,12 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
-
 import ChatAPP_Security.Authorization.CustomSecurityContextHolder.CustomUserDetail;
 import ChatAPP_Security.Authorization.JwtToken.AuthorizationUserTokenValue;
 import ChatAPP_Security.Authorization.JwtToken.jwtToken;
-import ChatAPP_Security.Filter.HttpRequestFilter.DefineFilterSkipPath.pathForAuthorizationFilterFilter;
 import ChatAPP_Security.Properties.SecurityProperties;
 import chatAPP_CommontPart.Log4j2.Log4j2;
 
@@ -29,11 +26,11 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 public class jwtAuthorizationFilter extends OncePerRequestFilter {
 	@Autowired
 	private DefineFilterSkipPath.pathForAuthorizationFilterFilter skip;
-	@Autowired 
+	@Autowired
 	private jwtToken.jwtTokenValidator jwtValidator;
 	@Autowired
 	private SecurityProperties prop;
-	
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -41,16 +38,16 @@ public class jwtAuthorizationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		
+
 		AuthorizationUserTokenValue token=this.jwtValidator.jwtTokenAuthorizationUserTokenValidator(request);
-		ArrayList<SimpleGrantedAuthority> authority=new ArrayList<SimpleGrantedAuthority>();
-		SimpleGrantedAuthority author=token.isUserEnable()? 
+		ArrayList<SimpleGrantedAuthority> authority=new ArrayList<>();
+		SimpleGrantedAuthority author=token.isUserEnable()?
 				new SimpleGrantedAuthority(prop.isUserActiveAuthorityName())
 				:
 					new SimpleGrantedAuthority(prop.isUserUnActiveAuthorityName());
 		authority.add(author);
 		CustomUserDetail aut=CustomUserDetail.createUser(token,authority);
-		Authentication auth = new UsernamePasswordAuthenticationToken(aut, null, aut.getAuthorities()); 
+		Authentication auth = new UsernamePasswordAuthenticationToken(aut, null, aut.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		Log4j2.log.debug(Log4j2.MarkerLog.Security.getMarker(),"User is authorizated");
 		filterChain.doFilter(request, response);

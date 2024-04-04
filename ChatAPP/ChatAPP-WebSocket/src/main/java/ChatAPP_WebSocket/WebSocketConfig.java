@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         Log4j2.log.info(Log4j2.MarkerLog.StartApp.getMarker(),"I am setting WebSocketStoamp EndPoint, Path: "+this.webSocketStoamppreflix);
     	registry.addEndpoint(this.webSocketStoamppreflix)
-    
+
     	.withSockJS();
     }
     @Override

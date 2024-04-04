@@ -2,29 +2,36 @@ package chatAPP_DTO.Message;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 
 
 public class MessageDTO {
 
-	private long order;
+	private Long order;
+	@NotEmpty
 	private String chatID;
 	private long senderID;
+	@NotEmpty
 	private String messageID;
+	@NotEmpty
 	private String message;
 	private LocalDateTime receivedTime;
 	private boolean wasMessageRemoved=false;
+	@NotNull
 	private Enum typeOfAction;
 	private String referencMessageID;
 	private long version;
-	
 
-	
+
+
 	public long getVersion() {
 		return version;
 	}
 
-	public MessageDTO setVersion(long version) {
+	public MessageDTO setVersion(Long version) {
 		this.version = version;
 		return this;
 	}
@@ -105,7 +112,7 @@ public class MessageDTO {
 		return this;
 
 	}
-	
-	
-	
+
+
+
 }

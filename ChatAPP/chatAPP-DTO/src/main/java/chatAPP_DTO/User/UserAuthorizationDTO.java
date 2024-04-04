@@ -11,7 +11,7 @@ public class UserAuthorizationDTO{
 	@Valid
 	@NotNull
 	private UserComunicationDTO profile;
-	
+
 	public UserAuthPasswordDTOInput getPassword() {
 		return password;
 	}
@@ -27,7 +27,7 @@ public class UserAuthorizationDTO{
 		return this;
 
 	}
-	
-	
+
+
 }
 

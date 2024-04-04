@@ -18,7 +18,7 @@ public class rmqProperties implements RabitMQProperties {
 	private String WebSocketEndPointHeaderName;
 	@Value("${rabbitmq.topicExchangeName}")
 	private String topicExchangeName;
-	
+
 
 	@Override
 	public Duration getUnacknowledgedMessageTimeout() {
@@ -26,7 +26,7 @@ public class rmqProperties implements RabitMQProperties {
 		return this.unTimeout;
 	}
 
-	
+
 	@Override
 	public String getHaveToBeMessageRequiredHeaderName() {
 		// TODO Auto-generated method stub

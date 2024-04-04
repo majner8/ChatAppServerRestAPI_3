@@ -5,14 +5,13 @@ import java.util.Map;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.data.util.Pair;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Security.CustomUserDetailsInterface;
 @Component
 public class WebSocketThreadLocalSession implements WebSocketThreadLocalSessionInterface, WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue {
-	private  final ThreadLocal<Pair<SimpMessageHeaderAccessor,CustomUserDetailsInterface>> wsSession=new ThreadLocal<Pair<SimpMessageHeaderAccessor,CustomUserDetailsInterface>>();
+	private  final ThreadLocal<Pair<SimpMessageHeaderAccessor,CustomUserDetailsInterface>> wsSession=new ThreadLocal<>();
 
 	private String rabitMQContainerHeaderName="xxx";
 	@Override
@@ -26,8 +25,8 @@ public class WebSocketThreadLocalSession implements WebSocketThreadLocalSessionI
 		UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken)session.getUser();
 		CustomUserDetailsInterface userDetails=(CustomUserDetailsInterface)authenticationToken.getPrincipal();
 		this.wsSession.set(Pair.of(session,userDetails));
-	
-		
+
+
 	}
 	@Override
 	public CustomUserDetailsInterface getCustomUserDetails() {

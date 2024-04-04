@@ -30,7 +30,7 @@ public class deviceIDService {
 				Log4j2.log.warn(Log4j2.MarkerLog.Database.getMarker(),"DataIntegrityViolationException occurs, system try generate Id again");
 			}
 			id=this.deviceIDGenerator.generateDeviceID();
-			
+
 			try {
 			this.deviceIDRepo.persist(id);
 			}
@@ -41,19 +41,19 @@ public class deviceIDService {
 			}
 			finish=true;
 		}
-		while(i<3&&finish==false);
+		while(i<3&&!finish);
 		if(Log4j2.log.isTraceEnabled()) {
 			Log4j2.log.trace(Log4j2.MarkerLog.Security.getMarker(),"Generated random device UUID-UUID: "+id);
 		}
-		
-		if(finish==false) {
+
+		if(!finish) {
 			throw ex;
 		}
-		
+
 		return id;
 
 	}
-	
+
 	public String generateDeviceJwtToken(String deviceID) {
 		return this.jwtTokenGenerator.generateDeviceToken(deviceID);
 	}

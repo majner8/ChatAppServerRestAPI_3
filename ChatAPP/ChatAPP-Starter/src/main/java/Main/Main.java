@@ -31,7 +31,7 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
  */
 public class Main {
 
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
 		Log4j2.log.info("Starting application");

@@ -9,10 +9,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -37,14 +34,14 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 @Component
 @Profile("test")
 public class MakeConnectionTOWebSocketTest {
-	
+
 	@Autowired
 	private jwtTokenTestAuthorizationToken autToken;
-	
 
-	
+
+
     private WebSocketStompClient stompClient;
-    
+
     public  MakeConnectionTOWebSocketTest() {
     	this.init();
     }
@@ -57,7 +54,7 @@ public class MakeConnectionTOWebSocketTest {
     	SockJsClient sockJsClient = new SockJsClient(transports);
 
     	ObjectMapper objectMapper = new ObjectMapper();
-    	objectMapper.registerModule(new JavaTimeModule()); // Register module for Java 8 Date/Time support    
+    	objectMapper.registerModule(new JavaTimeModule()); // Register module for Java 8 Date/Time support
     	objectMapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     	MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
     	messageConverter.setObjectMapper(objectMapper);
@@ -67,12 +64,12 @@ public class MakeConnectionTOWebSocketTest {
 
     }
 
-   
+
 	  public StompSession makeConnectionToServer(int serverPort,WebTestClient webTestClient,String handShakePath) throws InterruptedException {
 	    	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
-	    	   
-	         };         
-	       
+
+	         };
+
 	         WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
 	         this.autToken.getAuthorizationHeaders(webTestClient).forEach(
 	        		 (K,V)->{
@@ -88,15 +85,15 @@ public class MakeConnectionTOWebSocketTest {
 	        		StompSession x=ses.get(10, TimeUnit.SECONDS);
 					assertTrue(true);
 					return x;
-				} 
-	        	
+				}
+
 	        	catch (ExecutionException e) {
 	        		fail(e);
-	        		
+
 				} catch (TimeoutException e) {
 					// TODO Auto-generated catch block
 	        		fail("Cannot connect with server, in set time");
-				}	 
+				}
 	        	return null;
 	    }
 

@@ -1,12 +1,10 @@
 package chatAPP_DTO.User;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
+import chatAPP_DTO.Validation.MultipleNullChechValidatorUserComunicationDTO;
+@MultipleNullChechValidatorUserComunicationDTO
 public class UserComunicationDTO{
 	@Email
 	private String email;
@@ -15,7 +13,7 @@ public class UserComunicationDTO{
 	@Pattern(regexp = "^[0-9]{1,12}$")
 	private String phone;
 	//have to add validation, that phone and phonePreflix cannot be null,
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -44,7 +42,7 @@ public class UserComunicationDTO{
 		return this;
 
 	}
-	
+
 }
 
 

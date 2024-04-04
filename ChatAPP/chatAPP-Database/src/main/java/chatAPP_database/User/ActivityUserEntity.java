@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class ActivityUserEntity {
 
 	public static final String userActivityTableName="";
-	
+
 
 	public static final String deviceIDEntityColumnName="";
 	public static final String userIDEntityColumnName="";
@@ -26,7 +26,7 @@ public class ActivityUserEntity {
 	private LocalDateTime login;
 	@Column(name=ActivityUserEntity.logoutEntityColumnName)
 	private LocalDateTime logout;
-	
+
 	public String getDeviceID() {
 		return deviceID;
 	}
@@ -49,7 +49,7 @@ public class ActivityUserEntity {
 		return login;
 	}
 	public void setLogin() {
-		
+
 	}
 	public LocalDateTime getLogout() {
 		return logout;
@@ -57,5 +57,5 @@ public class ActivityUserEntity {
 	public void setLogout(LocalDateTime logout) {
 		this.logout = logout;
 	}
-	
+
 }

@@ -1,11 +1,9 @@
 package ChatAPP_Security.Authorization.CustomSecurityContextHolder;
 
-import java.security.Principal;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import ChatAPP_Security.Authorization.JwtToken.AuthorizationUserTokenValue;
 import chatAPP_CommontPart.Log4j2.Log4j2;
@@ -44,7 +42,7 @@ public class CustomUserDetail implements CustomUserDetailsInterface{
 	public static CustomUserDetail createUser(AuthorizationUserTokenValue user,
 			Collection<? extends GrantedAuthority> authority) {
 				return new CustomUserDetail(user,authority);
-		
+
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -81,15 +79,18 @@ public class CustomUserDetail implements CustomUserDetailsInterface{
 		// TODO Auto-generated method stub
 		return this.isUserEnable;
 	}
+	@Override
 	public long getUserID() {
 		return userID;
 	}
+	@Override
 	public long getDatabaseVersion() {
 		return databaseVersion;
 	}
+	@Override
 	public String getDeviceID() {
 		return deviceID;
 	}
-	
+
 	}
 

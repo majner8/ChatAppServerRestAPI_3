@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 
 import com.rabbitmq.client.Channel;
@@ -21,7 +19,7 @@ import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListManager,MessageAcknowledger,WebSocketSessionListener {
 
 	@Autowired
-	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue 
+	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue
 	webSocketSession;
 	private final Map<String,Map<String,Messages>>listOfMessage=
 			Collections.synchronizedMap(new HashMap<>());
@@ -43,9 +41,9 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 					 String.format("client connection, ID: %s was end, but Appropriate RabitMQ object has been removed before. ",userdeviceID ));
 			 return;
 		 }
-		 this.listOfMessage.remove(userdeviceID);		
+		 this.listOfMessage.remove(userdeviceID);
 		 }
-		
+
 		synchronized(mes) {
 			Collection<Messages> x=mes.values();
 			for(Messages V:x) {
@@ -58,9 +56,9 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 					Log4j2.log.error(Log4j2.MarkerLog.RabitMQ.getMarker(),String.format("Error during NackMessage, ID: %s deliveryTag: %s %s %s", V.getMessageID(),V.getDeliveryTag(),System.lineSeparator(),e));
 					return;
 				}
-				
+
 			}
-			
+
 			mes.forEach((K,V)->{
 				if(V.isWasMessageAlreadyAcknowledged()) {
 					return;
@@ -68,13 +66,13 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 				try {
 					V.getRabitChannel().basicNack(V.getDeliveryTag(), false, V.isShouldBeMessageRequiredAfterExpiration());
 				} catch (IOException e) {
-					
+
 				}
 			});
 		}
-		
+
 	}
-	
+
 
 		public static final class Messages{
 			private  String messageID;
@@ -83,8 +81,8 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 			private long timeStamp;
 			private boolean shouldBeMessageRequiredAfterExpiration;
 			private boolean wasMessageAlreadyAcknowledged=false;
-			
-			
+
+
 			public Messages(String messageID, long deliveryTag, Channel rabitChannel, long timeStamp,
 					boolean shouldBeMessageRequiredAfterExpiration, boolean wasMessageAlreadyAcknowledged) {
 				this.messageID = messageID;
@@ -115,25 +113,25 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 			public boolean isWasMessageAlreadyAcknowledged() {
 				return wasMessageAlreadyAcknowledged;
 			}
-			
+
 		}
-	
-	
+
+
 	@Override
 	public void AckMessage(String sessionID, String messageID) {
-		
+
 		Map<String,Messages> message=this.listOfMessage.get(sessionID);
 		Messages mes=message.get(messageID);
 		if(mes==null) {
 			//messageWas nackBefore
-			
+
 			return;
 		}
 		synchronized(mes) {
 			if(mes.wasMessageAlreadyAcknowledged) {
 				//message was ackBefore
 				return;
-			}			
+			}
 			try {
 				mes.getRabitChannel().basicAck(mes.getDeliveryTag(), false);
 				}
@@ -145,17 +143,17 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 					mes.setWasMessageAlreadyAcknowledged(true);
 				}
 		}
-		
+
 	}
 
 	@Override
 	public void NackMessage(String sessionID, String messageID) {
 		Map<String,Messages> message=this.listOfMessage.get(sessionID);
 		Messages mes=message.get(messageID);
-		
+
 		if(mes==null) {
 			//messageWas nackBefore
-			
+
 			return;
 		}
 		synchronized(mes) {
@@ -176,12 +174,12 @@ public class UnacknowledgedMessagesService implements UnAcknowledgeMessageListMa
 		}
 	}
 
-	
+
 	@Override
 	public void addMessageToList(String queueNameId, String messageID, Channel channel, long deliveryTag,
 			boolean haveToBeMessageRequired) {
-		
-		
+
+
 	}
 
 

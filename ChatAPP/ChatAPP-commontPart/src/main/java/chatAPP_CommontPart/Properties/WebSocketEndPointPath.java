@@ -7,7 +7,7 @@ public class WebSocketEndPointPath  {
 	public static final String Config_StartConsumingPath="/Connected";
 	public static final String Config_StopConsumingPath="";
 	public static final String AcknowledgeEndPoint_ConfirmMessage="";
-	
+
 	public static final String createChatEndPoint="/createChat";
 	public static final String chatPreflix="/chat";
 	public static final String MessagePreflix=chatPreflix+"/Message";

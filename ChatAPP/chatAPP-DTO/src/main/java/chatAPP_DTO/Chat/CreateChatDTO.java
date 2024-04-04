@@ -1,11 +1,9 @@
 package chatAPP_DTO.Chat;
 
-import java.util.List;
-
 public class CreateChatDTO {
 
 	private long createdBy;
-	
+
 	private long []otherUser;
 
 	public long getCreatedBy() {
@@ -25,5 +23,5 @@ public class CreateChatDTO {
 		this.otherUser = otherUser;
 		return this;
 	}
-	
+
 }

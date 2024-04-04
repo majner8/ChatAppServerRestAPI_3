@@ -2,11 +2,8 @@ package chatAPP_database.User;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,26 +49,24 @@ public class UserEntity {
 	private LocalDate bornDate;
 	@javax.persistence.Version
 	private long Version;
-	
+
 	public UserEntity() {
-		
+
 	}
 
 	//with all containing value
 	public UserEntity(Map<String,Object> values) {
 		try {
-			
+
 			Class<?> clas = this.getClass();
 			synchronized(values) {
-				Iterator<String> set=values.keySet().iterator();
-				while(set.hasNext()) {
-					String fieldName=set.next();
+				for (String fieldName : values.keySet()) {
 					Object value=values.get(fieldName);
 					Field field=clas.getDeclaredField(fieldName);
 					field.set(this, value);
-					
+
 				}
-				
+
 			}
 		}
 		 catch (IllegalAccessException |NoSuchFieldException |SecurityException e) {
@@ -83,12 +78,12 @@ public class UserEntity {
 	/**Metod return map which contain value for all field, aling to UserEntity object
 	 * if some of value is null, then it will be added to map as null as well*/
 	public Map<String,Object> getValues(){
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map = new HashMap<>();
 		try {
 			Class<?> clas = this.getClass();
 			for (Field field : clas.getDeclaredFields()) {
 				map.put(field.getName(), field.get(this));
-			} 
+			}
 		}
 		 catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
@@ -97,14 +92,14 @@ public class UserEntity {
 			return null;
 		}
 		return map;
-		
-		
+
+
 	}
 	public LocalDate getBornDate() {
 		return bornDate;
 	}
-	
-	
+
+
 	public long getVersion() {
 		return Version;
 	}
@@ -119,7 +114,7 @@ public class UserEntity {
 
 
 
-	
+
 	public long getUserId() {
 		return userId;
 	}
@@ -168,5 +163,5 @@ public class UserEntity {
 	public void setNick(String nick) {
 		Nick = nick;
 	}
-	
+
 }

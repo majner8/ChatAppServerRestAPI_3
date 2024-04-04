@@ -1,7 +1,6 @@
 package ChatAPP.Test.DTODataIntegrity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Set;
@@ -15,6 +14,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import chatAPP_CommontPart.Log4j2.Log4j2;
 import chatAPP_DTO.User.UserAuthPasswordDTOInput;
@@ -25,12 +27,14 @@ import chatAPP_DTO.User.UserProfileDTO;
 
 @SpringBootTest(classes=Main.Main.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient
+@Component
+@Profile("chatAPP-Test")
 public class UserDataIntegrityTest {
 
-	
+
 	@Autowired
 	private Validator validator;
-	
+
 	@Test
 	public void TestUserProfileDTO() {
 		String serName="serName";
@@ -41,7 +45,7 @@ public class UserDataIntegrityTest {
 				.setSerName(serName+1)
 				.setLastName(LastName+202)
 				.setNickName(NickName.repeat(10));
-	
+
 		this.makeValidation(profile, profile.getLastName(),profile.getNickName(),profile.getSerName());
 		profile.setLastName(null)
 		.setSerName(null)
@@ -51,14 +55,14 @@ public class UserDataIntegrityTest {
 		.setSerName("")
 		.setNickName("");
 		this.makeValidation(profile, profile.getLastName(),profile.getNickName(),profile.getSerName());
-			
+
 		profile.setLastName(LastName)
 		.setSerName(serName)
 		.setNickName(NickName+1);
 		this.makeValidation(profile, profile.getNickName());
-		
+
 		profile.setNickName(NickName);
-		this.makeValidation(profile);		
+		this.makeValidation(profile);
 	}
 	@Test
 	public void testUserAuthorizationDTO() {
@@ -73,53 +77,57 @@ public class UserDataIntegrityTest {
 		pass.setPassword("As");
 		userAut.setPassword(pass);
 		this.makeValidation(userAut, userAut.getPassword().getPassword(),null);
-	
+
 		pass.setPassword("As1");
 		userAut.setPassword(pass);
 		this.makeValidation(userAut,null);
-		
+
 		UserComunicationDTO com=new UserComunicationDTO();
 		userAut.setProfile(com);
-		
-		this.makeValidation(userAut,null,null,null);
-		
+
+		this.makeValidation(userAut,com);
+
 		com.setEmail("Tonik");
 		userAut.setProfile(com);
-		this.makeValidation(userAut, null,null,com.getEmail());
+		this.makeValidation(userAut,com.getEmail());
 		com.setEmail("tonik.120@gmail.cmo");
 		userAut.setProfile(com);
-		this.makeValidation(userAut, null,null);
-		
+		this.makeValidation(userAut);
+
 		com.setPhonePreflix("+333");
 		userAut.setProfile(com);
-		this.makeValidation(userAut, null,com.getPhonePreflix());
-		
+		this.makeValidation(userAut, com,com.getPhonePreflix());
+
 		com.setPhonePreflix("3333");
 		userAut.setProfile(com);
-		this.makeValidation(userAut, null,com.getPhonePreflix());
+		this.makeValidation(userAut, com,com.getPhonePreflix());
 		com.setPhonePreflix("33+");
 		userAut.setProfile(com);
-		this.makeValidation(userAut, null,com.getPhonePreflix());
-		
-		
+		this.makeValidation(userAut, com,com.getPhonePreflix());
+
+
 		 com.setPhonePreflix("333");
 		userAut.setProfile(com);
-		this.makeValidation(userAut, null);
-		
+		this.makeValidation(userAut, com);
+
 		com.setPhone("4532".repeat(10));
 		userAut.setProfile(com);
 		this.makeValidation(userAut,com.getPhone());
-		
+
 		com.setPhone("4532+");
 		userAut.setProfile(com);
 		this.makeValidation(userAut,com.getPhone());
-		
+
 		com.setPhone("4532");
 		userAut.setProfile(com);
 		this.makeValidation(userAut);
 		
+
+	
 		
 	}
+
+	 
 	
 	private  void makeValidation(Object toValidate,Object... expectValue) {
 		Set<ConstraintViolation<Object>> val=this.validator.validate(toValidate);
@@ -130,9 +138,9 @@ public class UserDataIntegrityTest {
 	        });
 	        return;
 		}
-		
+
 		if(expectValue.length==0) {assertEquals(true,val.isEmpty());return;}
-		AtomicBoolean xx=new AtomicBoolean();	
+		AtomicBoolean xx=new AtomicBoolean();
 		xx.set(false);
         assertEquals(expectValue.length,val.size());
         AtomicInteger nullInvalidValue=new AtomicInteger(0);

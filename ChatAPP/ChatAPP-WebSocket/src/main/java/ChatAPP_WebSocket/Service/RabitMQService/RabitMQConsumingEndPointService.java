@@ -2,13 +2,10 @@ package ChatAPP_WebSocket.Service.RabitMQService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Async;
 
 import ChatAPP_RabitMQ.Producer.RabitMQMessageProducerInterface;
 import ChatAPP_RabitMQ.Queue.RabbitMQQueueManager.RabitMQQueue;
@@ -24,7 +21,7 @@ import chatAPP_database.Chat.Messages.MessageRepositoryEntity;
 public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceInterface{
 
 
-	
+
 	@Autowired
 	private RabbitMQQueueManagerInterface queueManager;
 	@Autowired
@@ -50,7 +47,7 @@ public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceI
 		if(Log4j2.log.isDebugEnabled()) {
 			Log4j2.log.debug(Log4j2.MarkerLog.WebSocket.getMarker(),
 					String.format("Loading messages from database, to process Quick Asyn Synchronization"
-					+ System.lineSeparator()+"QueueID: %s"	
+					+ System.lineSeparator()+"QueueID: %s"
 					+ System.lineSeparator()+"userID: %s"
 					+ System.lineSeparator()+"offSetStart: %s"
 					+ System.lineSeparator()+"offSetEnd: %s"
@@ -63,7 +60,7 @@ public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceI
 			if(Log4j2.log.isTraceEnabled()) {
 					Log4j2.log.trace(Log4j2.MarkerLog.WebSocket.getMarker(),
 							String.format("Loading Quick SynchronizationMessage"
-							+ System.lineSeparator()+"QueueID: %s"	
+							+ System.lineSeparator()+"QueueID: %s"
 							+ System.lineSeparator()+"userID: %s"
 							+ System.lineSeparator()+"offSetStart: %s"
 							+ System.lineSeparator()+"offSetEnd: %s"
@@ -85,11 +82,11 @@ public class RabitMQConsumingEndPointService implements RabitMqConsumingServiceI
 		Collections.reverse(dto);
 			//user WebSocket ID is same as queue-unique per device
 		this.amq.PushMessageToRabitMQ(dto, userWebSocketID);
-		
+
 	}
 	@Override
 	public void StopConsuming() {
-		
+
 	}
 
 }

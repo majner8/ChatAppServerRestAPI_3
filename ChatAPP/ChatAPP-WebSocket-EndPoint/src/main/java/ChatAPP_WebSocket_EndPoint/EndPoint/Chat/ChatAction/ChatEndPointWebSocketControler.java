@@ -3,8 +3,6 @@ package ChatAPP_WebSocket_EndPoint.EndPoint.Chat.ChatAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import ChatAPP_WebSocket.Service.Chat.CreateChatInterface;
@@ -17,7 +15,7 @@ import chatAPP_DTO.Message.SawMessageDTO;
 @Controller
 public class ChatEndPointWebSocketControler implements WebSocketChatComunicationEndPoint,WebSocketChatEndPoint{
 
-	
+
 	@Autowired
 	private ProcessChatMessageService MessageService;
 	@Autowired
@@ -25,7 +23,7 @@ public class ChatEndPointWebSocketControler implements WebSocketChatComunication
 	@Override
 	@MessageMapping(WebSocketEndPointPath.Chat_SendMessagePath)
 	public void SendMessage(MessageDTO message,SimpMessageHeaderAccessor session) {
-		
+
 		this.MessageService.SendMessage(message);
 	}
 

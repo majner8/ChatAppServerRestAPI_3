@@ -5,7 +5,6 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.rabbitmq.client.Channel;
@@ -24,7 +23,7 @@ public class rabitMQConsumerService implements ChannelAwareMessageListener{
 	private RabbitMQMessageRelayInterface relay;
 	@Override
 	public void onMessage(Message message, Channel channel) throws Exception {
-		
+
 		MessageProperties properties=message.getMessageProperties();
 		String messageID=properties.getMessageId();
 		String recipientID=properties.getConsumerQueue();
@@ -33,7 +32,7 @@ public class rabitMQConsumerService implements ChannelAwareMessageListener{
 		String webSocketEndPoint=properties.getHeader(this.RabitMQProperties.getMessagePropertiesWebSocketEndPointHeaderName());
 //		Name is same as userdeviceID, userID+deviceID
 		this.messageManager.addMessageToList(recipientID,messageID, channel, deliveryTag, haveToBeMessageRequired);
-		
+
 		//message can be convert as String, because to rabitMQ is push in string JSON format.
 		String convertMessage=new String(message.getBody());
 		this.relay.SendConsumedMessage(webSocketEndPoint, messageID, convertMessage, recipientID);

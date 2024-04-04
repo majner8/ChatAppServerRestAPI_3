@@ -12,7 +12,7 @@ public class UserAuthPasswordDTOInput{
 	@Pattern(regexp = "^(?=.*[0-9])(?=.*\\p{Lu})(?=.*\\p{Ll}).{3,15}$")
 	private String password;
 
-	
+
 	public static class UserAuthPasswordDTOOutPut extends UserAuthPasswordDTOInput{
 		@PastOrPresent
 		@NotNull
@@ -25,7 +25,7 @@ public class UserAuthPasswordDTOInput{
 		public void setLastPasswordChange(LocalDateTime lastPasswordChange) {
 			this.lastPasswordChange = lastPasswordChange;
 		}
-		
+
 	}
 
 	public String getPassword() {
@@ -37,7 +37,7 @@ public class UserAuthPasswordDTOInput{
 	}
 
 
-	
-	
+
+
 }
 

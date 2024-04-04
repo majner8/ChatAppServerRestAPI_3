@@ -11,7 +11,7 @@ public class Log4j2 {
     public static final Logger log = LogManager.getLogger(Log4j2.class);
 
 	public static enum MarkerLog{
-		
+
 		Security(MarkerManager.getMarker("")),Database(MarkerManager.getMarker("")
 	),Validation(MarkerManager.getMarker(""))
 	,WebSocket(MarkerManager.getMarker("")),RequestLog(MarkerManager.getMarker("")),
@@ -27,26 +27,26 @@ public class Log4j2 {
 	appInit(MarkerManager.getMarker("")),
 	Test(MarkerManager.getMarker(""))
 
-	
+
 	;
-		
-		
+
+
 		private Marker marker;
-		
+
 		MarkerLog(Marker marker){
 			this.marker=marker;
 		}
-		
+
 		public Marker getMarker() {
 			return this.marker;
 		}
-		
-		
+
+
 	}
-	
-   /* 
+
+   /*
 	public static enum LogMarker{
-		
+
 		Security(MarkerManager.getMarker("")),Database(MarkerManager.getMarker("")
 	),Validation(MarkerManager.getMarker(""))
 	,WebSocket(MarkerManager.getMarker("")),RequestLog(MarkerManager.getMarker("")),
@@ -55,18 +55,18 @@ public class Log4j2 {
 	ObjectReferenceRemoving(MarkerManager.getMarker(""))
 
 	;
-		
-		
+
+
 		private Marker marker;
-		
+
 		LogMarker(Marker marker){
 			this.marker=marker;
 		}
-		
+
 		public Marker getMarker() {
 			return this.marker;
 		}
-		
-		
+
+
 	}*/
 }

@@ -44,16 +44,16 @@ public class AuthorizationService {
 		this.RequestUserEntity.setUserEntity(opt.get());
 		return true;
 
-	
+
 	}
 	@Transactional
 	public void register(UserComunicationDTO user,UserAuthPasswordDTOInput password) {
-		
+
 		UserEntity userEnt=new UserEntity();
 		userEnt.setEmail(user.getEmail());
 		userEnt.setPhone(user.getPhone());
 		userEnt.setCountryPreflix(user.getPhonePreflix());
-		this.userEntityRepo.save(userEnt);	
+		this.userEntityRepo.save(userEnt);
 		this.RequestUserEntity.setUserEntity(userEnt);
 		UserAuthEntity autUser=new UserAuthEntity();
 		autUser.setUserId(userEnt.getUserId());
@@ -61,7 +61,7 @@ public class AuthorizationService {
 		this.passwordRepo.save(autUser);
 
 	}
-	
+
 	/**Metod compare sent password and saved password in database */
 	public boolean login(UserAuthPasswordDTOInput password) {
 		long userID=this.RequestUserEntity.getUserEntity().getUserId();
@@ -71,7 +71,7 @@ public class AuthorizationService {
 			}
 		return this.BCryptEncoder.matches(password.getPassword(),user.get().getPassword());
 	}
-	
+
 	public void FinishRegistration(UserProfileRegistrationDTO user,long userID) {
 		UserEntity databaseUser=this.userEntityRepo.findByPrimaryKey(userID);
 		CustomUserDetail autUser=(CustomUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -87,5 +87,5 @@ public class AuthorizationService {
 		this.userEntityRepo.saveAndFlush(databaseUser);
 		this.RequestUserEntity.setUserEntity(databaseUser);
 	}
-	
+
 }

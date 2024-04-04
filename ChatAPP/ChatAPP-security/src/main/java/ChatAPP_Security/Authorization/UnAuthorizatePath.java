@@ -15,7 +15,7 @@ public interface UnAuthorizatePath {
 	@Primary
 	@Component
 	public static class MainDefinePathToSkip implements UnAuthorizatePath{
-		
+
 		private String[]pathToSkip;
 		@Autowired
 		public MainDefinePathToSkip(List<UnAuthorizatePath> list) {
@@ -23,7 +23,7 @@ public interface UnAuthorizatePath {
 			  list = list.stream()
                       .filter(manager -> !(manager instanceof MainDefinePathToSkip))
                       .collect(Collectors.toList());
-			  this.pathToSkip= (String[]) list
+			  this.pathToSkip= list
 						.stream()
 						.flatMap((element)->{
 							return Arrays.stream(element.getUnAuthorizatedPath());
@@ -33,7 +33,7 @@ public interface UnAuthorizatePath {
 		@Override
 		public String[] getUnAuthorizatedPath() {
 			return this.pathToSkip;
-			
+
 	}
 }
 }

@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import ChatAPP_WebSocket.Service.RabitMQService.RabitMQConsumingEndPointService;
 import chatAPP_CommontPart.Properties.WebSocketEndPointPath;
 
 
 public class WebSocketEndPointConfig implements WebSocketEndPointConfigInterface {
-	
+
 	public static final String StartConsumingPath=WebSocketEndPointPath.Config_StartConsumingPath;
 	public static final String StopConsumingPath=WebSocketEndPointPath.Config_StopConsumingPath;
 
@@ -28,9 +26,9 @@ public class WebSocketEndPointConfig implements WebSocketEndPointConfigInterface
 	@Override
 	public void StopConsumingMessage() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
+
 
 }

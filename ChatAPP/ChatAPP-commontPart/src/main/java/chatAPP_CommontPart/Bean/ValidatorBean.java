@@ -16,12 +16,12 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 @Configuration
 public class ValidatorBean {
 
-	@Bean 
+	@Bean
 	public Validator create() {
 		return new ValidationClass();
 	}
-	
-	
+
+
 	public static class ValidationClass implements Validator{
 
 		private final Validator validator;
@@ -32,7 +32,7 @@ public class ValidatorBean {
 		public <T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups) {
 			// TODO Auto-generated method stub
 			Set<ConstraintViolation<T>>set=
-			this.validator.validate(object, groups)	;	
+			this.validator.validate(object, groups)	;
 
 			if(Log4j2.log.isTraceEnabled()) {
 				set.forEach((x)->{
@@ -75,6 +75,6 @@ public class ValidatorBean {
 			// TODO Auto-generated method stub
 			return this.validator.forExecutables();
 		}
-		
+
 	}
 }

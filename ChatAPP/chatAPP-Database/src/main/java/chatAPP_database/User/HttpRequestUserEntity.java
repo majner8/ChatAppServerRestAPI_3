@@ -16,5 +16,5 @@ public  class HttpRequestUserEntity{
 	public void setUserEntity(UserEntity userEntity) {
 		this.userEntity = userEntity;
 	}
-	
+
 }

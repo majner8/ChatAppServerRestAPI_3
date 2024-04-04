@@ -7,8 +7,8 @@ public class TokenDTO {
 	private String token;
 	private boolean isUserActive;
 	private Date validUntil;
-	
-	
+
+
 	public String getToken() {
 		return token;
 	}
@@ -27,6 +27,6 @@ public class TokenDTO {
 	public void setValidUntil(Date validUntil) {
 		this.validUntil = validUntil;
 	}
-	
-	
+
+
 }

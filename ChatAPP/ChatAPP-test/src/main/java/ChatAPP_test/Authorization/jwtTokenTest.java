@@ -1,6 +1,5 @@
 package ChatAPP_test.Authorization;
 
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -8,12 +7,10 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -22,10 +19,10 @@ import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 import ChatAPP_Security.Authorization.DeviceID.DeviceIDGenerator;
 import ChatAPP_Security.Properties.SecurityProperties;
 import chatAPP_DTO.Authorization.TokenDTO;
-import chatAPP_DTO.User.UserDTO.UserAuthPasswordDTO;
-import chatAPP_DTO.User.UserDTO.UserAuthorizationDTO;
-import chatAPP_DTO.User.UserDTO.UserComunicationDTO;
-import chatAPP_DTO.User.UserDTO.UserProfileDTO;
+import chatAPP_DTO.User.UserAuthPasswordDTOInput;
+import chatAPP_DTO.User.UserAuthorizationDTO;
+import chatAPP_DTO.User.UserComunicationDTO;
+import chatAPP_DTO.User.UserProfileDTO;
 
 @SpringBootTest(classes=Main.Main.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient
@@ -66,12 +63,12 @@ public class jwtTokenTest {
 				userProfile.setPhone("5353");
 				userProfile.setPhonePreflix("54");
 				user.setProfile(userProfile);
-				UserAuthPasswordDTO pas=new UserAuthPasswordDTO();
+				UserAuthPasswordDTOInput pas=new UserAuthPasswordDTOInput();
 				pas.setPassword("dasdas");
 				user.setPassword(pas);
 	}
 	private UserAuthorizationDTO user;
-	
+
 	private static String deviceIDToken="523SA";
 
 	@Test()
@@ -82,39 +79,39 @@ public class jwtTokenTest {
 		//calling request first time, to fill empty database with ID
 		 ResponseSpec deviceIDToken=this.webTestClient
 					.get()
-					.uri("/authorization/generateDeviceID")			
+					.uri("/authorization/generateDeviceID")
 					.exchange()	;
-		 
+
 					deviceIDToken.expectStatus().isOk()
 					.expectBody(String.class)
 					.consumeWith((device)->{
-						this.deviceIDToken=device.getResponseBody();
+						jwtTokenTest.deviceIDToken=device.getResponseBody();
 
 					});
-					
+
 					//call it second time, but with generatedID
 					  deviceIDToken=this.webTestClient
 								.get()
-								.uri("/authorization/generateDeviceID")									.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
-								.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)		
+								.uri("/authorization/generateDeviceID")									.header(this.securityProperties.getTokenDeviceIdHeaderName(), jwtTokenTest.deviceIDToken)
+								.header(this.securityProperties.getTokenDeviceIdHeaderName(), jwtTokenTest.deviceIDToken)
 								.exchange()	;
-								deviceIDToken.expectStatus().isBadRequest();	
+								deviceIDToken.expectStatus().isBadRequest();
 
-					//call it third time, with mock same ID.	
+					//call it third time, with mock same ID.
 					  deviceIDToken=this.webTestClient
 								.get()
-								.uri("/authorization/generateDeviceID")			
+								.uri("/authorization/generateDeviceID")
 								.exchange()	;
 								deviceIDToken.expectStatus().isOk()
 								.expectBody(String.class)
 								.consumeWith((device)->{
-									this.deviceIDToken=device.getResponseBody();
+									jwtTokenTest.deviceIDToken=device.getResponseBody();
 
 								})
-								;	
-								
+								;
 
-		
+
+
 	}
 	@Test
 	@Order(6)
@@ -124,18 +121,18 @@ public class jwtTokenTest {
 		.uri("/authorization/finishRegistration")
 		.exchange()	;
 		res.expectStatus().isUnauthorized();
-		
+
 		ResponseSpec registration=this.webTestClient
 				.post()
 				.uri("/authorization/register")
 				.bodyValue(user)
 				.exchange();
-		
+
 		//because does not send jwtToken deviceID token
 		registration.expectStatus().isUnauthorized();
-		
+
 	}
-	
+
 	@Test
 	@Order(7)
 	public void TryLogin() {
@@ -143,36 +140,36 @@ public class jwtTokenTest {
 				.post()
 				.uri("/authorization/login")
 				.bodyValue(user)
-				.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
+				.header(this.securityProperties.getTokenDeviceIdHeaderName(), jwtTokenTest.deviceIDToken)
 				.exchange();
 		//because user is not registred
 		registration.expectStatus().isUnauthorized();
-	
+
 	}
 	@Test
 	@Order(8)
 	public void testRegistration() {
-		
+
 		 TokenDTO[] rawToken= new TokenDTO[1];
-		 
+
 			ResponseSpec registration=this.webTestClient
 					.post()
 					.uri("/authorization/register")
 					.bodyValue(user)
-					.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
+					.header(this.securityProperties.getTokenDeviceIdHeaderName(), jwtTokenTest.deviceIDToken)
 					.exchange();
 		registration.expectStatus().isOk()
 		.expectBody(TokenDTO.class)
 		.consumeWith((token)->{
 			rawToken[0]=token.getResponseBody();
 		});
-		
+
 		//try it again, with same value
 		 registration=this.webTestClient
 				.post()
 				.uri("/authorization/register")
 				.bodyValue(user)
-				.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
+				.header(this.securityProperties.getTokenDeviceIdHeaderName(), jwtTokenTest.deviceIDToken)
 				.exchange();
 	registration.expectStatus().isEqualTo(HttpStatus.CONFLICT)
 	.expectBody(TokenDTO.class)
@@ -180,7 +177,7 @@ public class jwtTokenTest {
 		rawToken[0]=token.getResponseBody();
 	});
 	}
-	
+
 	@Test
 	@Order(9)
 	public void makeLogin() {
@@ -188,12 +185,12 @@ public class jwtTokenTest {
 				.post()
 				.uri("/authorization/login")
 				.bodyValue(user)
-				.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
+				.header(this.securityProperties.getTokenDeviceIdHeaderName(), jwtTokenTest.deviceIDToken)
 				.exchange();
 		registration.expectStatus().isOk()
 		.expectBody(TokenDTO.class)
 		.consumeWith((token)->{
-			this.authorizatedToken=token.getResponseBody().getToken();
+			jwtTokenTest.authorizatedToken=token.getResponseBody().getToken();
 		});
 	}
 	private static String authorizatedToken;
@@ -204,13 +201,13 @@ public class jwtTokenTest {
 		prof.setLastName("Bicak");
 		prof.setSerName("Antonin");
 		prof.setNickName("majner8");
-		
+
 		this.webTestClient
 				.post()
 				.uri("/authorization/finishRegistration")
 				.bodyValue(prof)
-				.header(this.securityProperties.getTokenDeviceIdHeaderName(), this.deviceIDToken)
-				.header(this.securityProperties.getTokenAuthorizationUserHederName(), this.authorizatedToken)
+				.header(this.securityProperties.getTokenDeviceIdHeaderName(), jwtTokenTest.deviceIDToken)
+				.header(this.securityProperties.getTokenAuthorizationUserHederName(), jwtTokenTest.authorizatedToken)
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody(TokenDTO.class);

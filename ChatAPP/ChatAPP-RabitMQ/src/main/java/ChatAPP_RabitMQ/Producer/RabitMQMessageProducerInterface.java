@@ -17,7 +17,7 @@ public interface RabitMQMessageProducerInterface {
 			this.PushMessageToRabitMQ(message, x);
 		});
 	}
-	
+
 	public void PushMessageToRabitMQ(Object message, String queueName);
 	public default void PushMessageToRabitMQ(List<Object> messages,String queueName) {
 		synchronized(messages) {
@@ -26,6 +26,6 @@ public interface RabitMQMessageProducerInterface {
 			});
 		}
 	}
-	
+
 	public void pushMessageToRabitMQ(String chatID,Object... message);
 	}

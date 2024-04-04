@@ -21,12 +21,12 @@ public class rabbitMQDeviceUserListenerManager implements WebSocketSessionListen
     @Qualifier("customChannelAwareMessageListener")
     private ChannelAwareMessageListener listener;
 	@Autowired
-	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue 
+	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue
 	webSocketSession;
 
 	@Autowired
 	private RabitMQProperties amqProp;
-	
+
 	private void StartConsuming() {
 		SimpleMessageListenerContainer container=this.createContainer();
 		//save container to session
@@ -47,13 +47,13 @@ public class rabbitMQDeviceUserListenerManager implements WebSocketSessionListen
 		Log4j2.log.debug(Log4j2.MarkerLog.RabitMQ.getMarker(),"I am starting consuming Message! deviceUserID: "+this.webSocketSession.getConnectionID());
 
 		this.StartConsuming();
-		
+
 	}
 
 	@Override
 	public void UserDisconnect() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 

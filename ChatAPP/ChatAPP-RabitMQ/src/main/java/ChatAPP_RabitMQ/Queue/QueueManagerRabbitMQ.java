@@ -18,7 +18,7 @@ import chatAPP_CommontPart.ThreadLocal.WebSocketThreadLocalSessionInterface;
 @Component
 public class QueueManagerRabbitMQ implements WebSocketSessionListener {
 	@Autowired
-	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue 
+	private WebSocketThreadLocalSessionInterface.WebSocketThreadLocalSessionValue
 	webSocketSession;
 	@Autowired
 	private TopicExchange topicExchange; //have to be created bean
@@ -30,7 +30,7 @@ public class QueueManagerRabbitMQ implements WebSocketSessionListener {
 			Log4j2.log.debug(Log4j2.MarkerLog.RabitMQ.getMarker(),String.format("Chech/declare userDevice Queue. Queue name: %s ",
 					this.webSocketSession.getConnectionID()));
 		}
-		
+
 		String queueName=this.webSocketSession.getConnectionID();
 		if(this.amqpAdmin.getQueueInfo(queueName)!=null) {
 			// queue already exist
@@ -46,7 +46,7 @@ public class QueueManagerRabbitMQ implements WebSocketSessionListener {
 	@Override
 	public void UserDisconnect() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

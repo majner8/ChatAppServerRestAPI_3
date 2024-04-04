@@ -32,6 +32,6 @@ public class SawMessageDTO {
 	public void setTimeStamp(LocalDateTime timeStamp) {
 		this.timeStamp = timeStamp;
 	}
-	
-	
+
+
 }

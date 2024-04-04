@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
-		
-	
+
+
 	public  class UserProfileRegistrationDTO extends UserProfileDTO{
 		@Past
 		@NotNull
@@ -19,6 +19,6 @@ import javax.validation.constraints.Past;
 		public void setUserBorn(LocalDate userBorn) {
 			this.userBorn = userBorn;
 		}
-		
+
 	}
 

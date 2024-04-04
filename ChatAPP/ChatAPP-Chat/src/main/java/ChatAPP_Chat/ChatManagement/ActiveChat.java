@@ -4,14 +4,14 @@ import java.util.Set;
 
 public class ActiveChat implements Active_chat_int{
 
-	
+
 	private final Set<Long> memberID;
 	private volatile long LastTimeofUsed;
 
 	public ActiveChat(Set<Long> memberID) {
 		this.memberID=memberID;
 	}
-	
+
 	public void chatWasUsed() {
 		this.LastTimeofUsed=System.currentTimeMillis();
 	}
@@ -26,6 +26,6 @@ public class ActiveChat implements Active_chat_int{
 	public boolean isChatActive(long timeout) {
 		return (System.currentTimeMillis()-this.LastTimeofUsed)<timeout;
 	}
-	
-	
+
+
 }
