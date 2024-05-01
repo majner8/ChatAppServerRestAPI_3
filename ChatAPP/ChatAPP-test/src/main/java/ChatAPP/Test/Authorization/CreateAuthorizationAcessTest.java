@@ -1,5 +1,6 @@
 package ChatAPP.Test.Authorization;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,9 +19,9 @@ import chatAPP_DTO.User.UserAuthPasswordDTOInput;
 import chatAPP_DTO.User.UserAuthorizationDTO;
 import chatAPP_DTO.User.UserComunicationDTO;
 import chatAPP_DTO.User.UserProfileDTO;
+import chatAPP_DTO.User.UserProfileRegistrationDTO;
 
 @Component
-@Scope("prototype")
 @Profile("chatAPP-Test")
 public class CreateAuthorizationAcessTest {
 	private static  AtomicInteger integer=new AtomicInteger();
@@ -28,13 +29,12 @@ public class CreateAuthorizationAcessTest {
 		integer.set(0);
 	}
 	private ThreadLocal<Triple<Integer,WebTestClient,String>> threadLocal=new ThreadLocal<Triple<Integer,WebTestClient,String>>();
-	@Autowired
-	private WebTestClient webTestClient;
+
 	 @Autowired
 		private SecurityProperties securityProperties;
 	 
 	/** Method returns all headers needed to be processed through AuthorizationFilter */
-		public Map<String,String> getAuthorizationHeaders(){
+		public Map<String,String> getAuthorizationHeaders(WebTestClient webTestClient){
 			this.threadLocal.remove();
 			
 			this.threadLocal.set(new Triple<Integer, WebTestClient, String>());
@@ -88,20 +88,35 @@ public class CreateAuthorizationAcessTest {
 		.consumeWith((token)->{
 			this.threadLocal.get().setThird(token.getResponseBody().getToken());
 		});
-
+		//make login
+		//just verify that login metod work as well
+		
+		this.threadLocal.get().getSecond()
+		.post()
+		.uri("/authorization/login")
+		.bodyValue(user)
+		.headers(httpHeaders -> deviceHeader.forEach(httpHeaders::add))
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(TokenDTO.class)
+.consumeWith((token)->{
+this.threadLocal.get().setThird(token.getResponseBody().getToken());
+});
+		
 		deviceHeader.put(this.securityProperties.getTokenAuthorizationUserHederName(), this.threadLocal.get().getThird());
 		}
 		private void getFullAuthorizatedUserHeader(Map<String,String> UserAuthorizatedHeader){
-			UserProfileDTO prof=new UserProfileDTO();
+			UserProfileRegistrationDTO prof=new UserProfileRegistrationDTO();
 			prof.setLastName("Bicak");
 			prof.setSerName("Antonin");
 			prof.setNickName("majner8");
-		
+			prof.setUserBorn(LocalDate.now().minusDays(1));
 			this.threadLocal.get().getSecond()
 					.post()
 					.uri("/authorization/finishRegistration")
 					.bodyValue(prof)
 					.headers(httpHeaders -> UserAuthorizatedHeader.forEach(httpHeaders::add))
+					
 					.exchange()
 					.expectStatus().isOk()
 					.expectBody(TokenDTO.class)

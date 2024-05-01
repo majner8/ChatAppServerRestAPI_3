@@ -1,16 +1,18 @@
-package ChatAPP_test.WebSocket;
+package ChatAPP.Test.WebSocket;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Scope;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
@@ -29,20 +31,20 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import ChatAPP_test.Authorization.jwtTokenTestAuthorizationToken;
-import chatAPP_CommontPart.Log4j2.Log4j2;
+import ChatAPP.Test.TestProperties;
+import ChatAPP.Test.Authorization.CreateAuthorizationAcessTest;
+
 @Component
-@Profile("test")
-public class MakeConnectionTOWebSocketTest {
+@Profile("chatAPP-Test")
+public class CreateAndgetWebSocketSessionTest {
 
 	@Autowired
-	private jwtTokenTestAuthorizationToken autToken;
-
-
-
+	private CreateAuthorizationAcessTest authorization;
+	@Autowired
+	private TestProperties properties;
     private WebSocketStompClient stompClient;
 
-    public  MakeConnectionTOWebSocketTest() {
+    public  CreateAndgetWebSocketSessionTest() {
     	this.init();
     }
     public void init() {
@@ -61,28 +63,38 @@ public class MakeConnectionTOWebSocketTest {
         this.stompClient = new WebSocketStompClient(sockJsClient);
         this.stompClient.setMessageConverter(messageConverter);
         this.stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
-
     }
 
 
-	  public StompSession makeConnectionToServer(int serverPort,WebTestClient webTestClient,String handShakePath) throws InterruptedException {
+	  public StompSession makeConnectionToServer(int serverPort,WebTestClient web) {
 	    	 StompSessionHandler sessionHandler = new StompSessionHandlerAdapter() {
 
 	         };
 
 	         WebSocketHttpHeaders authorizationHeader=new WebSocketHttpHeaders() ;
-	         this.autToken.getAuthorizationHeaders(webTestClient).forEach(
+	         this.authorization.getAuthorizationHeaders(web)
+	         
+	         .forEach(
 	        		 (K,V)->{
 	        			 authorizationHeader.add(K, V);
 	        		 }
 	        		 );
 	         assertTrue(!authorizationHeader.isEmpty());
 	         ListenableFuture< StompSession> ses=
-	        		 this.stompClient.connect(handShakePath, authorizationHeader, sessionHandler,new Object [0]);
+	        		 this.stompClient.connect(this.properties.getWebSocketEndPointPath(serverPort), authorizationHeader, sessionHandler,new Object [0]);
 	        	try {
-	        		StompSession x=ses.get(10, TimeUnit.SECONDS);
-					assertTrue(true);
-					return x;
+	        		StompSession x;
+					try {
+						x = ses.get(10, TimeUnit.SECONDS);
+						assertTrue(true);
+
+						return x;
+
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+
+						fail(e);
+						}
 				}
 
 	        	catch (ExecutionException e) {
@@ -94,6 +106,4 @@ public class MakeConnectionTOWebSocketTest {
 				}
 	        	return null;
 	    }
-
-
 }

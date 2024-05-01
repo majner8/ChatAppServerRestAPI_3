@@ -2,6 +2,7 @@ package chatAPP_DTO.User;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class UserProfileDTO{
 
@@ -12,7 +13,8 @@ public class UserProfileDTO{
 	@Pattern(regexp = "^[^0-9]*$")
 	private String lastName;
 	@NotEmpty
-	@Pattern(regexp = "^[^0-9]{0,20}$")
+	@Size(min=0, max=20)
+	//@Pattern(regexp = "^[^0-9]{0,20}$")
 	private String nickName;
 	public String getSerName() {
 		return SerName;

@@ -18,7 +18,7 @@ import chatAPP_CommontPart.Log4j2.Log4j2;
 @ComponentScan(basePackages = {"chatAPP_database,ChatAPP_security"
 		+ ",ChatAPP_RabitMQ","ChatAPP_WebSocket","ChatAPP_commontPart",
 		"chatAPP_DTO", "ChatAPP_HttpendPoint","ChatAPP_Chat",
-		  "ChatAPP_WebSocket","ChatAPP_WebSocket_EndPoint","ChatAPP_test"})
+		  "ChatAPP_WebSocket","ChatAPP_WebSocket_EndPoint","ChatAPP.Test"})
 @EntityScan(basePackages={"chatAPP_database"})
 @EnableJpaRepositories(basePackages = {"chatAPP_database"})
 @EnableAutoConfiguration

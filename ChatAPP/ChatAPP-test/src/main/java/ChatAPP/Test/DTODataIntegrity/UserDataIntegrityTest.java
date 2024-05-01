@@ -27,7 +27,6 @@ import chatAPP_DTO.User.UserProfileDTO;
 
 @SpringBootTest(classes=Main.Main.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient
-@Component
 @Profile("chatAPP-Test")
 public class UserDataIntegrityTest {
 
